@@ -4,14 +4,15 @@ import { richWords } from '../lib/rich.jsx'
 
 export const EASE = [0.16, 1, 0.3, 1]
 
-// Fades, lifts and un-blurs its children when scrolled into view.
-export function Reveal({ children, delay = 0, y = 40, className = '', as = 'div', ...rest }) {
+// Swings its children up out of perspective, un-blurring as they arrive.
+/** @param {Record<string, any>} props */
+export function Reveal({ children, delay = 0, y = 50, className = '', as = 'div', ...rest }) {
   const M = motion[as]
   return (
     <M
       className={className}
-      initial={{ opacity: 0, y, filter: 'blur(8px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={{ opacity: 0, y, rotateX: 14, filter: 'blur(8px)', transformPerspective: 1200 }}
+      whileInView={{ opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
       viewport={{ once: true, margin: '0px 0px -12% 0px' }}
       transition={{ duration: 1, ease: EASE, delay }}
       {...rest}
@@ -32,7 +33,7 @@ export function SplitText({ lines, className = '', delay = 0, stagger = 0.05, as
     <H className={className}>
       <motion.span className="block" {...anim}>
         {lines.map((line, li) => (
-          <span key={li} className="block">
+          <span key={li} className="inline md:block">
             {richWords(line).map(({ w, em }) => {
               const d = delay + i++ * stagger
               return (
@@ -102,6 +103,41 @@ export function Magnetic({ children, strength = 0.25, className = '' }) {
     <motion.span ref={ref} onPointerMove={move} onPointerLeave={leave} style={{ x: sx, y: sy }} className={`inline-flex ${className}`}>
       {children}
     </motion.span>
+  )
+}
+
+// 3D tilt toward the pointer with a moving glare highlight.
+/** @param {Record<string, any>} props */
+export function Tilt({ children, className = '', max = 8 }) {
+  const ref = useRef(null)
+  const rx = useMotionValue(0)
+  const ry = useMotionValue(0)
+  const gx = useMotionValue(50)
+  const gy = useMotionValue(50)
+  const on = useMotionValue(0)
+  const glareOpacity = useSpring(on, { stiffness: 200, damping: 25 })
+  const sx = useSpring(rx, { stiffness: 180, damping: 18 })
+  const sy = useSpring(ry, { stiffness: 180, damping: 18 })
+  const glare = useTransform([gx, gy], ([x, y]) => `radial-gradient(420px circle at ${x}% ${y}%, rgba(92,225,255,.16), transparent 60%)`)
+  const move = (e) => {
+    const r = ref.current.getBoundingClientRect()
+    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height
+    ry.set((px - 0.5) * max * 2)
+    rx.set(-(py - 0.5) * max * 2)
+    gx.set(px * 100)
+    gy.set(py * 100)
+    on.set(1)
+  }
+  const leave = () => {
+    rx.set(0)
+    ry.set(0)
+    on.set(0)
+  }
+  return (
+    <motion.div ref={ref} onPointerMove={move} onPointerLeave={leave} style={{ rotateX: sx, rotateY: sy, transformPerspective: 1000, transformStyle: 'preserve-3d' }} className={`relative h-full ${className}`}>
+      {children}
+      <motion.span aria-hidden="true" style={{ background: glare, opacity: glareOpacity }} className="pointer-events-none absolute inset-0 z-10 rounded-[20px]" />
+    </motion.div>
   )
 }
 

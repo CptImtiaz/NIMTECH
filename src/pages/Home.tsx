@@ -1,286 +1,244 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
-import { ArrowRight, ArrowUpRight, Globe, Instagram, Twitter } from 'lucide-react'
-import { CASES, ORDER, SERVICES } from '../data/content.js'
-import { CaseCard, CTA, FAQ, Section, SectionHead, Steps, svcName } from '../components/blocks.jsx'
-import { Reveal } from '../components/motion.jsx'
+import { Link } from 'react-router-dom'
+import { AnimatePresence, motion, useInView, useScroll, useTransform, type MotionValue } from 'framer-motion'
+import { CASES, INDUSTRIES, ORDER, SERVICES } from '../data/content.js'
+import Hero from '../components/Hero'
+import { CaseCard, CTA, Eyebrow, FAQ, Marquee, Section, SectionHead, Statement, svcName } from '../components/blocks.jsx'
+import { ArrowUpRight, Icon } from '../components/Icons.jsx'
+import { EASE, Reveal, SplitText, Tilt } from '../components/motion.jsx'
+import { SHOWCASES } from '../components/Showcases.jsx'
 import Counters from '../components/Counters.jsx'
 
 const V = (id: string) => `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/${id}.mp4`
-const HERO_VIDEO = V('hf_20260405_074625_a81f018a-956b-43fb-9aee-4d1508e30e6a')
-const FEATURED_VIDEO = V('hf_20260402_054547_9875cfc5-155a-4229-8ec8-b7ba7125cbf8')
-const PHILOSOPHY_VIDEO = V('hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8')
 const SERVICE_VIDEOS: Record<string, string> = {
   'ai-agents': V('hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31'),
   'computer-vision': V('hf_20260815_034306_229eccbe-fd8f-40fb-8002-9868ef2bb1a8'),
   software: V('hf_20260324_151826_c7218672-6e92-402c-9e45-f1e0f454bdc4'),
   apps: V('hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6'),
-  'api-integration': V('hf_20260818_072341_50851634-bbc3-4c33-9acc-7647d4db44aa'),
+  'api-integration': V('hf_20260402_054547_9875cfc5-155a-4229-8ec8-b7ba7125cbf8'),
   'ai-content': V('hf_20260826_041744_63efcd78-bf7d-4039-99e2-2461e8a61903'),
 }
-const serif = { fontFamily: "'Instrument Serif', serif" }
-const view = { once: true, margin: '-100px' as const }
+type Svc = (typeof SERVICES)[keyof typeof SERVICES]
 
-/* ---------- hero video with crossfade-to-black loop ---------- */
-function HeroVideo() {
-  const ref = useRef<HTMLVideoElement>(null)
+function useWide(q = '(min-width: 900px)') {
+  const [wide, setWide] = useState(() => typeof window !== 'undefined' && matchMedia(q).matches)
   useEffect(() => {
-    const v = ref.current
-    if (!v) return
-    let raf = 0
-    let fadingOut = false
-    let timer: ReturnType<typeof setTimeout> | undefined
-    const fade = (to: number, ms = 500) => {
-      cancelAnimationFrame(raf)
-      const from = parseFloat(v.style.opacity || '0')
-      const t0 = performance.now()
-      const step = (now: number) => {
-        const k = Math.min(1, (now - t0) / ms)
-        v.style.opacity = String(from + (to - from) * k)
-        if (k < 1) raf = requestAnimationFrame(step)
-      }
-      raf = requestAnimationFrame(step)
-    }
-    const onCanPlay = () => {
-      v.play().catch(() => {})
-      fade(1)
-    }
-    const onTime = () => {
-      if (!fadingOut && v.duration && v.duration - v.currentTime <= 0.55) {
-        fadingOut = true
-        fade(0)
-      }
-    }
-    const onEnded = () => {
-      cancelAnimationFrame(raf)
-      v.style.opacity = '0'
-      timer = setTimeout(() => {
-        v.currentTime = 0
-        fadingOut = false
-        v.play().catch(() => {})
-        fade(1)
-      }, 100)
-    }
-    v.addEventListener('canplay', onCanPlay, { once: true })
-    v.addEventListener('timeupdate', onTime)
-    v.addEventListener('ended', onEnded)
-    return () => {
-      cancelAnimationFrame(raf)
-      clearTimeout(timer)
-      v.removeEventListener('canplay', onCanPlay)
-      v.removeEventListener('timeupdate', onTime)
-      v.removeEventListener('ended', onEnded)
-    }
-  }, [])
-  return <video ref={ref} src={HERO_VIDEO} muted autoPlay playsInline preload="auto" className="absolute inset-0 h-full w-full object-cover object-bottom" style={{ opacity: 0 }} aria-hidden="true" />
+    const m = matchMedia(q)
+    const f = () => setWide(m.matches)
+    m.addEventListener('change', f)
+    return () => m.removeEventListener('change', f)
+  }, [q])
+  return wide
 }
 
-function Hero() {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault()
-    navigate(`/contact${email ? `?email=${encodeURIComponent(email)}` : ''}`)
-  }
-  return (
-    <section className="relative flex min-h-screen flex-col overflow-hidden">
-      <HeroVideo />
-      <nav className="relative z-20 px-6 py-6">
-        <div className="liquid-glass mx-auto flex max-w-5xl items-center justify-between rounded-full px-6 py-3">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2 text-white">
-              <Globe size={24} />
-              <span className="text-lg font-semibold">NIMTECH</span>
-            </Link>
-            <div className="ml-8 hidden items-center gap-8 md:flex">
-              {[
-                ['Services', '/services'],
-                ['Work', '/work'],
-                ['About', '/company'],
-              ].map(([l, to]) => (
-                <Link key={l} to={to} className="text-sm font-medium text-white/80 transition-colors hover:text-white">
-                  {l}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link to="/careers" className="hidden text-sm font-medium text-white sm:inline">
-              Careers
-            </Link>
-            <Link to="/contact" className="liquid-glass rounded-full px-6 py-2 text-sm font-medium text-white">
-              Contact
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      <div className="relative z-10 flex flex-1 -translate-y-[20%] flex-col items-center justify-center gap-8 px-6 py-12 text-center">
-        <motion.h1 initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }} animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }} transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} className="whitespace-nowrap text-7xl tracking-tight text-white md:text-8xl lg:text-9xl" style={serif}>
-          Build it <em className="italic">all</em>.
-        </motion.h1>
-        <motion.form initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} onSubmit={submit} className="w-full max-w-xl">
-          <div className="liquid-glass flex items-center gap-3 rounded-full py-2 pl-6 pr-2">
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" aria-label="Your email" className="min-w-0 flex-1 bg-transparent text-white outline-none placeholder:text-white/40" />
-            <button type="submit" aria-label="Start a project" className="rounded-full bg-white p-3 text-black transition-transform hover:scale-105">
-              <ArrowRight size={20} />
-            </button>
-          </div>
-        </motion.form>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.5 }} className="max-w-xl px-4 text-sm leading-relaxed text-white">
-          AI agents, computer vision, software, apps, integrations and AI content, engineered by one senior team. Leave your email and a senior engineer will reply within one working day.
-        </motion.p>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.65 }}>
-          <Link to="/company" className="liquid-glass inline-block rounded-full px-8 py-3 text-sm font-medium text-white transition-colors hover:bg-white/5">
-            Read our manifesto
-          </Link>
-        </motion.div>
-      </div>
-
-      <div className="relative z-10 flex justify-center gap-4 pb-12">
-        {[
-          [Instagram, 'Instagram'],
-          [Twitter, 'Twitter'],
-          [Globe, 'Website'],
-        ].map(([Icon, label]) => {
-          const I = Icon as typeof Globe
-          return (
-            <a key={label as string} href="#" aria-label={label as string} className="liquid-glass rounded-full p-4 text-white/80 transition-all hover:bg-white/5 hover:text-white">
-              <I size={20} />
-            </a>
-          )
-        })}
-      </div>
-    </section>
-  )
-}
-
-function About() {
-  const ref = useRef(null)
-  const inView = useInView(ref, view)
-  return (
-    <section ref={ref} className="relative overflow-hidden bg-black px-6 pb-10 pt-32 md:pb-14 md:pt-44">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(255,255,255,0.03)_0%,_transparent_70%)]" />
-      <div className="relative mx-auto max-w-6xl">
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="mb-6 text-sm uppercase tracking-widest text-white/40">
-          About Us
-        </motion.p>
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, delay: 0.1 }} className="text-4xl leading-[1.1] tracking-tight text-white md:text-6xl lg:text-7xl" style={serif}>
-          Pioneering <em className="italic text-white/60">ideas</em> for
-          <br className="hidden md:block" /> minds that <em className="italic text-white/60">create, build, and inspire.</em>
-        </motion.h2>
-      </div>
-    </section>
-  )
-}
-
-function Featured() {
-  const ref = useRef(null)
-  const inView = useInView(ref, view)
-  return (
-    <section ref={ref} className="overflow-hidden bg-black px-6 pb-20 pt-6 md:pb-32 md:pt-10">
-      <motion.div initial={{ opacity: 0, y: 60 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.9 }} className="relative mx-auto aspect-video max-w-6xl overflow-hidden rounded-3xl max-md:aspect-[3/4]">
-        <video src={FEATURED_VIDEO} muted autoPlay loop playsInline preload="auto" className="h-full w-full object-cover" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 flex flex-col items-start justify-between gap-4 p-6 md:flex-row md:items-end md:p-10">
-          <div className="liquid-glass max-w-md rounded-2xl p-6 md:p-8">
-            <p className="mb-3 text-xs uppercase tracking-widest text-white/50">Our Approach</p>
-            <p className="text-sm leading-relaxed text-white md:text-base">We start with the problem, the people and the data, not with a technology. For AI work we test on your real data first, so you see results before you commit.</p>
-          </div>
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link to="/process" className="liquid-glass inline-block rounded-full px-8 py-3 text-sm font-medium text-white">
-              Explore more
-            </Link>
-          </motion.div>
-        </div>
-      </motion.div>
-    </section>
-  )
-}
-
-function Philosophy() {
-  const ref = useRef(null)
-  const inView = useInView(ref, view)
-  return (
-    <section ref={ref} className="overflow-hidden bg-black px-6 py-28 md:py-40">
-      <div className="mx-auto max-w-6xl">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8 }} className="mb-16 text-5xl tracking-tight text-white md:mb-24 md:text-7xl lg:text-8xl" style={serif}>
-          Innovation <em className="italic text-white/40">x</em> Vision
-        </motion.h2>
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
-          <motion.div initial={{ opacity: 0, x: -40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.9, delay: 0.1 }} className="aspect-[4/3] overflow-hidden rounded-3xl">
-            <video src={PHILOSOPHY_VIDEO} muted autoPlay loop playsInline preload="auto" className="h-full w-full object-cover" aria-hidden="true" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.9, delay: 0.2 }} className="flex flex-col justify-center gap-10">
-            <div>
-              <p className="mb-4 text-xs uppercase tracking-widest text-white/40">Engineered, not plugged in</p>
-              <p className="text-base leading-relaxed text-white/70 md:text-lg">Every meaningful breakthrough begins where disciplined engineering meets bold vision. We build and train our own models when off‑the‑shelf isn’t good enough, and we prove them on your real data before anything scales.</p>
-            </div>
-            <div className="h-px w-full bg-white/10" />
-            <div>
-              <p className="mb-4 text-xs uppercase tracking-widest text-white/40">Yours to keep</p>
-              <p className="text-base leading-relaxed text-white/70 md:text-lg">The best work emerges when curiosity meets conviction. Everything we build, from source code and trained models to datasets and infrastructure, belongs to you, documented so your team can own it.</p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function LazyVideo({ src, className }: { src: string; className: string }) {
+function LazyVideo({ src }: { src: string }) {
   const ref = useRef<HTMLVideoElement>(null)
-  const inView = useInView(ref, { margin: '200px' })
+  const inView = useInView(ref, { margin: '300px' })
   useEffect(() => {
     const v = ref.current
     if (!v) return
     if (inView) v.play().catch(() => {})
     else v.pause()
   }, [inView])
-  return <video ref={ref} src={inView ? src : undefined} muted loop playsInline preload="none" className={className} aria-hidden="true" />
+  return <video ref={ref} src={inView ? src : undefined} muted loop playsInline preload="none" className="absolute inset-0 h-full w-full object-cover opacity-60 transition-transform duration-700 group-hover:scale-105" aria-hidden="true" />
 }
 
-function Services() {
-  const ref = useRef(null)
-  const inView = useInView(ref, view)
+function ServiceCard({ id, i }: { id: string; i: number }) {
+  const s = SERVICES[id as keyof typeof SERVICES] as Svc
   return (
-    <section ref={ref} className="relative overflow-hidden bg-black px-6 py-28 md:py-40">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.02)_0%,_transparent_60%)]" />
-      <div className="relative mx-auto max-w-6xl">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} className="mb-12 flex items-end justify-between md:mb-16">
-          <h2 className="text-3xl tracking-tight text-white md:text-5xl" style={serif}>
-            What we do
-          </h2>
-          <span className="hidden text-sm text-white/40 md:block">Our services</span>
-        </motion.div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-          {ORDER.map((id, i) => {
-            const s = SERVICES[id as keyof typeof SERVICES]
-            return (
-              <motion.div key={id} initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={view} transition={{ duration: 0.8, delay: (i % 2) * 0.15 }}>
-                <Link to={`/services/${id}`} className="liquid-glass group block rounded-3xl">
-                  <div className="relative aspect-video overflow-hidden">
-                    <LazyVideo src={SERVICE_VIDEOS[id]} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  </div>
-                  <div className="p-6 md:p-8">
-                    <div className="mb-4 flex items-center justify-between">
-                      <span className="text-xs uppercase tracking-widest text-white/40">{s.tags.slice(0, 2).join(' · ')}</span>
-                      <span className="liquid-glass rounded-full p-2 text-white transition-transform duration-500 group-hover:rotate-45">
-                        <ArrowUpRight size={16} />
-                      </span>
-                    </div>
-                    <h3 className="mb-3 text-xl tracking-tight text-white md:text-2xl" style={serif}>
-                      {svcName(id)}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-white/50">{s.one}</p>
-                  </div>
-                </Link>
-              </motion.div>
-            )
-          })}
+    <Tilt className="rounded-[28px]">
+      <Link to={`/services/${id}`} className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-line bg-surface">
+        <div className="relative h-[46%] min-h-[180px] overflow-hidden">
+          <LazyVideo src={SERVICE_VIDEOS[id]} />
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent" />
+          <span className="absolute left-6 top-6 grid h-12 w-12 place-items-center rounded-2xl border border-white/15 bg-night/50 text-brand-cyan backdrop-blur-md">
+            <Icon name={s.icon} className="h-5 w-5" />
+          </span>
+          <span className="absolute right-6 top-6 font-mono text-xs text-white/60">0{i + 1} / 06</span>
         </div>
+        <div className="flex flex-1 flex-col p-7">
+          <h3 className="font-display text-[clamp(26px,2.4vw,34px)] font-semibold tracking-[-.03em] text-ink">{svcName(id)}</h3>
+          <p className="mt-3 text-[15.5px] leading-relaxed text-ink-soft">{s.one}</p>
+          <div className="mt-5 flex flex-wrap gap-1.5">
+            {s.tags.slice(0, 4).map((t: string) => (
+              <span key={t} className="tag">{t}</span>
+            ))}
+          </div>
+          <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-medium text-brand-cyan">
+            Explore {svcName(id)}
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
+          </span>
+        </div>
+      </Link>
+    </Tilt>
+  )
+}
+
+function CoverCard({ id, i, n, progress }: { id: string; i: number; n: number; progress: MotionValue<number> }) {
+  const c = i / (n - 1)
+  const rotateY = useTransform(progress, [c - 0.35, c, c + 0.35], [32, 0, -32])
+  const scale = useTransform(progress, [c - 0.35, c, c + 0.35], [0.86, 1, 0.86])
+  const opacity = useTransform(progress, [c - 0.6, c, c + 0.6], [0.35, 1, 0.35])
+  return (
+    <motion.div style={{ rotateY, scale, opacity, transformPerspective: 1400 }} className="h-[min(560px,64vh)] w-[min(440px,78vw)] shrink-0">
+      <ServiceCard id={id} i={i} />
+    </motion.div>
+  )
+}
+
+// Pinned section: vertical scroll drives a horizontal 3D coverflow.
+function ServicesRail() {
+  const wide = useWide()
+  const ref = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', `-${((ORDER.length - 1) / ORDER.length) * 100}%`])
+  if (!wide) {
+    return (
+      <Section>
+        <SectionHead eyebrow="What we do" title="Six practices. <em>One team.</em>" />
+        <div className="grid gap-5">
+          {ORDER.map((id, i) => (
+            <Reveal key={id} className="h-[520px]">
+              <ServiceCard id={id} i={i} />
+            </Reveal>
+          ))}
+        </div>
+      </Section>
+    )
+  }
+  return (
+    <section ref={ref} className="relative" style={{ height: `${ORDER.length * 70 + 60}vh` }}>
+      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden pb-6 pt-28">
+        <div className="wrap mb-8 flex items-end justify-between gap-8">
+          <div>
+            <Eyebrow>What we do</Eyebrow>
+            <SplitText as="h2" lines={['Six practices. <em>One team.</em>']} inView className="h2" />
+          </div>
+          <p className="lede hidden max-w-[34ch] lg:block">Most projects combine two or three. We bring all of it under one roof.</p>
+        </div>
+        <motion.div style={{ x }} className="flex gap-8 pl-[max(20px,calc((100vw-1280px)/2+56px))]">
+          {ORDER.map((id, i) => (
+            <CoverCard key={id} id={id} i={i} n={ORDER.length} progress={scrollYProgress} />
+          ))}
+          <div className="w-[30vw] shrink-0" />
+        </motion.div>
+        <div className="wrap mt-10">
+          <div className="h-px w-full bg-line">
+            <motion.div style={{ scaleX: scrollYProgress }} className="h-px origin-left bg-gradient-to-r from-brand to-brand-cyan" />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Tabs that flip between the live console demos in 3D.
+const LAB = [
+  ['agents', 'AI agent trace'],
+  ['vision', 'Model training'],
+  ['api', 'Integration hub'],
+  ['content', 'Content studio'],
+] as const
+function LiveLab() {
+  const [k, setK] = useState(0)
+  const Show = SHOWCASES[LAB[k][0]]
+  return (
+    <Section>
+      <SectionHead eyebrow="Live lab" title="Watch the systems <em>work.</em>" lede="Interactive recreations of what we build: every run traced, every model measured, every event accounted for." />
+      <div className="mb-6 flex flex-wrap gap-2" role="tablist">
+        {LAB.map(([id, label], i) => (
+          <button key={id} role="tab" aria-selected={k === i} onClick={() => setK(i)} className={`filter ${k === i ? 'on' : ''}`}>
+            {k === i && <motion.span layoutId="lab-pill" className="absolute inset-0 rounded-full bg-gradient-to-r from-brand to-brand-mid" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+            <span className="relative">{label}</span>
+          </button>
+        ))}
+      </div>
+      <div style={{ perspective: 1600 }}>
+        <AnimatePresence mode="wait">
+          <motion.div key={k} initial={{ opacity: 0, rotateX: -18, y: 40 }} animate={{ opacity: 1, rotateX: 0, y: 0 }} exit={{ opacity: 0, rotateX: 14, y: -30 }} transition={{ duration: 0.6, ease: EASE }} className="console">
+            <div className="console-bar">
+              <i />
+              <i />
+              <i />
+              <span className="ml-2">{Show.title}</span>
+              <span className="console-live">LIVE</span>
+            </div>
+            <Show.C />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </Section>
+  )
+}
+
+// Sticky cards that stack and recede in depth as the next one arrives.
+const PROCESS = [
+  ['Discover', 'We start with the problem, the people and the data, not with a technology.', 'eye'],
+  ['Prove', 'For AI work, we test on your real data first, so you see results before you commit.', 'chart'],
+  ['Build', 'Two‑week sprints with a working demo at the end of each.', 'code'],
+  ['Launch', 'Production release with monitoring, documentation and training.', 'rocket'],
+  ['Evolve', 'Ongoing improvement as your users, data and business change.', 'loop'],
+]
+function StackCard({ step, i, n, progress }: { step: string[]; i: number; n: number; progress: MotionValue<number> }) {
+  const start = i / n
+  const scale = useTransform(progress, [start, 1], [1, 1 - (n - i) * 0.04])
+  const rotateX = useTransform(progress, [start, 1], [0, (n - i) * 2.5])
+  const brightness = useTransform(progress, [start, 1], [1, 0.55 + i * 0.08])
+  const filter = useTransform(brightness, (b) => `brightness(${b})`)
+  return (
+    <div className="sticky flex h-[70vh] items-start justify-center" style={{ top: `calc(18vh + ${i * 22}px)` }}>
+      <motion.div style={{ scale, rotateX, filter, transformPerspective: 1400, transformOrigin: 'top center' }} className="relative w-full max-w-[920px] overflow-hidden rounded-[28px] border border-line bg-gradient-to-br from-surface to-night p-8 md:p-12">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-brand/20 blur-3xl" />
+        <div className="relative flex items-start justify-between gap-6">
+          <div>
+            <span className="font-mono text-xs tracking-[.12em] text-brand-cyan">STEP 0{i + 1}</span>
+            <h3 className="mt-3 font-display text-[clamp(34px,4.6vw,64px)] font-semibold leading-none tracking-[-.04em] text-ink">{step[0]}</h3>
+            <p className="mt-5 max-w-[46ch] text-[17px] leading-relaxed text-ink-soft">{step[1]}</p>
+          </div>
+          <span className="hidden h-16 w-16 shrink-0 place-items-center rounded-2xl border border-line bg-white/[.03] text-brand-cyan md:grid">
+            <Icon name={step[2]} className="h-7 w-7" />
+          </span>
+        </div>
+        <div className="relative mt-10 h-1 overflow-hidden rounded-full bg-line">
+          <div className="h-full rounded-full bg-gradient-to-r from-brand to-brand-cyan" style={{ width: `${((i + 1) / n) * 100}%` }} />
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+function ProcessStack() {
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
+  return (
+    <section className="relative pt-24 md:pt-36">
+      <div className="wrap">
+        <SectionHead eyebrow="Process" title="How we <em>work.</em>" lede="A clear, repeatable delivery model, whichever service you need." />
+        <div ref={ref} data-stack className="relative pb-[10vh]">
+          {PROCESS.map((p, i) => (
+            <StackCard key={p[0]} step={p} i={i} n={PROCESS.length} progress={scrollYProgress} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function IndustryRails() {
+  const a = INDUSTRIES.map((x: unknown[]) => x[0] as string)
+  return (
+    <section className="py-20">
+      <div className="wrap mb-10">
+        <Eyebrow>Industries</Eyebrow>
+        <SplitText as="h2" lines={['Built for <em>real operations.</em>']} inView className="h2" />
+      </div>
+      <Marquee items={a} />
+      <div className="[&_.marquee-track]:[animation-direction:reverse]">
+        <Marquee items={[...a].reverse()} />
+      </div>
+      <div className="wrap mt-8">
+        <Link to="/industries" className="inline-flex items-center gap-2 text-sm font-medium text-brand-cyan">
+          Explore industries <ArrowUpRight className="h-4 w-4" />
+        </Link>
       </div>
     </section>
   )
@@ -288,34 +246,34 @@ function Services() {
 
 export default function Home() {
   return (
-    <div className="bg-black">
-      <Hero />
-      <About />
-      <Featured />
-      <Philosophy />
-      <Services />
-      <Counters />
-      <Steps
-        title="How we <em>work.</em>"
-        lede="A clear, repeatable delivery model, whichever service you need."
-        list={[
-          ['Discover', 'We start with the problem, the people and the data, not with a technology.'],
-          ['Prove', 'For AI work, we test on your real data first, so you see results before you commit.'],
-          ['Build', 'Two‑week sprints with a working demo at the end of each.'],
-          ['Launch', 'Production release with monitoring, documentation and training.'],
-          ['Evolve', 'Ongoing improvement as your users, data and business change.'],
-        ]}
+    <>
+      <Hero
+        scene="core"
+        size="xl"
+        badge="AI & Software Engineering Studio"
+        h1={['We engineer', '<em>intelligent</em> systems.']}
+        lede="NIMTECH designs, builds and runs AI agents, custom vision models, software, apps and integrations for companies around the world."
+        primary={['Start a Project', '/contact']}
+        secondary={['Explore Services', '/services']}
+        stats={['6 practices, one senior team', '2‑week sprints with live demos', 'Code, models and data are yours']}
       />
+      <Marquee items={ORDER.map(svcName)} />
+      <Statement text="We’re an engineering studio for companies that want AI and software done <em>properly.</em> You bring the problem. We design, build and run the system that solves it." />
+      <ServicesRail />
+      <Counters />
+      <LiveLab />
+      <ProcessStack />
       <Section>
         <SectionHead eyebrow="Work" title="What a project <em>looks like.</em>" lede="Illustrative examples of the kind of problems we solve." />
-        <div className="grid gap-4 lg:grid-cols-3">
-          {CASES.slice(0, 3).map((c, i) => (
+        <div className="grid gap-5 lg:grid-cols-3">
+          {CASES.slice(0, 3).map((c: { t: string }, i: number) => (
             <Reveal key={c.t} delay={i * 0.08} className="h-full">
               <CaseCard c={c} />
             </Reveal>
           ))}
         </div>
       </Section>
+      <IndustryRails />
       <Section>
         <SectionHead eyebrow="FAQ" title="Common <em>questions.</em>" />
         <FAQ
@@ -329,6 +287,6 @@ export default function Home() {
         />
       </Section>
       <CTA />
-    </div>
+    </>
   )
 }

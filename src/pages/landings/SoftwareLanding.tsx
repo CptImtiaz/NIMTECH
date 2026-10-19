@@ -1,44 +1,7 @@
-import { motion } from 'framer-motion'
-import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeftRight, Bell, Briefcase, Check, ChevronDown, ChevronRight, CreditCard, Home, Landmark, ListChecks, MoreVertical, Play, Plus, Search, Send, Settings, Wallet } from 'lucide-react'
-import { Button } from '../../components/ui/button'
-import ServiceBody from '../../components/ServiceBody.jsx'
-
-const VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260319_015952_e1deeb12-8fb7-4071-a42a-60779fc64ab6.mp4'
-const LINKS: [string, string][] = [
-  ['Home', '/'],
-  ['Pricing', '/contact?service=software'],
-  ['About', '/company'],
-  ['Contact', '/contact'],
-]
-const up = (y: number, duration: number, delay = 0) => ({
-  initial: { opacity: 0, y },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration, delay, ease: [0.16, 1, 0.3, 1] as const },
-})
-
-function Navbar() {
-  const navigate = useNavigate()
-  return (
-    <nav className="relative z-20 flex items-center justify-between px-6 py-5 font-body md:px-12 lg:px-20">
-      <Link to="/" className="text-xl font-semibold tracking-tight text-foreground">
-        ✦ NIMTECH
-      </Link>
-      <div className="flex items-center gap-8">
-        <div className="hidden items-center gap-8 md:flex">
-          {LINKS.map(([l, to]) => (
-            <Link key={l} to={to} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-              {l}
-            </Link>
-          ))}
-        </div>
-        <Button className="rounded-full px-5 text-sm font-medium" onClick={() => navigate('/contact?service=software')}>
-          Get started
-        </Button>
-      </div>
-    </nav>
-  )
-}
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { ArrowLeftRight, Bell, Briefcase, Check, ChevronDown, ChevronRight, CreditCard, Home, Landmark, ListChecks, MoreVertical, Plus, Search, Send, Settings, Wallet } from 'lucide-react'
+import { ServicePage } from '../Service.jsx'
 
 /* ---------- coded dashboard preview ---------- */
 const SIDEBAR: [React.ElementType, string, string?, boolean?][] = [
@@ -122,8 +85,8 @@ function Dashboard() {
               </div>
               <div className="mt-1 flex gap-3 text-[10px]">
                 <span className="text-muted-foreground">Last 30 Days</span>
-                <span className="text-emerald-600">+$1.8M</span>
-                <span className="text-red-500">-$900K</span>
+                <span className="text-emerald-400">+$1.8M</span>
+                <span className="text-red-400">-$900K</span>
               </div>
               <svg viewBox="0 0 400 70" preserveAspectRatio="none" className="mt-2 h-20 w-full" aria-hidden="true">
                 <defs>
@@ -171,9 +134,9 @@ function Dashboard() {
                   <tr key={desc} className="border-t border-border">
                     <td className="py-1.5 text-muted-foreground">{dt}</td>
                     <td className="py-1.5">{desc}</td>
-                    <td className={`py-1.5 ${amt.startsWith('+') ? 'text-emerald-600' : ''}`}>{amt}</td>
+                    <td className={`py-1.5 ${amt.startsWith('+') ? 'text-emerald-400' : ''}`}>{amt}</td>
                     <td className="py-1.5">
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] ${st === 'Pending' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>{st}</span>
+                      <span className={`rounded-full px-2 py-0.5 text-[10px] ${st === 'Pending' ? 'bg-amber-400/15 text-amber-300' : 'bg-emerald-400/15 text-emerald-300'}`}>{st}</span>
                     </td>
                   </tr>
                 ))}
@@ -186,47 +149,29 @@ function Dashboard() {
   )
 }
 
-export default function SoftwareLanding() {
-  const navigate = useNavigate()
+// The dashboard starts tilted back in 3D and lays flat as it scrolls in.
+function DashboardStage() {
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'center center'] })
+  const rotateX = useTransform(scrollYProgress, [0, 1], [38, 0])
+  const scale = useTransform(scrollYProgress, [0, 1], [0.86, 1])
+  const y = useTransform(scrollYProgress, [0, 1], [80, 0])
   return (
-    <>
-      <div className="nexora flex h-screen flex-col overflow-hidden bg-background font-body">
-        <Navbar />
-        <section className="relative flex flex-1 flex-col items-center px-6 pt-6 md:pt-10">
-          <video src={VIDEO} autoPlay loop muted playsInline className="absolute inset-0 z-0 h-full w-full object-cover" aria-hidden="true" />
-          <div className="relative z-10 flex w-full flex-col items-center">
-            <motion.span {...up(10, 0.5)} className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-4 py-1.5 font-body text-sm text-muted-foreground">
-              Now with GPT-5 support ✨
-            </motion.span>
-            <motion.h1 {...up(16, 0.6, 0.1)} className="max-w-xl text-center font-display text-5xl leading-[0.95] tracking-tight text-foreground md:text-6xl lg:text-[5rem]">
-              The Future of <em className="italic">Smarter</em> Automation
-            </motion.h1>
-            <motion.p {...up(16, 0.6, 0.2)} className="mt-4 max-w-[650px] text-center font-body text-base leading-relaxed text-muted-foreground md:text-lg">
-              Automate your busywork with intelligent agents that learn, adapt, and execute—so your team can focus on what matters most.
-            </motion.p>
-            <motion.div {...up(16, 0.6, 0.3)} className="mt-5 flex items-center gap-3">
-              <Button className="rounded-full px-6 py-5 font-body text-sm font-medium" onClick={() => navigate('/contact?service=software')}>
-                Book a demo
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="See how it works"
-                className="h-11 w-11 rounded-full border-0 bg-background shadow-[0_2px_12px_rgba(0,0,0,0.08)] hover:bg-background/80"
-                onClick={() => document.getElementById('show')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                <Play className="h-4 w-4 fill-foreground" />
-              </Button>
-            </motion.div>
-            <motion.div {...up(30, 0.8, 0.5)} className="mt-8 w-full max-w-5xl">
-              <div className="overflow-hidden rounded-2xl p-3 md:p-4" style={{ background: 'rgba(255, 255, 255, 0.4)', border: '1px solid rgba(255, 255, 255, 0.5)', boxShadow: 'var(--shadow-dashboard)' }}>
-                <Dashboard />
-              </div>
-            </motion.div>
-          </div>
-        </section>
+    <section className="relative pb-8 pt-10">
+      <div className="wrap">
+        <div ref={ref} style={{ perspective: 1600 }}>
+          <motion.div style={{ rotateX, scale, y, transformOrigin: 'center top' }} className="nexora relative mx-auto max-w-5xl">
+            <div className="pointer-events-none absolute -inset-10 -z-10 rounded-[40px] bg-brand/25 blur-3xl" />
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[.03] p-3 shadow-[0_40px_120px_-30px_rgba(47,123,255,.45)] backdrop-blur-xl md:p-4">
+              <Dashboard />
+            </div>
+          </motion.div>
+        </div>
       </div>
-      <ServiceBody id="software" />
-    </>
+    </section>
   )
+}
+
+export default function SoftwareLanding() {
+  return <ServicePage id="software" afterHero={<DashboardStage />} />
 }

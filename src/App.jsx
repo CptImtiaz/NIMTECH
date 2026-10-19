@@ -3,7 +3,6 @@ import Layout from './components/Layout.jsx'
 import Home from './pages/Home'
 import Service from './pages/Service.jsx'
 import Contact from './pages/Contact.jsx'
-import AgentsLanding from './pages/landings/AgentsLanding'
 import VisionLanding from './pages/landings/VisionLanding'
 import SoftwareLanding from './pages/landings/SoftwareLanding'
 import AppsLanding from './pages/landings/AppsLanding'
@@ -16,7 +15,6 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="services" element={<Services />} />
-        <Route path="services/ai-agents" element={<AgentsLanding />} />
         <Route path="services/computer-vision" element={<VisionLanding />} />
         <Route path="services/software" element={<SoftwareLanding />} />
         <Route path="services/apps" element={<AppsLanding />} />

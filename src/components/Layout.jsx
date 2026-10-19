@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { matchPath, useLocation, useOutlet } from 'react-router-dom'
+import { useLocation, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import Lenis from 'lenis'
 import { REDUCE } from '../lib/canvas.js'
 import Navbar from './Navbar.jsx'
 import Footer from './Footer.jsx'
 import { EASE } from './motion.jsx'
-
-// Landing pages that bring their own navigation
-const OWN_NAV = ['/', '/services/ai-agents', '/services/software', '/services/ai-content']
+import { Backdrop, Cursor } from './Ambient.jsx'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -33,28 +31,35 @@ export default function Layout() {
   }, [])
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-black">
-      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-gradient-to-r from-brand-light to-brand" />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[900px] overflow-hidden">
-        <div className="absolute -left-[220px] -top-[260px] h-[620px] w-[820px] rounded-full bg-brand-light opacity-30 blur-[140px]" />
-        <div className="absolute -left-[120px] -top-[180px] h-[380px] w-[520px] rounded-full bg-brand-mid opacity-25 blur-[120px]" />
-        <div className="absolute left-[180px] top-[40px] h-[240px] w-[360px] rounded-full bg-brand-light opacity-20 blur-[100px]" />
-      </div>
-      {!OWN_NAV.some((p) => matchPath(p, pathname)) && <Navbar />}
+    <div className="relative min-h-screen overflow-x-clip bg-night">
+      <Backdrop />
+      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-gradient-to-r from-brand to-brand-cyan" />
+      <Navbar />
+      <AnimatePresence>
+        <motion.div
+          key={pathname}
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-[65] origin-top bg-gradient-to-b from-brand via-brand-mid to-night"
+          initial={{ scaleY: 1 }}
+          animate={{ scaleY: 0, transition: { duration: 0.8, ease: EASE, delay: 0.05 } }}
+          exit={{ opacity: 0, transition: { duration: 0.01 } }}
+        />
+      </AnimatePresence>
       <AnimatePresence mode="wait" onExitComplete={() => (lenis.current ? lenis.current.scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
         <motion.main
           key={pathname}
-          initial={{ opacity: 0, y: 24, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
-          exit={{ opacity: 0, y: -16, filter: 'blur(10px)' }}
-          transition={{ duration: 0.5, ease: EASE }}
-          className="relative"
+          initial={{ opacity: 0, y: 40, rotateX: 6, scale: 0.98, transformPerspective: 1400 }}
+          animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1, transitionEnd: { transform: 'none' } }}
+          exit={{ opacity: 0, y: -30, rotateX: -4, scale: 0.98, filter: 'blur(8px)' }}
+          transition={{ duration: 0.55, ease: EASE }}
+          className="relative z-[1]"
         >
           <FrozenOutlet />
         </motion.main>
       </AnimatePresence>
       <Footer />
       <div className="grain" aria-hidden="true" />
+      <Cursor />
     </div>
   )
 }

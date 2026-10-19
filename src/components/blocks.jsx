@@ -5,7 +5,7 @@ import { Rich } from '../lib/rich.jsx'
 import { ORDER, SERVICES } from '../data/content.js'
 import { EMAIL } from '../data/site.js'
 import { ArrowRight, ArrowUpRight, Icon, Spark } from './Icons.jsx'
-import { EASE, Magnetic, Reveal, ScrollWords, SplitText } from './motion.jsx'
+import { EASE, Magnetic, Reveal, ScrollWords, SplitText, Tilt } from './motion.jsx'
 import { useToast } from './Toast.jsx'
 
 export const svcName = (id) => SERVICES[id].nav || SERVICES[id].name
@@ -135,9 +135,11 @@ function spotlight(e) {
 
 export function Card({ children, className = '', to, delay = 0 }) {
   const inner = (
-    <div onPointerMove={spotlight} className={`card ${to ? 'card-link' : ''} ${className}`}>
-      {children}
-    </div>
+    <Tilt>
+      <div onPointerMove={spotlight} className={`card h-full ${to ? 'card-link' : ''} ${className}`}>
+        {children}
+      </div>
+    </Tilt>
   )
   return (
     <Reveal delay={delay} className="h-full">
@@ -285,7 +287,7 @@ export function FAQ({ list }) {
           <Reveal key={i} className="border-b border-line">
             <button type="button" onClick={() => setOpen(on ? -1 : i)} aria-expanded={on} className="flex w-full items-center justify-between gap-5 py-6 text-left font-fustat text-[clamp(17px,1.6vw,21px)] font-bold tracking-[-.02em]">
               {f[0]}
-              <motion.span animate={{ rotate: on ? 45 : 0, backgroundColor: on ? '#0A6CFF' : 'rgba(255,255,255,0)', color: on ? '#fff' : '#F2F6FF' }} transition={{ duration: 0.4, ease: EASE }} className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-line">
+              <motion.span animate={{ rotate: on ? 45 : 0, backgroundColor: on ? '#2F7BFF' : 'rgba(255,255,255,0)', color: on ? '#fff' : '#F2F6FF' }} transition={{ duration: 0.4, ease: EASE }} className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-line">
                 <svg viewBox="0 0 12 12" className="h-3 w-3" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                   <path d="M6 1v10M1 6h10" />
                 </svg>
@@ -331,9 +333,10 @@ export function CTA({ title = 'Have a problem <em>worth solving?</em>', text = '
 /* ---------- work ---------- */
 export function CaseCard({ c }) {
   return (
+    <Tilt>
     <div onPointerMove={spotlight} className="card h-full justify-between">
       <div className="grid gap-3">
-        <span className="font-mono text-[11.5px] uppercase tracking-[.08em] text-brand">
+        <span className="font-mono text-[11.5px] uppercase tracking-[.08em] text-brand-cyan">
           {svcName(c.s)} · {c.ind}
         </span>
         <h3 className="h3">{c.t}</h3>
@@ -349,6 +352,7 @@ export function CaseCard({ c }) {
       </div>
       <p className="mt-4 border-t border-line pt-4 text-[14.5px] font-medium text-ink">{c.out}</p>
     </div>
+    </Tilt>
   )
 }
 
