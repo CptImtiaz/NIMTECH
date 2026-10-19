@@ -278,8 +278,8 @@ function ApiFlow() {
 }
 
 /* ---------- content studio ---------- */
-const PROMPTS = ['Write a LinkedIn post on why most AI pilots stall, in Maya’s voice.', 'Turn the Acme interview into a 600‑word case study.', 'Draft a 60‑second explainer script for the new release.']
-const CAL = ['LinkedIn', 'Article', 'Case study', 'Video', 'Carousel', 'Newsletter', 'LinkedIn', 'Whitepaper', 'LinkedIn', 'Article', 'Video', 'LinkedIn', 'Case study', 'Carousel', 'LinkedIn', 'Article', 'LinkedIn', 'Video', 'Report', 'LinkedIn']
+const PROMPTS = ['Cut a 30‑second launch film from the product shoot, in our brand style.', 'Make 40 ad variations for the summer campaign, three sizes each.', 'Dub the onboarding course into Spanish, Malay and Japanese.']
+const CAL = ['Launch film', 'Reel', 'Ad set', 'Product shots', 'Article', 'Voice‑over', 'Carousel', 'Email', 'Story', 'Explainer', 'Ad set', 'Thumbnail', 'Guide', 'Reel', 'Podcast clip', 'Landing copy', 'Dubbing', 'Illustration', 'Short', 'Newsletter']
 function ContentStudio() {
   const ref = useRef(null)
   const inView = useInView(ref, { amount: 0.25 })
@@ -315,8 +315,8 @@ function ContentStudio() {
           <div className="h-[7px] rounded bg-white/15" />
           <div className="h-[7px] w-[86%] rounded bg-white/15" />
           <div className="h-[7px] w-[60%] rounded bg-white/15" />
-          <div className="mt-1 flex justify-between font-mono text-xs text-white/50"><span>Voice match</span><b className="font-normal text-white">✓ on brand</b></div>
-          <div className="flex justify-between font-mono text-xs text-white/50"><span>Human editor</span><b className="font-normal text-white">✓ edited · fact‑checked</b></div>
+          <div className="mt-1 flex justify-between font-mono text-xs text-white/50"><span>Brand match</span><b className="font-normal text-white">✓ voice · style · tone</b></div>
+          <div className="flex justify-between font-mono text-xs text-white/50"><span>Human review</span><b className="font-normal text-white">✓ edited · checked · approved</b></div>
         </div>
       </div>
       <div className="grid grid-cols-5 content-start gap-1.5 p-5">

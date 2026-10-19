@@ -13,7 +13,7 @@ export default function Contact() {
   const [params] = useSearchParams()
   const pre = params.get('service')
   const initial = pre === 'careers' ? 'Careers' : SERVICES[pre] ? svcName(pre) : 'Not sure yet'
-  const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', service: initial, message: '' })
+  const [form, setForm] = useState({ name: '', company: '', email: params.get('email') || '', phone: '', service: initial, message: '' })
   const [out, setOut] = useState(null)
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 

@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { useLocation, useOutlet } from 'react-router-dom'
+import { matchPath, useLocation, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import Lenis from 'lenis'
 import { REDUCE } from '../lib/canvas.js'
 import Navbar from './Navbar.jsx'
 import Footer from './Footer.jsx'
 import { EASE } from './motion.jsx'
+
+// Landing pages that bring their own navigation
+const OWN_NAV = ['/', '/services/ai-agents', '/services/software', '/services/ai-content']
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -30,22 +33,22 @@ export default function Layout() {
   }, [])
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-white">
+    <div className="relative min-h-screen overflow-x-clip bg-black">
       <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-gradient-to-r from-brand-light to-brand" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-[900px] overflow-hidden">
         <div className="absolute -left-[220px] -top-[260px] h-[620px] w-[820px] rounded-full bg-brand-light opacity-30 blur-[140px]" />
         <div className="absolute -left-[120px] -top-[180px] h-[380px] w-[520px] rounded-full bg-brand-mid opacity-25 blur-[120px]" />
         <div className="absolute left-[180px] top-[40px] h-[240px] w-[360px] rounded-full bg-brand-light opacity-20 blur-[100px]" />
       </div>
-      <Navbar />
+      {!OWN_NAV.some((p) => matchPath(p, pathname)) && <Navbar />}
       <AnimatePresence mode="wait" onExitComplete={() => (lenis.current ? lenis.current.scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
         <motion.main
           key={pathname}
           initial={{ opacity: 0, y: 24, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
           exit={{ opacity: 0, y: -16, filter: 'blur(10px)' }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="relative z-10"
+          className="relative"
         >
           <FrozenOutlet />
         </motion.main>

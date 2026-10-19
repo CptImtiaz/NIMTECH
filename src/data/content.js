@@ -949,182 +949,219 @@ export const SERVICES = {
   ]
  },
  "ai-content": {
-  "name": "B2B AI Content",
+  "name": "AI Content",
   "nav": "AI Content",
-  "short": "AI‑produced, human‑finished B2B content",
+  "short": "Any format, any channel, made with AI",
   "icon": "content",
   "vis": "content",
-  "badge": "AI Content Studio for B2B",
+  "badge": "AI Content Studio",
   "h1": [
-   "B2B content, made with <em>AI,</em>",
-   "finished by <em>people.</em>"
+   "Content for everything,",
+   "made with <em>AI.</em>"
   ],
-  "lede": "Thought leadership, articles, case studies and video for B2B brands, produced with AI trained on your voice and edited by specialists.",
+  "lede": "Video, images, copy, voice, social, ads and documentation, produced at speed with AI and finished by people who care about craft. Any brand, any industry, any channel.",
   "stats": [
-   "Trained on your brand voice",
-   "Fact‑checked by human editors",
+   "Every format: video, image, copy, voice",
+   "Trained on your brand, finished by people",
    "Published in 30+ languages"
   ],
-  "one": "Content in your voice, produced with AI, finished by editors.",
+  "one": "Video, images, copy and voice for any channel, produced with AI.",
   "tags": [
-   "LinkedIn",
-   "SEO",
-   "Case studies",
-   "AI video"
+   "Video",
+   "Images",
+   "Copy",
+   "Voice",
+   "Social",
+   "Ads"
   ],
-  "problemT": "Why B2B content <em>stalls.</em>",
+  "problemT": "Why content <em>falls behind.</em>",
   "problems": [
    [
-    "Experts have no time",
-    "Your best ideas sit in the heads of people who never get time to write."
+    "Demand outruns the team",
+    "Every channel, market and product launch wants fresh content, every week."
    ],
    [
-    "Generic AI sounds like everyone",
-    "Unedited AI content is easy to spot and easy to ignore."
+    "Generic AI looks generic",
+    "Unedited AI output is easy to spot and easy to ignore."
    ],
    [
-    "Publishing is inconsistent",
-    "Bursts of posts followed by months of silence."
+    "Formats multiply",
+    "One idea now needs a video, a carousel, an ad set, a blog post and a voice‑over."
    ],
    [
-    "Not tied to pipeline",
-    "Content gets made, but nobody knows whether it helps sales."
+    "Quality is inconsistent",
+    "Different tools, freelancers and agencies make the brand look different everywhere."
    ]
   ],
-  "capsT": "What we <em>produce.</em>",
+  "capsT": "What we <em>make.</em>",
   "caps": [
-   [
-    "users",
-    "Executive LinkedIn programmes",
-    "Weekly posts and carousels written in each leader’s own voice."
-   ],
-   [
-    "chart",
-    "Search‑led articles",
-    "Articles built from real buyer questions and search data."
-   ],
-   [
-    "content",
-    "Case studies & whitepapers",
-    "Customer interviews turned into proof your sales team uses."
-   ],
    [
     "eye",
     "AI video & motion",
-    "Explainers, product demos and short social clips with AI voice‑over."
+    "Brand films, explainers, product demos, short‑form social and animated ads."
+   ],
+   [
+    "spark",
+    "Images & visual design",
+    "Campaign visuals, product shots, illustrations and social graphics in your style."
+   ],
+   [
+    "pen",
+    "Copy & storytelling",
+    "Websites, articles, scripts, emails, newsletters and long‑form editorial."
+   ],
+   [
+    "users",
+    "Social content",
+    "Always‑on posts, carousels, reels and stories for every platform."
    ],
    [
     "bolt",
-    "Sales enablement",
-    "One‑pagers, decks and email sequences for every buying stage."
+    "Ads & performance creative",
+    "Hundreds of on‑brand ad variations, ready to test and scale."
+   ],
+   [
+    "tag",
+    "Product & e‑commerce",
+    "Product descriptions, catalogue imagery and listings at catalogue scale."
+   ],
+   [
+    "content",
+    "Docs, training & learning",
+    "Manuals, onboarding guides, course material and knowledge bases."
    ],
    [
     "globe",
-    "Localisation",
-    "Your best content adapted for new markets in 30+ languages."
+    "Voice & localisation",
+    "AI voice‑over, dubbing, subtitles and adaptation for 30+ languages."
+   ],
+   [
+    "chart",
+    "Strategy & measurement",
+    "Content plans from audience data, with reporting on what actually works."
    ]
   ],
   "showT": "From brief to <em>published.</em>",
-  "showP": "Your content engine: AI drafts in your voice, editors refine and fact‑check, and everything runs on one shared calendar.",
+  "showP": "One content engine for every format: AI drafts in your brand’s voice and style, people refine and check, and everything runs on one shared calendar.",
   "processT": "How the studio <em>works.</em>",
   "process": [
    [
-    "Voice capture",
-    "We train on your past content, calls and style guide."
+    "Brand capture",
+    "We learn your voice, visual style, audiences and guardrails from what you already have."
    ],
    [
-    "Strategy",
-    "A monthly plan built from search data, sales questions and goals."
+    "Plan",
+    "A content plan across formats and channels, built around your goals."
    ],
    [
     "Produce",
-    "AI drafts at speed in your voice."
+    "AI generates drafts, visuals, video and voice at speed."
    ],
    [
-    "Edit & verify",
-    "Editors check facts, tone, claims and approvals."
+    "Craft & check",
+    "Editors, designers and motion artists refine, fact‑check and approve."
    ],
    [
     "Publish & learn",
-    "Scheduled, measured and fed back into next month’s plan."
+    "Scheduled across channels, measured, and fed back into the next plan."
    ]
   ],
-  "usesT": "Who it’s <em>for.</em>",
+  "usesT": "Made for <em>every kind</em> of team.",
   "uses": [
    [
-    "SaaS & technology",
-    "Product‑led content and feature videos that feed the funnel."
+    "Consumer brands",
+    "Campaigns, social, product imagery and ads for launches and always‑on marketing."
    ],
    [
-    "Industrial & manufacturing",
-    "Technical whitepapers and case studies for long sales cycles."
+    "Retail & e‑commerce",
+    "Catalogue copy, product visuals and localised listings at scale."
    ],
    [
-    "Professional services",
-    "Founder and partner‑led thought leadership."
+    "Technology & SaaS",
+    "Product videos, docs, release notes and website content."
    ],
    [
-    "Logistics & trade",
-    "Multilingual content for entering new regions."
+    "Media & creators",
+    "Scripts, edits, thumbnails, dubbing and repurposed clips."
+   ],
+   [
+    "Education & training",
+    "Course videos, learning material and multilingual training content."
+   ],
+   [
+    "Public sector & non‑profit",
+    "Clear, accessible information campaigns in every language."
+   ],
+   [
+    "Industrial & B2B",
+    "Explainers, case studies, technical documentation and sales material."
    ]
   ],
   "stackT": "Our content <em>toolkit.</em>",
   "stack": [
    [
-    "Voice",
-    "Custom brand‑voice models and style guides"
+    "Video & motion",
+    "AI video generation, motion templates, editing, captioning"
    ],
    [
-    "Research",
-    "Search, competitor and buyer‑question analysis"
+    "Images & design",
+    "Image generation, brand style models, retouching, layout"
    ],
    [
-    "Production",
-    "AI writing, AI voice and video, motion templates"
+    "Writing",
+    "Custom brand‑voice models, research, editing, fact‑checking"
+   ],
+   [
+    "Voice & language",
+    "AI voice‑over, dubbing, subtitles, 30+ languages"
    ],
    [
     "Publishing",
-    "LinkedIn, CMS, email and social scheduling"
+    "Social schedulers, CMS, email platforms, ad managers"
    ],
    [
     "Measurement",
-    "Engagement, search and pipeline attribution"
+    "Engagement, search, conversion and attribution reporting"
    ]
   ],
   "why": [
    [
-    "Human‑finished",
-    "Every piece edited by a specialist before you see it."
+    "Every format",
+    "Video, images, copy and voice from one studio, not five vendors."
    ],
    [
-    "Your voice",
-    "Trained on your words, not the internet’s."
+    "People‑finished",
+    "Every piece reviewed by a specialist before you see it."
    ],
    [
-    "Accurate",
-    "Claims and numbers checked against your sources."
+    "On brand, everywhere",
+    "Trained on your voice and visual style, so it all looks like you."
    ],
    [
-    "Consistent",
-    "A steady calendar, every week."
+    "Fast without shortcuts",
+    "AI handles the volume, people handle the judgement."
    ]
   ],
   "faq": [
    [
-    "Will it sound like AI?",
-    "No. We train on your own writing and calls, and editors finish every piece."
+    "What kinds of content can you make?",
+    "Almost anything digital: video, motion, images, design, copy, social, ads, product content, documentation, voice‑over and translations."
+   ],
+   [
+    "Will it look and sound like AI?",
+    "No. We train on your own brand material, and editors, designers and motion artists finish every piece."
+   ],
+   [
+    "Do you work with any industry?",
+    "Yes. The studio is built for consumer, B2B, public sector and creator content alike."
    ],
    [
     "Who owns the content?",
     "You do, everything we create for you."
    ],
    [
-    "How do you check facts?",
-    "Editors verify claims, numbers and quotes against your sources and flag anything that needs approval."
-   ],
-   [
     "Can you publish for us?",
-    "Yes, to LinkedIn, your website and your email platform, or we hand over ready files."
+    "Yes, to social platforms, your website, email and ad accounts, or we hand over ready files."
    ]
   ]
  }
@@ -1204,7 +1241,7 @@ export const INDUSTRIES = [
  ],
  [
   "Professional & B2B services",
-  "Client portals, knowledge agents and thought‑leadership content.",
+  "Client portals, knowledge agents and AI‑made content for every channel.",
   [
    "software",
    "ai-agents",
@@ -1276,15 +1313,15 @@ export const CASES = [
  },
  {
   "s": "ai-content",
-  "t": "Founder‑led LinkedIn programme for an industrial tech firm",
-  "ind": "B2B technology",
-  "ch": "Strong expertise, but no time to publish consistently.",
+  "t": "Always‑on content engine for a consumer brand",
+  "ind": "Consumer goods",
+  "ch": "Three markets, five channels and a two‑person marketing team.",
   "did": [
-   "Captured the founder’s voice from talks and interviews",
-   "Built a monthly calendar from buyer questions",
-   "Produced posts, case studies and short videos in two languages"
+   "Trained brand voice and visual style models on past campaigns",
+   "Produced video, social, ads and product imagery from one plan",
+   "Localised every asset into three languages with AI voice‑over"
   ],
-  "out": "A steady weekly presence in the founder’s own voice."
+  "out": "A steady stream of on‑brand content in every format and market."
  }
 ]
 
@@ -1315,8 +1352,8 @@ export const ROLES = [
   "Remote"
  ],
  [
-  "B2B Content Editor",
-  "Edit AI‑assisted drafts into sharp, accurate B2B content.",
+  "Content Editor & Producer",
+  "Shape AI‑made video, images and copy into polished, on‑brand content.",
   "Remote"
  ],
  [

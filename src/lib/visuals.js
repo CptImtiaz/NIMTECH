@@ -1,8 +1,8 @@
 import { P, run, local, rrect, MONO } from './canvas.js'
 
-// Palettes: LIGHT draws brand blue on white heroes, DARK draws white inside
-// the navy "console" panels.
-export const LIGHT = { c: '0,110,255', solid: '#0A6CFF', on: '#fff', face1: 'rgba(236,244,255,.96)', face2: 'rgba(214,230,255,.96)', screen: '#ffffff', screen2: '#F2F7FF', boost: 1.25 }
+// Palettes: LIGHT draws glowing brand blue on the black heroes, DARK draws
+// white inside the navy "console" panels.
+export const LIGHT = { c: '96,177,255', solid: '#7CC4FF', on: '#02050C', face1: 'rgba(6,14,30,.94)', face2: 'rgba(14,30,60,.94)', screen: '#0a1428', screen2: '#060d1c', boost: 1.15 }
 export const DARK = { c: '255,255,255', solid: '#ffffff', on: '#000', face1: 'rgba(10,16,30,.92)', face2: 'rgba(24,34,56,.92)', screen: '#111a2c', screen2: '#0b1222', boost: 1 }
 
 const rgba = (k, a) => `rgba(${k.c},${Math.min(1, a * k.boost)})`
@@ -259,7 +259,7 @@ VIS.api = (c, k = LIGHT) => {
 
 /* content: kinetic typography, scrubbed by the pointer */
 VIS.content = (c, k = LIGHT) => {
-  const Wd = ['Thought leadership', 'case study', 'Whitepaper', 'explainer', 'LinkedIn', 'newsletter', 'Playbook', 'webinar', 'Article', 'insight', 'Brief', 'story', 'Carousel', 'launch', 'Report', 'voice']
+  const Wd = ['Brand film', 'reel', 'Campaign', 'explainer', 'Product shots', 'voice‑over', 'Ad set', 'dubbing', 'Article', 'thumbnail', 'Illustration', 'story', 'Carousel', 'launch', 'Podcast', 'guide']
   const it = Wd.map((w, i) => ({ w, x: Math.random() * 1.4, y: 0.08 + ((i * 41) % 74) / 100, z: 0.3 + ((i * 29) % 70) / 100 }))
   let off = 0, tgt = 0, px = null
   const mv = (e) => { if (px !== null) tgt += ((e.clientX - px) / innerWidth) * 0.8; px = e.clientX }

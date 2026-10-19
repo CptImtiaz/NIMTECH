@@ -11,6 +11,7 @@ import { useToast } from './Toast.jsx'
 export const svcName = (id) => SERVICES[id].nav || SERVICES[id].name
 
 /* ---------- buttons ---------- */
+/** @param {Record<string, any>} props */
 export function Button({ to, href, children, variant = 'primary', arrow = true, className = '', ...rest }) {
   const cls = `btn ${variant === 'primary' ? 'btn-primary' : variant === 'dark' ? 'btn-dark' : 'btn-glass'} ${className}`
   const inner = (
@@ -65,6 +66,7 @@ export function CopyEmail({ variant = 'glass', label }) {
 }
 
 /* ---------- section scaffolding ---------- */
+/** @param {Record<string, any>} props */
 export function Section({ children, className = '', id, tight = false, dark = false }) {
   return (
     <section id={id} className={`relative ${tight ? 'pb-24 pt-0 md:pb-32' : 'py-24 md:py-36'} ${dark ? 'dark-band' : ''} ${className}`}>
@@ -82,6 +84,7 @@ export function Eyebrow({ children, className = '' }) {
   )
 }
 
+/** @param {Record<string, any>} props */
 export function SectionHead({ eyebrow, title, lede }) {
   return (
     <div className="mb-12 grid items-end gap-x-16 gap-y-5 md:mb-20 md:grid-cols-[1.15fr_.85fr]">
@@ -196,12 +199,13 @@ export function ServiceRows() {
 }
 
 /* ---------- sticky process steps ---------- */
-export function Steps({ title, list, lede, eyebrow = 'Process' }) {
+/** @param {Record<string, any>} props */
+export function Steps({ title, list, lede, eyebrow = 'Process', id }) {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 70%', 'end 60%'] })
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1])
   return (
-    <Section>
+    <Section id={id}>
       <div className="grid items-start gap-12 md:grid-cols-[.85fr_1.15fr]">
         <div className="min-w-0 md:sticky md:top-32">
           <Eyebrow>{eyebrow}</Eyebrow>
@@ -228,9 +232,9 @@ function Step({ s, i }) {
   return (
     <Reveal className="relative pb-12 pl-10 last:pb-0">
       <motion.span
-        className="absolute -left-[6px] top-1.5 h-[13px] w-[13px] rounded-full border border-brand/50 bg-white"
+        className="absolute -left-[6px] top-1.5 h-[13px] w-[13px] rounded-full border border-brand/50 bg-black"
         initial={{ scale: 0.6 }}
-        whileInView={{ scale: 1, backgroundColor: '#0A6CFF', boxShadow: '0 0 0 6px rgba(10,108,255,.12)' }}
+        whileInView={{ scale: 1, backgroundColor: '#3D8BFF', boxShadow: '0 0 0 6px rgba(61,139,255,.2), 0 0 18px rgba(96,177,255,.8)' }}
         viewport={{ margin: '0px 0px -45% 0px' }}
         transition={{ duration: 0.5, ease: EASE }}
       />
@@ -281,7 +285,7 @@ export function FAQ({ list }) {
           <Reveal key={i} className="border-b border-line">
             <button type="button" onClick={() => setOpen(on ? -1 : i)} aria-expanded={on} className="flex w-full items-center justify-between gap-5 py-6 text-left font-fustat text-[clamp(17px,1.6vw,21px)] font-bold tracking-[-.02em]">
               {f[0]}
-              <motion.span animate={{ rotate: on ? 45 : 0, backgroundColor: on ? '#0A6CFF' : 'rgba(255,255,255,0)', color: on ? '#fff' : '#0B1220' }} transition={{ duration: 0.4, ease: EASE }} className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-line">
+              <motion.span animate={{ rotate: on ? 45 : 0, backgroundColor: on ? '#0A6CFF' : 'rgba(255,255,255,0)', color: on ? '#fff' : '#F2F6FF' }} transition={{ duration: 0.4, ease: EASE }} className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-line">
                 <svg viewBox="0 0 12 12" className="h-3 w-3" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                   <path d="M6 1v10M1 6h10" />
                 </svg>
