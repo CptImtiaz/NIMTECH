@@ -4,7 +4,7 @@ import { Reveal } from './motion.jsx'
 
 // Synthetic, procedurally drawn computer-vision examples. Every scene is
 // illustrative: shapes stand in for real camera frames.
-const HUD = '#5CE1FF'
+const HUD = '#3ee7ff'
 const OK = '#3DDC97'
 const BAD = '#FF5A6A'
 
@@ -35,7 +35,7 @@ function corners(x, X, Y, w, h, color = HUD, l = 10) {
 function hudText(x, lines, X = 12, Y = 20) {
   x.font = MONO
   lines.forEach((l, i) => {
-    x.fillStyle = i === 0 ? 'rgba(92,225,255,.95)' : 'rgba(255,255,255,.55)'
+    x.fillStyle = i === 0 ? 'rgba(62, 231, 255,.95)' : 'rgba(255,255,255,.55)'
     x.fillText(l, X, Y + i * 15)
   })
 }
@@ -59,8 +59,8 @@ function defects(c) {
       const X = k * (pw + gap) - (speed % (pw + gap)), Y = H * 0.3
       const bad = rnd(idx) > 0.62
       x.fillStyle = '#0f2547'; rrect(x, X, Y, pw, 80, 6); x.fill()
-      x.strokeStyle = 'rgba(92,225,255,.25)'; x.stroke()
-      for (let q = 0; q < 6; q++) { x.fillStyle = 'rgba(92,225,255,.35)'; x.fillRect(X + 12 + q * 17, Y + 14, 8, 8); x.fillRect(X + 12 + q * 17, Y + 56, 8, 8) }
+      x.strokeStyle = 'rgba(62, 231, 255,.25)'; x.stroke()
+      for (let q = 0; q < 6; q++) { x.fillStyle = 'rgba(62, 231, 255,.35)'; x.fillRect(X + 12 + q * 17, Y + 14, 8, 8); x.fillRect(X + 12 + q * 17, Y + 56, 8, 8) }
       x.strokeStyle = 'rgba(200,170,90,.55)'; x.lineWidth = 1
       x.beginPath(); x.moveTo(X + 10, Y + 40); x.lineTo(X + pw - 10, Y + 40); x.stroke()
       const scanX = W * 0.5
@@ -77,9 +77,9 @@ function defects(c) {
         tag(x, X, Y + 98, bad ? 'FAIL' : 'PASS', bad ? BAD : OK)
       }
     }
-    x.fillStyle = 'rgba(92,225,255,.8)'; x.fillRect(W * 0.5, H * 0.18, 1.5, H * 0.62)
+    x.fillStyle = 'rgba(62, 231, 255,.8)'; x.fillRect(W * 0.5, H * 0.18, 1.5, H * 0.62)
     const sg = x.createLinearGradient(W * 0.5 - 60, 0, W * 0.5, 0)
-    sg.addColorStop(0, 'rgba(92,225,255,0)'); sg.addColorStop(1, 'rgba(92,225,255,.12)')
+    sg.addColorStop(0, 'rgba(62, 231, 255,0)'); sg.addColorStop(1, 'rgba(62, 231, 255,.12)')
     x.fillStyle = sg; x.fillRect(W * 0.5 - 60, H * 0.18, 60, H * 0.62)
     hudText(x, ['LINE 3 · EDGE GPU', `units ${inspected} · defects ${faults} · 9 ms`])
   })
@@ -87,7 +87,7 @@ function defects(c) {
 
 /* 2. Retail shelf monitoring */
 function shelf(c) {
-  const COLORS = ['#2F7BFF', '#5FB0FF', '#5CE1FF', '#3D8BFF', '#1E5FD9', '#9BD1FF']
+  const COLORS = ['#5b7cff', '#8ea6ff', '#3ee7ff', '#6f8cff', '#3e5bff', '#b8c6ff']
   return run(c, (x, W, H, t) => {
     x.clearRect(0, 0, W, H)
     x.fillStyle = '#070c16'; x.fillRect(0, 0, W, H)
@@ -111,7 +111,7 @@ function shelf(c) {
         if (X < scan && X > scan - 160) corners(x, X - 2, Y + 8, pw + 4, rh - 18, HUD, 6)
       }
     }
-    x.fillStyle = 'rgba(92,225,255,.7)'; x.fillRect(scan, 20, 1.5, H - 30)
+    x.fillStyle = 'rgba(62, 231, 255,.7)'; x.fillRect(scan, 20, 1.5, H - 30)
     hudText(x, ['AISLE 7 · PLANOGRAM', `facings ${total - gaps}/${total} · compliance ${Math.round(((total - gaps) / total) * 100)}%`])
   })
 }
@@ -158,7 +158,7 @@ function ocr(c) {
       x.fillStyle = '#9aa6b8'; x.fillRect(px + 14, Y, pw * 0.3, 5)
       x.fillStyle = '#2b3447'; x.fillRect(px + 14, Y + 10, pw * (0.45 + (i % 3) * 0.12), 7)
       if (i < step) {
-        box(x, px + 10, Y - 5, pw - 20, 28, i === step - 1 ? HUD : 'rgba(92,225,255,.5)')
+        box(x, px + 10, Y - 5, pw - 20, 28, i === step - 1 ? HUD : 'rgba(62, 231, 255,.5)')
         const kx = px + pw + 22, ky = py + 24 + i * 30
         x.font = MONO; x.fillStyle = 'rgba(255,255,255,.5)'; x.fillText(f[0], kx, ky)
         x.fillStyle = '#fff'; x.fillText(f[1], kx + 92, ky)
@@ -184,7 +184,7 @@ function ppe(c) {
       const X = p.x * W, base = H * 0.8, s = Math.min(1, H / 280), sw = Math.sin(t * 0.006 + p.ph) * 8 * s
       const head = [X, base - 120 * s], neck = [X, base - 102 * s], hip = [X, base - 55 * s]
       const pts = [head, neck, [X - 18 * s, base - 80 * s + sw * 0.3], [X + 18 * s, base - 80 * s - sw * 0.3], hip, [X - 10 * s + sw, base], [X + 10 * s - sw, base]]
-      x.strokeStyle = 'rgba(92,225,255,.85)'; x.lineWidth = 1.6
+      x.strokeStyle = 'rgba(62, 231, 255,.85)'; x.lineWidth = 1.6
       x.beginPath()
       ;[[1, 2], [1, 3], [1, 4], [4, 5], [4, 6]].forEach(([a, b]) => { x.moveTo(pts[a][0], pts[a][1]); x.lineTo(pts[b][0], pts[b][1]) })
       x.stroke()
@@ -214,7 +214,7 @@ function traffic(c) {
     for (let l = 1; l < 4; l++) { x.beginPath(); x.moveTo(0, road + l * lh); x.lineTo(W, road + l * lh); x.stroke() }
     x.setLineDash([])
     const lineX = W * 0.62
-    x.strokeStyle = 'rgba(92,225,255,.8)'; x.lineWidth = 2; x.beginPath(); x.moveTo(lineX, road); x.lineTo(lineX, H - road); x.stroke(); x.lineWidth = 1
+    x.strokeStyle = 'rgba(62, 231, 255,.8)'; x.lineWidth = 2; x.beginPath(); x.moveTo(lineX, road); x.lineTo(lineX, H - road); x.stroke(); x.lineWidth = 1
     cars.forEach((car) => {
       const dir = car.lane < 2 ? 1 : -1
       const prev = car.p
@@ -224,9 +224,9 @@ function traffic(c) {
       const X = car.p * W, Y = road + car.lane * lh + lh / 2
       if ((prev - lineX / W) * (car.p - lineX / W) < 0 && Math.abs(prev - car.p) < 0.5) count++
       car.trail.push([X, Y]); if (car.trail.length > 30 || Math.abs(car.trail[0][0] - X) > W * 0.5) car.trail.shift()
-      x.strokeStyle = 'rgba(92,225,255,.35)'; x.beginPath(); car.trail.forEach((q, i) => (i ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]))); x.stroke()
+      x.strokeStyle = 'rgba(62, 231, 255,.35)'; x.beginPath(); car.trail.forEach((q, i) => (i ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]))); x.stroke()
       const w = 46, h = lh * 0.55
-      x.fillStyle = ['#2F7BFF', '#e6edf7', '#5FB0FF', '#8a95a8'][car.id % 4]; rrect(x, X - w / 2, Y - h / 2, w, h, 6); x.fill()
+      x.fillStyle = ['#5b7cff', '#e6edf7', '#8ea6ff', '#8a95a8'][car.id % 4]; rrect(x, X - w / 2, Y - h / 2, w, h, 6); x.fill()
       x.fillStyle = 'rgba(0,0,0,.4)'; x.fillRect(X + (dir > 0 ? 6 : -16), Y - h / 2 + 3, 10, h - 6)
       corners(x, X - w / 2 - 4, Y - h / 2 - 4, w + 8, h + 8, HUD, 7)
       tag(x, X - w / 2 - 4, Y - h / 2 - 5, `car #${car.id}`)

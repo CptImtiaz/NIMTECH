@@ -55,8 +55,8 @@ export function Logo({ className = 'h-7 w-7' }) {
     <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
       <defs>
         <linearGradient id="nimtech-logo" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#5CE1FF" />
-          <stop offset="1" stopColor="#2F7BFF" />
+          <stop stopColor="#3ee7ff" />
+          <stop offset="1" stopColor="#5b7cff" />
         </linearGradient>
       </defs>
       <rect width="32" height="32" rx="9" fill="url(#nimtech-logo)" />

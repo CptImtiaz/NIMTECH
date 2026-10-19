@@ -1,0 +1,5 @@
+scifi-helmet.glb
+  "Sci Fi Helmet" by Michael Pavlovic, glTF conversion by Norbert Nopper.
+  License: CC0 1.0 (public domain) — https://creativecommons.org/publicdomain/zero/1.0/
+  Source: https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SciFiHelmet
+  Optimised for the web (WebP textures at 1024px, meshopt compression).

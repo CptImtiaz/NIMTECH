@@ -3,7 +3,7 @@ import { SERVICES } from '../data/content.js'
 import Hero from '../components/Hero'
 import ServiceBody from '../components/ServiceBody.jsx'
 
-const SCENE = { agents: 'agents', vision: 'vision', software: 'software', apps: 'apps', api: 'api', content: 'content' }
+const CORE = { agents: 'ai', vision: 'vision', software: 'software', apps: 'apps', api: 'api', content: 'content' }
 
 // Shared service page: 3D hero for the practice, optional hero extras
 // (`heroExtra`), an optional section right after the hero (`afterHero`),
@@ -14,7 +14,7 @@ export function ServicePage({ id, heroExtra = null, afterHero = null, extra = nu
   const s = SERVICES[id]
   return (
     <>
-      <Hero scene={SCENE[s.vis]} badge={s.badge} h1={s.h1} lede={lede === undefined ? s.lede : lede} primary={ctas ? ['Start a Project', `/contact?service=${id}`] : undefined} secondary={!ctas ? undefined : extra ? ['See examples', '#examples'] : ['See how it works', '#show']} stats={s.stats}>
+      <Hero core={CORE[s.vis]} badge={s.badge} h1={s.h1} lede={lede === undefined ? s.lede : lede} primary={ctas ? ['Start a Project', `/contact?service=${id}`] : undefined} secondary={!ctas ? undefined : extra ? ['See examples', '#examples'] : ['See how it works', '#show']} stats={s.stats}>
         {heroExtra}
       </Hero>
       {afterHero}

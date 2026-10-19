@@ -35,10 +35,13 @@ this. Service cards on Home stream background videos from CloudFront.
 
 ## Design system
 
-- **Palette** (`tailwind.config.js`): near-black `night` / `surface`, text
-  `ink`, one accent family `brand` (#2F7BFF) → `brand-light` (#5FB0FF) →
-  `brand-cyan` (#5CE1FF). Green and red appear only as pass/fail signals.
-- **Type**: Space Grotesk for every heading, Inter for body text.
+- **Palette** (`tailwind.config.js`): deep-space navy `night` / `surface`,
+  text `ink`, electric indigo `brand` (#5B7CFF) with `brand-light`,
+  `brand-cyan` (#3EE7FF) and `brand-violet` (#B794FF) highlights. Each hero
+  is tinted by its 3D stage theme (`src/three/themes.ts`). Green and red
+  appear only as pass/fail signals.
+- **Type** (self-hosted via Fontsource): Sora for headings, Inter for text,
+  JetBrains Mono for labels.
 
 ## Editing content
 
@@ -51,17 +54,24 @@ this. Service cards on Home stream background videos from CloudFront.
 
 ## Motion
 
-- `src/three/Scene.tsx`: lazy-loaded react-three-fiber scenes (glass core,
-  neural network, vision lens, data blocks, phones, data streams, content
-  helix, particle galaxy) with mouse and scroll parallax. They pause when off
-  screen and fall back to a CSS orb without WebGL.
-- `src/components/Hero.tsx`: the shared hero used by every page.
+- `src/three/Stage.ts`: the 3D hero stage, ported from the Tegar Labs hero.
+  A glossy centrepiece per service (AI icosahedron, vision lens, software
+  slabs, phone, API knot, content prism, sci‑fi helmet) turns toward the
+  cursor; floating shapes flee the pointer and morph when the service
+  changes. three.js loads on demand after first paint.
+- `src/components/Hero.tsx`: the shared hero. The 3D core is centred on a
+  layout anchor, so CSS decides exactly where it sits on every screen.
+  The home hero adds a service carousel that switches the stage.
 - `src/components/motion.jsx`: 3D scroll reveals, split-text headlines,
   pointer-tilt cards with glare, scroll-lit statements, magnetic buttons.
 - `src/components/Ambient.jsx`: aurora and 3D grid floor behind every page,
   plus the custom cursor.
-- `src/components/Layout.jsx`: smooth scrolling, scroll progress bar and the
-  curtain + 3D page transition.
 - Showcases: `VisionDemos.jsx`, `AppGallery.jsx`, `Showcases.jsx`.
 
 Everything respects the visitor's reduced-motion setting.
+
+## Credits
+
+`public/models/scifi-helmet.glb`: "Sci Fi Helmet" by Michael Pavlovic,
+CC0 1.0 (public domain), from the Khronos glTF Sample Assets. See
+`public/models/CREDITS.txt`.

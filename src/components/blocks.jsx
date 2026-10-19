@@ -236,7 +236,7 @@ function Step({ s, i }) {
       <motion.span
         className="absolute -left-[6px] top-1.5 h-[13px] w-[13px] rounded-full border border-brand/50 bg-black"
         initial={{ scale: 0.6 }}
-        whileInView={{ scale: 1, backgroundColor: '#3D8BFF', boxShadow: '0 0 0 6px rgba(61,139,255,.2), 0 0 18px rgba(96,177,255,.8)' }}
+        whileInView={{ scale: 1, backgroundColor: '#6f8cff', boxShadow: '0 0 0 6px rgba(111, 140, 255,.2), 0 0 18px rgba(96,177,255,.8)' }}
         viewport={{ margin: '0px 0px -45% 0px' }}
         transition={{ duration: 0.5, ease: EASE }}
       />
@@ -287,7 +287,7 @@ export function FAQ({ list }) {
           <Reveal key={i} className="border-b border-line">
             <button type="button" onClick={() => setOpen(on ? -1 : i)} aria-expanded={on} className="flex w-full items-center justify-between gap-5 py-6 text-left font-fustat text-[clamp(17px,1.6vw,21px)] font-bold tracking-[-.02em]">
               {f[0]}
-              <motion.span animate={{ rotate: on ? 45 : 0, backgroundColor: on ? '#2F7BFF' : 'rgba(255,255,255,0)', color: on ? '#fff' : '#F2F6FF' }} transition={{ duration: 0.4, ease: EASE }} className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-line">
+              <motion.span animate={{ rotate: on ? 45 : 0, backgroundColor: on ? '#5b7cff' : 'rgba(255,255,255,0)', color: on ? '#fff' : '#F2F6FF' }} transition={{ duration: 0.4, ease: EASE }} className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-line">
                 <svg viewBox="0 0 12 12" className="h-3 w-3" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                   <path d="M6 1v10M1 6h10" />
                 </svg>

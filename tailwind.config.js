@@ -4,20 +4,21 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // One display face for every heading on the site
-        fustat: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
-        inter: ['Inter', 'system-ui', 'sans-serif'],
+        // Sora for headings, Inter for text, JetBrains Mono for labels (self-hosted)
+        fustat: ['"Sora Variable"', 'Inter Variable', 'system-ui', 'sans-serif'],
+        display: ['"Sora Variable"', 'Inter Variable', 'system-ui', 'sans-serif'],
+        body: ['"Inter Variable"', 'system-ui', 'sans-serif'],
+        inter: ['"Inter Variable"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'Menlo', 'monospace'],
       },
       colors: {
-        // Site palette: near-black surfaces, one blue -> cyan accent family
-        ink: { DEFAULT: '#EEF3FF', soft: '#8B97B0', dim: '#56627A' },
-        line: 'rgba(255,255,255,0.08)',
-        night: '#03050B',
-        surface: '#0A0F1C',
+        // Site palette: deep-space navy, electric indigo -> cyan, violet highlight
+        ink: { DEFAULT: '#F4F6FF', soft: '#A3ABC7', dim: '#646D8E' },
+        line: 'rgba(164,180,255,0.12)',
+        night: '#05060F',
+        surface: '#0C1022',
         star: '#FF801E',
-        brand: { DEFAULT: '#2F7BFF', light: '#5FB0FF', mid: '#3D8BFF', cyan: '#5CE1FF' },
+        brand: { DEFAULT: '#5B7CFF', light: '#8EA6FF', mid: '#6F8CFF', cyan: '#3EE7FF', violet: '#B794FF' },
         // Semantic tokens for the Software landing (vars are scoped to .nexora)
         background: 'hsl(var(--background) / <alpha-value>)',
         foreground: 'hsl(var(--foreground) / <alpha-value>)',

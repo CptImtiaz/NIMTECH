@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useInView, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { CASES, INDUSTRIES, ORDER, SERVICES } from '../data/content.js'
-import Hero from '../components/Hero'
+import Hero, { type StageHandle } from '../components/Hero'
+import type { CoreId } from '../three/Stage'
 import { CaseCard, CTA, Eyebrow, FAQ, Marquee, Section, SectionHead, Statement, svcName } from '../components/blocks.jsx'
 import { ArrowUpRight, Icon } from '../components/Icons.jsx'
 import { EASE, Reveal, SplitText, Tilt } from '../components/motion.jsx'
@@ -244,19 +245,87 @@ function IndustryRails() {
   )
 }
 
+
+/* ---------- home hero: service carousel driving the 3D stage ---------- */
+const CORE_OF: Record<string, CoreId> = { 'ai-agents': 'ai', 'computer-vision': 'vision', software: 'software', apps: 'apps', 'api-integration': 'api', 'ai-content': 'content' }
+
+function HomeHero() {
+  const stage = useRef<StageHandle | null>(null)
+  const [active, setActive] = useState(0)
+  const pick = (i: number) => {
+    const n = (i + ORDER.length) % ORDER.length
+    if (n === active) return
+    if (stage.current && !stage.current.switchTo(CORE_OF[ORDER[n]])) return
+    setActive(n)
+  }
+  const id = ORDER[active]
+  const s = SERVICES[id as keyof typeof SERVICES] as Svc
+  const offset = Math.min(active, ORDER.length - 2)
+  const aside = (
+    <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, ease: EASE, delay: 0.9 }} className="flex flex-col items-center gap-5 lg:items-end">
+      <div className="w-[310px] overflow-hidden px-3 pb-1 pt-16">
+        <div className="flex gap-4 transition-transform duration-700 [transition-timing-function:cubic-bezier(.2,.8,.2,1)]" style={{ transform: `translateX(${-offset * 151}px)` }} role="tablist" aria-label="Services">
+          {ORDER.map((sid, i) => {
+            const sv = SERVICES[sid as keyof typeof SERVICES] as Svc
+            const on = i === active
+            return (
+              <button key={sid} type="button" role="tab" aria-selected={on} onClick={() => pick(i)} className={`svc-card group ${on ? 'on' : ''}`}>
+                <span className="svc-chip">
+                  <Icon name={sv.icon} className="h-9 w-9" />
+                </span>
+                <span className="text-[12.5px] font-semibold leading-tight text-ink">{svcName(sid)}</span>
+                <span className="text-[11px] leading-tight text-ink-soft">{sv.tags[0]}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <span className="font-mono text-xs tabular-nums tracking-[.08em] text-ink-soft">
+          {String(active + 1).padStart(2, '0')} / {String(ORDER.length).padStart(2, '0')}
+        </span>
+        <button type="button" onClick={() => pick(active - 1)} aria-label="Previous service" className="round-btn">←</button>
+        <button type="button" onClick={() => pick(active + 1)} aria-label="Next service" className="round-btn">→</button>
+      </div>
+      <AnimatePresence mode="wait">
+        <motion.div key={id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }} className="max-w-[290px] text-center lg:text-right">
+          <p className="text-[14px] leading-relaxed text-ink-soft">{s.one}</p>
+          <Link to={`/services/${id}`} className="mt-3 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-brand-cyan">
+            Explore {svcName(id)} <ArrowUpRight className="h-3.5 w-3.5" />
+          </Link>
+        </motion.div>
+      </AnimatePresence>
+    </motion.div>
+  )
+  return (
+    <Hero
+      core="ai"
+      layout="home"
+      badge="AI & Software Engineering Studio"
+      h1={['We engineer', '<em>intelligent</em> systems.']}
+      lede="NIMTECH designs, builds and runs AI agents, custom vision models, software, apps and integrations for companies around the world."
+      primary={['Start a Project', '/contact']}
+      secondary={['Explore Services', '/services']}
+      aside={aside}
+      onStage={(h) => (stage.current = h)}
+    >
+      <div className="mt-8 flex items-center gap-3">
+        <span className="grid h-11 w-11 place-items-center rounded-xl border border-line bg-white/[.04] text-brand-cyan">
+          <Icon name="vision" className="h-5 w-5" />
+        </span>
+        <span className="leading-tight">
+          <span className="block font-mono text-[10.5px] tracking-[.14em] text-ink-soft">IN‑HOUSE VISION MODEL</span>
+          <span className="text-[13.5px] font-semibold text-ink">Target Locker AI</span>
+        </span>
+      </div>
+    </Hero>
+  )
+}
+
 export default function Home() {
   return (
     <>
-      <Hero
-        scene="core"
-        size="xl"
-        badge="AI & Software Engineering Studio"
-        h1={['We engineer', '<em>intelligent</em> systems.']}
-        lede="NIMTECH designs, builds and runs AI agents, custom vision models, software, apps and integrations for companies around the world."
-        primary={['Start a Project', '/contact']}
-        secondary={['Explore Services', '/services']}
-        stats={['6 practices, one senior team', '2‑week sprints with live demos', 'Code, models and data are yours']}
-      />
+      <HomeHero />
       <Marquee items={ORDER.map(svcName)} />
       <Statement text="We’re an engineering studio for companies that want AI and software done <em>properly.</em> You bring the problem. We design, build and run the system that solves it." />
       <ServicesRail />

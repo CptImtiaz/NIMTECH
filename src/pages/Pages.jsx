@@ -163,7 +163,7 @@ export function Process() {
 export function Technology() {
   return (
     <>
-      <PageHero badge="Technology" h1={['The right tools for', '<em>each problem.</em>']} lede="We stay model‑agnostic and cloud‑agnostic, choosing proven technology that fits your constraints." primary={['Start a Project', '/contact']} secondary={['How we work', '/process']} />
+      <PageHero vis="helmet" badge="Technology" h1={['The right tools for', '<em>each problem.</em>']} lede="We stay model‑agnostic and cloud‑agnostic, choosing proven technology that fits your constraints." primary={['Start a Project', '/contact']} secondary={['How we work', '/process']} />
       <Section>
         <SectionHead eyebrow="Stack" title="What we <em>build with.</em>" />
         <StackTable
@@ -194,7 +194,7 @@ export function Technology() {
 export function Company() {
   return (
     <>
-      <PageHero badge="About NIMTECH" h1={['Engineers and researchers', '<em>building what’s next.</em>']} lede="NIMTECH is a global engineering studio headquartered in Kuala Lumpur, working with clients across time zones." primary={['Work with us', '/contact']} secondary={['Careers', '/careers']} />
+      <PageHero vis="helmet" badge="About NIMTECH" h1={['Engineers and researchers', '<em>building what’s next.</em>']} lede="NIMTECH is a global engineering studio headquartered in Kuala Lumpur, working with clients across time zones." primary={['Work with us', '/contact']} secondary={['Careers', '/careers']} />
       <Statement text="We started where research meets real work. Our team trains its own vision models, then puts them to work in the real world <em>alongside the software, apps and agents</em> businesses run on." />
       <Section tight>
         <SectionHead eyebrow="Values" title="What we <em>believe.</em>" />
@@ -237,7 +237,7 @@ export function Company() {
 export function Careers() {
   return (
     <>
-      <PageHero badge="Careers" h1={['Build AI that works', '<em>in the real world.</em>']} lede="We’re growing a remote‑first team of engineers, researchers, editors and delivery leads." primary={['See open roles', '#roles']} secondary={['About us', '/company']} />
+      <PageHero vis="helmet" badge="Careers" h1={['Build AI that works', '<em>in the real world.</em>']} lede="We’re growing a remote‑first team of engineers, researchers, editors and delivery leads." primary={['See open roles', '#roles']} secondary={['About us', '/company']} />
       <Section id="roles">
         <SectionHead eyebrow="Open roles" title="Roles we’re <em>hiring for.</em>" />
         <div className="border-t border-line">

@@ -162,7 +162,7 @@ function DashboardStage() {
         <div ref={ref} style={{ perspective: 1600 }}>
           <motion.div style={{ rotateX, scale, y, transformOrigin: 'center top' }} className="nexora relative mx-auto max-w-5xl">
             <div className="pointer-events-none absolute -inset-10 -z-10 rounded-[40px] bg-brand/25 blur-3xl" />
-            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[.03] p-3 shadow-[0_40px_120px_-30px_rgba(47,123,255,.45)] backdrop-blur-xl md:p-4">
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[.03] p-3 shadow-[0_40px_120px_-30px_rgba(91, 124, 255,.45)] backdrop-blur-xl md:p-4">
               <Dashboard />
             </div>
           </motion.div>
