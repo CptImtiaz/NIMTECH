@@ -1,24 +1,26 @@
-import Navbar from './components/Navbar.jsx'
-import Hero from './components/Hero.jsx'
-import TrustedBy from './components/TrustedBy.jsx'
+import { Route, Routes } from 'react-router-dom'
+import Layout from './components/Layout.jsx'
+import Home from './pages/Home.jsx'
+import Service from './pages/Service.jsx'
+import Contact from './pages/Contact.jsx'
+import { Careers, Company, Industries, NotFound, Process, Services, Technology, Work } from './pages/Pages.jsx'
 
 export default function App() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-white">
-      {/* Background glow, top-left */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-[220px] -top-[260px] h-[620px] w-[820px] rounded-full bg-[#60B1FF] opacity-30 blur-[140px]" />
-        <div className="absolute -left-[120px] -top-[180px] h-[380px] w-[520px] rounded-full bg-[#319AFF] opacity-25 blur-[120px]" />
-        <div className="absolute left-[180px] top-[40px] h-[240px] w-[360px] rounded-full bg-[#60B1FF] opacity-20 blur-[100px]" />
-      </div>
-
-      <div className="relative z-10 mx-auto w-full max-w-[1600px]">
-        <Navbar />
-        <main>
-          <Hero />
-          <TrustedBy />
-        </main>
-      </div>
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="services" element={<Services />} />
+        <Route path="services/:id" element={<Service />} />
+        <Route path="industries" element={<Industries />} />
+        <Route path="work" element={<Work />} />
+        <Route path="process" element={<Process />} />
+        <Route path="technology" element={<Technology />} />
+        <Route path="company" element={<Company />} />
+        <Route path="careers" element={<Careers />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }

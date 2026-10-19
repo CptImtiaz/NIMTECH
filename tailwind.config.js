@@ -8,11 +8,11 @@ export default {
         inter: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
-        brand: {
-          light: '#60B1FF',
-          DEFAULT: '#319AFF',
-          star: '#FF801E',
-        },
+        ink: { DEFAULT: '#0B1220', soft: '#55617A', dim: '#8A94A8' },
+        line: 'rgba(11,18,32,0.09)',
+        night: '#050B18',
+        star: '#FF801E',
+        brand: { DEFAULT: '#0A6CFF', light: '#60B1FF', mid: '#319AFF' },
       },
     },
   },
