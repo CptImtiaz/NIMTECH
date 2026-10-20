@@ -72,11 +72,14 @@ export function ScrollWords({ text, className = '' }) {
   )
 }
 
+// Words light up from a readable grey (always above WCAG large-text
+// contrast) to full ink; accent words fade in from a softer start.
 function Word({ children, progress, range, em }) {
-  const opacity = useTransform(progress, range, [0.14, 1])
+  const color = useTransform(progress, range, ['#7A829C', '#0B1020'])
+  const opacity = useTransform(progress, range, [0.45, 1])
   return (
     <>
-      <motion.span style={{ opacity }} className={em ? 'accent' : ''}>
+      <motion.span style={em ? { opacity } : { color }} className={em ? 'accent' : ''}>
         {children}
       </motion.span>{' '}
     </>

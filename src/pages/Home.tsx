@@ -9,6 +9,7 @@ import { ArrowUpRight, Icon } from '../components/Icons.jsx'
 import { EASE, Reveal, SplitText, Tilt } from '../components/motion.jsx'
 import { SHOWCASES } from '../components/Showcases.jsx'
 import Counters from '../components/Counters.jsx'
+import { HOME_FAQ } from '../data/site.js'
 
 const V = (id: string) => `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/${id}.mp4`
 const SERVICE_VIDEOS: Record<string, string> = {
@@ -22,10 +23,11 @@ const SERVICE_VIDEOS: Record<string, string> = {
 type Svc = (typeof SERVICES)[keyof typeof SERVICES]
 
 function useWide(q = '(min-width: 900px)') {
-  const [wide, setWide] = useState(() => typeof window !== 'undefined' && matchMedia(q).matches)
+  const [wide, setWide] = useState(false)
   useEffect(() => {
     const m = matchMedia(q)
     const f = () => setWide(m.matches)
+    f()
     m.addEventListener('change', f)
     return () => m.removeEventListener('change', f)
   }, [q])
@@ -345,15 +347,7 @@ export default function Home() {
       <IndustryRails />
       <Section>
         <SectionHead eyebrow="FAQ" title="Common <em>questions.</em>" />
-        <FAQ
-          list={[
-            ['What kind of companies do you work with?', 'Growing companies and enterprise teams in many industries, anywhere in the world, from first AI project to large platforms.'],
-            ['Do you work with clients outside Malaysia?', 'Yes. Most of our work is remote, with overlap hours for calls and sprint demos in your time zone.'],
-            ['Can you join our existing team?', 'Yes. We can lead a project, work alongside your engineers, or hand over gradually.'],
-            ['How does a project start?', 'With a short discovery: we learn the problem, review your data and systems, and propose a clear plan.'],
-            ['Who owns what you build?', 'You do: source code, trained models, datasets and infrastructure.'],
-          ]}
-        />
+        <FAQ list={HOME_FAQ} />
       </Section>
       <CTA />
     </>

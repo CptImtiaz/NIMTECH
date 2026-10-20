@@ -2,7 +2,7 @@
 
 Website for NIMTECH, a global engineering studio for AI agents, computer
 vision, software, apps, systems integration and AI content. Built with
-React, Vite, Tailwind CSS, Framer Motion and Lenis.
+React, Vite, Tailwind CSS, Framer Motion, three.js and Lenis.
 
 ## Getting started
 
@@ -10,7 +10,7 @@ React, Vite, Tailwind CSS, Framer Motion and Lenis.
 npm install
 npm run dev       # local dev server
 npm run typecheck # TypeScript check (.tsx pages; JS files are allowed)
-npm run build     # production build into dist/
+npm run build     # client build, SSR build, then prerender every route into dist/
 npm run preview   # serve the production build
 ```
 
@@ -29,19 +29,43 @@ on phones the scene sits above the copy), one palette and one display font.
 Extras per practice: live vision demos, coded example apps, a 3D dashboard
 stage (Software) and the A.R.I.A typing agent (AI Content).
 
-The site uses clean URLs, so the host must serve `index.html` for every
-path. `vercel.json` (Vercel) and `public/_redirects` (Netlify) already do
-this. Service cards on Home stream background videos from CloudFront.
+Every route is prerendered to static HTML (`dist/<route>/index.html`) and
+hydrated in the browser, so search engines and AI crawlers get the full
+text without running JavaScript. Unknown paths get `dist/404.html` with a
+real 404 status. Service cards on Home stream background videos from
+CloudFront.
 
 ## Design system
 
-- **Palette** (`tailwind.config.js`): deep-space navy `night` / `surface`,
-  text `ink`, electric indigo `brand` (#5B7CFF) with `brand-light`,
-  `brand-cyan` (#3EE7FF) and `brand-violet` (#B794FF) highlights. Each hero
-  is tinted by its 3D stage theme (`src/three/themes.ts`). Green and red
-  appear only as pass/fail signals.
+- **Palette** (`tailwind.config.js`): white `night` and `surface`, navy
+  text `ink`, indigo `brand` (#4C63F6) with `brand-cyan` (#0E7490) and
+  `brand-violet` (#7C5CFA) highlights. Dark `deep` panels (footer, CTA,
+  consoles) give contrast. Each hero is tinted by its 3D stage theme
+  (`src/three/themes.ts`). All text meets WCAG AA contrast.
 - **Type** (self-hosted via Fontsource): Sora for headings, Inter for text,
   JetBrains Mono for labels.
+
+## SEO and AI search
+
+- `src/data/seo.js`: title, description and structured data (Organization,
+  WebSite, WebPage, Service, FAQPage, BreadcrumbList) for every route.
+  **Set the real domain with `VITE_SITE_URL` at build time** (default
+  `https://www.nimtech.com`), and bump `UPDATED` when content changes.
+- `scripts/prerender.mjs` writes the route HTML plus `sitemap.xml`,
+  `robots.txt` (search and AI crawlers allowed) and `llms.txt` (a Markdown
+  summary for AI agents).
+- `src/components/Seo.jsx` keeps the head in step during client navigation.
+- `public/og.jpg` is the social share image (1200×630).
+
+## Security and hosting
+
+- `vercel.json` (Vercel) and `public/_headers` (Netlify, Cloudflare Pages)
+  set a Content Security Policy, HSTS, `X-Content-Type-Options`,
+  `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` and long
+  caching for hashed assets. If you add a third-party script, analytics or
+  video host, add its domain to the CSP.
+- No secrets live in the repo; the contact form opens the visitor's own
+  email or WhatsApp, so there is no backend to attack.
 
 ## Editing content
 
@@ -58,7 +82,10 @@ this. Service cards on Home stream background videos from CloudFront.
   A glossy centrepiece per service (AI icosahedron, vision lens, software
   slabs, phone, API knot, content prism, sci‑fi helmet) turns toward the
   cursor; floating shapes flee the pointer and morph when the service
-  changes. three.js loads on demand after first paint.
+  changes. three.js loads on demand once the browser is idle; phones and
+  low-power devices get a lighter renderer, and browsers without a GPU
+  (software WebGL) get a static orb instead. Add `?3d` to a URL to force
+  the scene.
 - `src/components/Hero.tsx`: the shared hero. The 3D core is centred on a
   layout anchor, so CSS decides exactly where it sits on every screen.
   The home hero adds a service carousel that switches the stage.

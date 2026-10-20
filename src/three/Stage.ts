@@ -1,7 +1,7 @@
 // 3D hero stage, ported from the Tegar Labs hero: a glossy centrepiece per
 // service that turns toward the cursor, floating shapes that flee the
-// pointer and morph when the service changes, on three stacked canvases
-// (background shapes, core, foreground shapes above the copy).
+// pointer and morph when the service changes, on two stacked canvases
+// (background shapes plus core, then foreground shapes above the copy).
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -18,7 +18,6 @@ const TINT: Record<CoreId, number> = { ai: 0x6e86ff, vision: 0x22b8d6, software:
 interface Options {
   host: HTMLElement
   anchor: HTMLElement
-  bg: HTMLCanvasElement
   core: HTMLCanvasElement
   fg: HTMLCanvasElement
   id: CoreId
@@ -99,12 +98,10 @@ export function createStage(o: Options) {
     panel(new THREE.Color(2.2, 2.2, 2.6), 6, 4, -38, 34, 22)
     return sc
   }
-  function layer(c: HTMLCanvasElement) {
-    const r = new THREE.WebGLRenderer({ canvas: c, alpha: true, antialias: true })
-    r.setPixelRatio(Math.min(devicePixelRatio, 1.5))
-    r.outputColorSpace = THREE.SRGBColorSpace
-    r.toneMapping = THREE.ACESFilmicToneMapping
-    r.toneMappingExposure = 1.05
+  // Phones, low-core CPUs and data-saver get a lighter renderer.
+  const nav = navigator as Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } }
+  const lite = (nav.hardwareConcurrency || 8) <= 4 || (nav.deviceMemory || 8) <= 4 || !!nav.connection?.saveData || innerWidth < 768
+  function scene(r: THREE.WebGLRenderer) {
     const s = new THREE.Scene()
     const pm = new THREE.PMREMGenerator(r)
     s.environment = pm.fromScene(envScene(), 0.04).texture
@@ -116,11 +113,25 @@ export function createStage(o: Options) {
     const p = new THREE.DirectionalLight(ACCENT, 2.2)
     p.position.set(-0.8, -0.4, 0.6)
     s.add(p)
+    return s
+  }
+  function layer(c: HTMLCanvasElement) {
+    const r = new THREE.WebGLRenderer({ canvas: c, alpha: true, antialias: !lite, powerPreference: 'high-performance' })
+    r.setPixelRatio(Math.min(devicePixelRatio, lite ? 1 : 1.5))
+    r.outputColorSpace = THREE.SRGBColorSpace
+    r.toneMapping = THREE.ACESFilmicToneMapping
+    r.toneMappingExposure = 1.05
     const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, -4000, 4000)
     disposers.push(() => r.dispose())
-    return { c, r, s, cam }
+    return { c, r, s: scene(r), cam }
   }
-  const L = { bg: layer(o.bg), core: layer(o.core), fg: layer(o.fg) }
+  // Background shapes share the core's context: one PMREM and one GL
+  // context fewer, drawn as two passes into the same canvas.
+  const core0 = layer(o.core)
+  core0.r.autoClear = false
+  const L = { bg: { ...core0, s: new THREE.Scene() }, core: core0, fg: layer(o.fg) }
+  L.bg.s.environment = core0.s.environment
+  L.bg.s.add(...core0.s.children.filter((c) => (c as THREE.Light).isLight).map((c) => c.clone()))
   const gloss = (color: number, rough = 0.18, metal = 0.1, extra: THREE.MeshPhysicalMaterialParameters = {}) =>
     new THREE.MeshPhysicalMaterial({ color, roughness: rough, metalness: metal, clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.3, ...extra })
 
@@ -423,7 +434,8 @@ export function createStage(o: Options) {
       const a = ((n.angle + fa) * Math.PI) / 180
       n.mesh.rotation.set(n.tilt + a * 0.6, a * 0.4, -a)
     })
-    L.bg.r.render(L.bg.s, L.bg.cam)
+    L.core.r.clear()
+    L.core.r.render(L.bg.s, L.core.cam)
     L.core.r.render(L.core.s, L.core.cam)
     L.fg.r.render(L.fg.s, L.fg.cam)
   }

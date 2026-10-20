@@ -31,12 +31,12 @@ export default function Footer() {
           <FootCol title="Company" links={COMPANY_LINKS} />
           <div>
             <p className="mb-4 text-xs font-medium uppercase tracking-[.14em] text-white/60">Contact</p>
-            <ul className="grid gap-2.5 text-[14.5px] text-white/60">
-              <li><Link to="/contact" className="hover:text-white">Contact form</Link></li>
-              <li><a href={`mailto:${EMAIL}`} className="hover:text-white">{EMAIL}</a></li>
-              <li className="text-white/60">HQ {HQ}</li>
-              <li className="text-white/60">Working worldwide</li>
-            </ul>
+            <address className="grid gap-2.5 text-[14.5px] not-italic text-white/60">
+              <Link to="/contact" className="hover:text-white">Contact form</Link>
+              <a href={`mailto:${EMAIL}`} className="hover:text-white">{EMAIL}</a>
+              <span>HQ {HQ}</span>
+              <span>Working worldwide</span>
+            </address>
           </div>
         </div>
         <motion.div style={{ letterSpacing: spacing, opacity }} aria-hidden="true" className="footer-word select-none">

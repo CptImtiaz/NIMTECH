@@ -263,10 +263,22 @@
     -webkit-mask-image: radial-gradient(60% 55% at 70% 40%, #000 0%, transparent 75%);
     mask-image: radial-gradient(60% 55% at 70% 40%, #000 0%, transparent 75%);
   }
+  /* Shown instead of the 3D stage when WebGL is missing or software-only */
   .orb-fallback {
-    background: radial-gradient(circle at 32% 28%, #e6f3ff 0%, #8ea6ff 28%, #5b7cff 62%, #3e5bff 100%);
-    box-shadow: 0 0 120px rgba(111, 140, 255, 0.45), inset -20px -30px 80px rgba(10, 30, 90, 0.35);
+    position: relative;
+    width: min(62vw, 34svh, 400px);
+    aspect-ratio: 1;
+    background: radial-gradient(circle at 34% 28%, #ffffff 0 5%, #e6eaff 16%, #b4c0ff 42%, #7389ff 70%, #4c63f6 100%);
+    box-shadow: 0 50px 100px -30px rgba(76, 99, 246, 0.5), inset -26px -34px 70px rgba(30, 40, 120, 0.35), inset 20px 24px 44px rgba(255, 255, 255, 0.75);
     animation: orb-breathe 6s ease-in-out infinite;
+  }
+  .orb-fallback::after {
+    content: '';
+    position: absolute;
+    inset: 40% -12%;
+    border-radius: 50%;
+    border: 2px solid rgba(76, 99, 246, 0.45);
+    transform: rotate(-18deg);
   }
   @keyframes orb-breathe {
     50% {

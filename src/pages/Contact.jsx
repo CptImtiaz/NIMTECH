@@ -63,7 +63,7 @@ export default function Contact() {
                     ) : (
                       <>
                         <span className="text-ink">Your enquiry is ready. Send it by:</span>
-                        <Button href={out.wa} target="_blank" rel="noopener">WhatsApp</Button>
+                        <Button href={out.wa} target="_blank" rel="noopener noreferrer">WhatsApp</Button>
                         <Button href={out.mail} variant="glass">Email</Button>
                       </>
                     )}
@@ -82,7 +82,7 @@ export default function Contact() {
               <Reveal key={c[0]} delay={i * 0.07}>
                 <div className="card">
                   <span className="card-num">{c[0].toUpperCase()}</span>
-                  <h3 className="h3 break-words">{c[1]}</h3>
+                  <p className="h3 break-words">{c[1]}</p>
                   <p className="card-text">{c[2]}</p>
                   {c[3] && <div><CopyEmail label="Copy email" /></div>}
                 </div>

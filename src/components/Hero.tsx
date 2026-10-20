@@ -61,23 +61,31 @@ function Bubbles() {
 export default function Hero({ core = 'brand', layout = 'side', badge, h1, lede, primary, secondary, stats, children, aside, onStage }: Props) {
   const host = useRef<HTMLElement>(null)
   const anchor = useRef<HTMLDivElement>(null)
-  const bg = useRef<HTMLCanvasElement>(null)
   const coreCv = useRef<HTMLCanvasElement>(null)
   const fg = useRef<HTMLCanvasElement>(null)
-  const [webgl] = useState(hasWebGL)
+  // null until mounted, so the prerendered HTML and hydration agree
+  const [webgl, setWebgl] = useState<boolean | null>(null)
+  useEffect(() => {
+    const run = () => setWebgl(hasWebGL())
+    if (!('requestIdleCallback' in window)) return void setTimeout(run, 200)
+    const id = requestIdleCallback(run, { timeout: 1200 })
+    return () => cancelIdleCallback(id)
+  }, [])
   const { scrollYProgress } = useScroll({ target: host, offset: ['start start', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], [0, -80])
   const o = useTransform(scrollYProgress, [0, 0.75], [1, 0])
   const theme = THEMES[core]
 
   useEffect(() => {
-    if (!webgl || !host.current || !anchor.current || !bg.current || !coreCv.current || !fg.current) return
+    if (!webgl || !host.current || !anchor.current || !coreCv.current || !fg.current) return
     let stage: Stage | undefined
     let dead = false
     const h = host.current
-    const els = { host: h, anchor: anchor.current, bg: bg.current, core: coreCv.current, fg: fg.current }
-    // three.js loads on demand so the page paints first
-    import('../three/Stage').then(({ createStage }) => {
+    const els = { host: h, anchor: anchor.current, core: coreCv.current, fg: fg.current }
+    // three.js loads on demand, and the scene is built once the browser is
+    // idle, so the copy paints and responds first
+    const idle = (cb: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 1500 }) : setTimeout(cb, 300))
+    import('../three/Stage').then(({ createStage }) => new Promise<typeof createStage>((ok) => idle(() => ok(createStage)))).then((createStage) => {
       if (dead) return
       try {
         stage = createStage({ ...els, id: core, layout, reduce: REDUCE })
@@ -111,7 +119,6 @@ export default function Hero({ core = 'brand', layout = 'side', badge, h1, lede,
       style={{ '--bg-inner': theme[0], '--bg-mid': theme[1], '--bg-outer': theme[2] } as React.CSSProperties}
     >
       <Bubbles />
-      <canvas ref={bg} className="pointer-events-none absolute inset-0 z-[1] h-full w-full" aria-hidden="true" />
       <canvas ref={coreCv} className="stage-core pointer-events-none absolute inset-0 z-[2] h-full w-full" aria-hidden="true" />
 
       <motion.div style={{ y, opacity: o }} className="wrap relative z-[3] grid min-h-[100svh] items-center gap-y-6 pb-32 pt-28 lg:grid-cols-12 lg:gap-x-8 lg:pb-28 lg:pt-32">
@@ -145,7 +152,7 @@ export default function Hero({ core = 'brand', layout = 'side', badge, h1, lede,
         </div>
 
         <div ref={anchor} className={`order-1 h-[38svh] min-h-[260px] lg:order-2 lg:h-[64vh] ${home ? 'lg:col-span-4' : 'lg:col-span-5'}`} aria-hidden="true">
-          {!webgl && <div className="orb-fallback mx-auto aspect-square h-full max-h-[420px] rounded-full" />}
+          {webgl === false && <div className="grid h-full place-items-center"><div className="orb-fallback rounded-full" /></div>}
         </div>
 
         {aside && <div className="order-3 min-w-0 lg:col-span-3">{aside}</div>}

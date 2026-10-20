@@ -20,7 +20,7 @@ export default {
         surface: '#F6F8FC',
         deep: '#070A1A',
         star: '#FF801E',
-        brand: { DEFAULT: '#4C63F6', light: '#6E86FF', mid: '#5A72FF', cyan: '#0891B2', violet: '#7C5CFA' },
+        brand: { DEFAULT: '#4C63F6', light: '#6E86FF', mid: '#5A72FF', cyan: '#0E7490', violet: '#7C5CFA' },
         // Semantic tokens for the Software landing (vars are scoped to .nexora)
         background: 'hsl(var(--background) / <alpha-value>)',
         foreground: 'hsl(var(--foreground) / <alpha-value>)',

@@ -35,7 +35,9 @@ export default function Layout() {
       <Backdrop />
       <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-gradient-to-r from-brand to-brand-cyan" />
       <Navbar />
-      <AnimatePresence>
+      {/* initial={false}: no curtain or page fade on first load, so the
+          prerendered page shows at once */}
+      <AnimatePresence initial={false}>
         <motion.div
           key={pathname}
           aria-hidden="true"
@@ -45,7 +47,7 @@ export default function Layout() {
           exit={{ opacity: 0, transition: { duration: 0.01 } }}
         />
       </AnimatePresence>
-      <AnimatePresence mode="wait" onExitComplete={() => (lenis.current ? lenis.current.scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => (lenis.current ? lenis.current.scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
         <motion.main
           key={pathname}
           initial={{ opacity: 0, y: 40, rotateX: 6, scale: 0.98, transformPerspective: 1400 }}
