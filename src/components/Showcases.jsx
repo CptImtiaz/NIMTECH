@@ -99,9 +99,9 @@ function VisionTraining() {
         x.strokeStyle = 'rgba(255,255,255,.85)'; line(tl, [], 1.4)
         x.strokeStyle = '#7f9bc4'; line(vl, [4, 3], 1.2)
         const g = x.createLinearGradient(0, 0, W, 0)
-        g.addColorStop(0, '#8fa2ff'); g.addColorStop(1, '#12b5ad')
+        g.addColorStop(0, '#60b1ff'); g.addColorStop(1, '#12b5ad')
         x.strokeStyle = g; line(mp, [], 2.8)
-        x.fillStyle = '#8fa2ff'
+        x.fillStyle = '#60b1ff'
         x.beginPath(); x.arc(X(p), Y(mp(p)), 4.5, 0, 7); x.fill()
         if (t - lastSet > 90 || !t) {
           lastSet = t
@@ -201,26 +201,26 @@ function AppShowcase() {
   )
   const screens = [
     <>
-      <h5>Good evening, <span className="text-brand-light">Sam</span></h5>
+      <p className="scr-title">Good evening, <span className="text-brand-light">Sam</span></p>
       <div className="scr-big">Today’s picks for you</div>
       <div className="scr-r"><span>Chicken rice bowl</span><b>$12.90</b></div>
       <div className="scr-r"><span>Iced latte</span><b>$4.50</b></div>
       <span className="scr-btn">Order again</span>
     </>,
     <>
-      <h5>On the <span className="text-brand-light">way</span></h5>
+      <p className="scr-title">On the <span className="text-brand-light">way</span></p>
       <div className="scr-big scr-map">Driver · 6 min away</div>
       <div className="scr-r"><span>Order #4821</span><b>Picked up</b></div>
       <div className="scr-r"><span>Arriving</span><b>7:42 pm</b></div>
     </>,
     <>
-      <h5>Your <span className="text-brand-light">rewards</span></h5>
+      <p className="scr-title">Your <span className="text-brand-light">rewards</span></p>
       <div className="scr-ring"><span>72%</span></div>
       <div className="scr-r"><span>Points</span><b>1,440</b></div>
       <div className="scr-r"><span>Next reward at</span><b>2,000</b></div>
     </>,
     <>
-      <h5>Scan <span className="text-brand-light">product</span></h5>
+      <p className="scr-title">Scan <span className="text-brand-light">product</span></p>
       <div className="scr-cam"><i /></div>
       <div className="scr-r"><span>Detected</span><b>Bottle · 0.96</b></div>
       <span className="scr-btn">Add to inspection</span>
@@ -349,14 +349,14 @@ export function Tracker() {
         x.beginPath(); x.arc(X, Y - h * 0.82, w * 0.32, 0, 7); x.fill()
         rrect(x, X - w * 0.32, Y - h * 0.66, w * 0.64, h * 0.66, 6); x.fill()
         if (p.t) {
-          x.fillStyle = '#8fa2ff'
+          x.fillStyle = '#60b1ff'
           x.fillRect(X + w * 0.2, Y - h * 0.5, w * 0.5, w * 0.4)
           trail.push([X, Y]); if (trail.length > 90) trail.shift()
-          x.strokeStyle = '#8fa2ff'; x.lineWidth = 1.5
+          x.strokeStyle = '#60b1ff'; x.lineWidth = 1.5
           x.strokeRect(X - w * 0.7, Y - h - 6, w * 1.6, h + 12)
           x.font = MONO
           const lb = 'ID 07 · tracked · 0.94', tw = x.measureText(lb).width + 10
-          x.fillStyle = '#8fa2ff'; x.fillRect(X - w * 0.7, Y - h - 24, tw, 17)
+          x.fillStyle = '#60b1ff'; x.fillRect(X - w * 0.7, Y - h - 24, tw, 17)
           x.fillStyle = '#06101f'; x.fillText(lb, X - w * 0.7 + 5, Y - h - 12)
         } else {
           x.strokeStyle = 'rgba(255,255,255,.22)'; x.lineWidth = 1

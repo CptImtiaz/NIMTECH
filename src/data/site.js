@@ -1,5 +1,5 @@
 // Contact details used across the site. Replace with your real ones.
-export const EMAIL = 'hello@nimtech.com'
+export const EMAIL = 'nimtech.itsolution@gmail.com'
 export const WHATSAPP = '60100000000' // country code + number, no "+"
 export const WHATSAPP_LABEL = '+60 1X‑XXX XXXX'
 export const HQ = 'Kuala Lumpur, Malaysia'

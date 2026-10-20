@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useInView, useScroll } from 'framer-motion'
-import { CASES, INDUSTRIES, ORDER, SERVICES } from '../data/content.js'
+import { INDUSTRIES, ORDER, SERVICES } from '../data/content.js'
 import { INSIGHTS } from '../data/insights.js'
-import Hero, { type StageHandle } from '../components/Hero'
-import type { CoreId } from '../three/themes'
-import { CaseCard, CTA, Eyebrow, FAQ, Marquee, Section, SectionHead, svcName } from '../components/blocks.jsx'
+import GlassHero from '../components/GlassHero.jsx'
+import AgentsTeaser from '../components/agents/AgentsTeaser.jsx'
+import Projects from '../components/Projects.jsx'
+import { GITHUB } from '../data/projects.js'
+import { CTA, Eyebrow, FAQ, Marquee, Section, SectionHead, svcName } from '../components/blocks.jsx'
 import { ArrowRight, ArrowUpRight, Icon } from '../components/Icons.jsx'
 import { EASE, Reveal, SplitText } from '../components/motion.jsx'
 import { SHOWCASES } from '../components/Showcases.jsx'
@@ -24,7 +26,6 @@ const SERVICE_VIDEOS: Record<string, string> = {
 }
 type Svc = (typeof SERVICES)[keyof typeof SERVICES]
 const svc = (id: string) => SERVICES[id as keyof typeof SERVICES] as Svc
-const CORE_OF: Record<string, CoreId> = { 'ai-agents': 'ai', 'computer-vision': 'vision', software: 'software', apps: 'apps', 'api-integration': 'api', 'ai-content': 'content' }
 
 // Technologies we build with (not a claim of partnership)
 const STACK = ['AWS', 'Microsoft Azure', 'Google Cloud', 'NVIDIA', 'OpenAI', 'Anthropic', 'Llama', 'PyTorch', 'Kubernetes', 'PostgreSQL', 'Snowflake', 'Salesforce', 'SAP', 'Shopify', 'Flutter', 'React']
@@ -39,53 +40,6 @@ function LazyVideo({ src }: { src: string }) {
     else v.pause()
   }, [inView])
   return <video ref={ref} src={inView ? src : undefined} muted loop playsInline preload="none" className="absolute inset-0 h-full w-full object-cover" aria-hidden="true" />
-}
-
-/* ---------- hero: the globe, with a switcher that swaps in each practice's scene ---------- */
-const SCENES: [CoreId, string, string][] = [
-  ['globe', 'Global delivery', '/company'],
-  ...ORDER.map((id) => [CORE_OF[id], svcName(id), `/services/${id}`] as [CoreId, string, string]),
-]
-
-function HomeHero() {
-  const stage = useRef<StageHandle | null>(null)
-  const [active, setActive] = useState(0)
-  const pick = (i: number) => {
-    if (i === active) return
-    if (stage.current && !stage.current.switchTo(SCENES[i][0])) return
-    setActive(i)
-  }
-  const aside = (
-    <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.9, ease: EASE, delay: 0.8 }}>
-      <span className="kicker">Explore</span>
-      <div className="mt-4 grid border-t border-line" role="tablist" aria-label="Scenes">
-        {SCENES.map(([id, name], i) => (
-          <button key={id} type="button" role="tab" aria-selected={i === active} onClick={() => pick(i)} className={`group relative flex items-center gap-3 border-b border-line py-2.5 text-left text-[13.5px] font-medium transition-colors ${i === active ? 'text-ink' : 'text-ink-dim hover:text-ink'}`}>
-            <span className="font-mono text-[10.5px] text-brand">{String(i).padStart(2, '0')}</span>
-            {name}
-            {i === active && <motion.span layoutId="scene-bar" className="absolute -left-3 bottom-2 top-2 w-[2px] bg-brand" />}
-          </button>
-        ))}
-      </div>
-      <Link to={SCENES[active][2]} className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-brand">
-        Explore {SCENES[active][1]} <ArrowRight className="h-3.5 w-3.5" />
-      </Link>
-    </motion.div>
-  )
-  return (
-    <Hero
-      core="globe"
-      layout="home"
-      badge="AI & software engineering"
-      h1={['Engineering the', '<em>intelligent</em> enterprise.']}
-      lede="NIMTECH designs, builds and runs AI agents, computer vision, software, apps and integrations for organisations around the world, from first prototype to production at scale."
-      primary={['Start a Project', '/contact']}
-      secondary={['Explore services', '/services']}
-      stats={['Senior engineers on every engagement', 'Delivery from Kuala Lumpur, worldwide', 'You own the code, models and data']}
-      aside={aside}
-      onStage={(h) => (stage.current = h)}
-    />
-  )
 }
 
 /* ---------- capabilities: auto-advancing tabs with media ---------- */
@@ -324,7 +278,7 @@ function Insights() {
 export default function Home() {
   return (
     <>
-      <HomeHero />
+      <GlassHero />
       <section aria-label="Technologies we build with" className="border-y border-line">
         <div className="wrap flex flex-col items-center gap-0 md:flex-row md:gap-8">
           <span className="shrink-0 pt-5 font-mono text-[11.5px] uppercase tracking-[.14em] text-ink-dim md:pt-0">Built with</span>
@@ -336,24 +290,19 @@ export default function Home() {
       <Capabilities />
       <Counters />
       <Industries />
+      <AgentsTeaser />
       <Section>
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <Eyebrow>Client work</Eyebrow>
-            <SplitText as="h2" lines={['Problems in. <em>Systems out.</em>']} inView className="h2" />
-            <p className="lede mt-4">Illustrative examples of the problems we solve and the outcomes we design for.</p>
+            <Eyebrow>Projects</Eyebrow>
+            <SplitText as="h2" lines={['Real work, <em>open on GitHub.</em>']} inView className="h2" />
+            <p className="lede mt-4">A selection of what our team has built and published: vision research, booking platforms, brand sites and commerce integrations.</p>
           </div>
-          <Link to="/work" className="inline-flex items-center gap-2 text-[14.5px] font-medium text-brand">
-            See all work <ArrowRight className="h-4 w-4" />
-          </Link>
+          <a href={GITHUB} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[14.5px] font-medium text-brand">
+            Our GitHub <ArrowUpRight className="h-4 w-4" />
+          </a>
         </div>
-        <div className="grid gap-4 lg:grid-cols-3">
-          {CASES.slice(0, 3).map((c: { t: string }, i: number) => (
-            <Reveal key={c.t} delay={i * 0.08} className="h-full">
-              <CaseCard c={c} />
-            </Reveal>
-          ))}
-        </div>
+        <Projects />
       </Section>
       <LiveLab />
       <Engage />

@@ -121,7 +121,7 @@ export function Tilt({ children, className = '', max = 5 }) {
   const glareOpacity = useSpring(on, { stiffness: 200, damping: 25 })
   const sx = useSpring(rx, { stiffness: 180, damping: 18 })
   const sy = useSpring(ry, { stiffness: 180, damping: 18 })
-  const glare = useTransform([gx, gy], ([x, y]) => `radial-gradient(420px circle at ${x}% ${y}%, rgba(42, 75, 255,.10), transparent 60%)`)
+  const glare = useTransform([gx, gy], ([x, y]) => `radial-gradient(420px circle at ${x}% ${y}%, rgba(0, 102, 221,.10), transparent 60%)`)
   const move = (e) => {
     const r = ref.current.getBoundingClientRect()
     const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height

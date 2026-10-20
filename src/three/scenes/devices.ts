@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { C, type Ctx, type SceneObj, canvasTex, glossy, rounded } from '../kit'
 
-const F = '"Geist Variable", "Inter Variable", system-ui, sans-serif'
+const F = '"Inter Variable", system-ui, sans-serif'
 
 function phoneScreen() {
   return canvasTex(512, 1080, (x) => {
@@ -19,7 +19,7 @@ function phoneScreen() {
     x.font = `500 26px ${F}`
     x.fillText('3 deliveries arriving today', 40, 214)
     const g = x.createLinearGradient(40, 250, 472, 470)
-    g.addColorStop(0, '#2a4bff')
+    g.addColorStop(0, '#0a74ff')
     g.addColorStop(1, '#7b61ff')
     rounded(x, 40, 250, 432, 220, 34)
     x.fillStyle = g
@@ -37,7 +37,7 @@ function phoneScreen() {
     x.stroke()
     const rows = [
       ['#12b5ad', 'Shipment #4821', 'Out for delivery'],
-      ['#2a4bff', 'Invoice paid', 'RM 12,400'],
+      ['#0a74ff', 'Invoice paid', 'RM 12,400'],
       ['#7b61ff', 'New review', '★★★★★'],
     ]
     rows.forEach(([c, a, b], i) => {
@@ -73,13 +73,13 @@ function tabletScreen() {
     x.fillRect(0, 0, 200, 720)
     for (let i = 0; i < 6; i++) {
       rounded(x, 28, 90 + i * 64, 144, 36, 10)
-      x.fillStyle = i === 1 ? '#2a4bff' : 'rgba(255,255,255,.08)'
+      x.fillStyle = i === 1 ? '#0a74ff' : 'rgba(255,255,255,.08)'
       x.fill()
     }
     x.fillStyle = '#fff'
     x.font = `700 40px ${F}`
     x.fillText('Operations', 240, 92)
-    ;['#2a4bff', '#12b5ad', '#7b61ff'].forEach((c, i) => {
+    ;['#0a74ff', '#12b5ad', '#7b61ff'].forEach((c, i) => {
       rounded(x, 240 + i * 255, 130, 235, 140, 18)
       x.fillStyle = 'rgba(255,255,255,.06)'
       x.fill()
@@ -95,7 +95,7 @@ function tabletScreen() {
     for (let i = 0; i < 14; i++) {
       const h = 60 + Math.abs(Math.sin(i * 1.7)) * 220
       rounded(x, 270 + i * 50, 650 - h, 30, h, 8)
-      x.fillStyle = i % 4 === 3 ? '#12b5ad' : '#2a4bff'
+      x.fillStyle = i % 4 === 3 ? '#12b5ad' : '#0a74ff'
       x.fill()
     }
   })
@@ -173,7 +173,7 @@ export function devices(ctx: Ctx): SceneObj {
         x.font = `700 30px ${F}`
         x.fillText('24,310', 34, 84)
         ;[30, 46, 38, 62, 54, 78].forEach((h, i) => {
-          x.fillStyle = i === 5 ? '#2a4bff' : '#c9d3ff'
+          x.fillStyle = i === 5 ? '#0a74ff' : '#c4e0ff'
           rounded(x, 34 + i * 28, 140 - h * 0.6, 18, h * 0.6, 5)
           x.fill()
         })

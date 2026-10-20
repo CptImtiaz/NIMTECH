@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 export const REDUCE =
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -60,3 +61,11 @@ export function rrect(x, X, Y, w, h, r) {
 }
 
 export const MONO = '500 11px ui-monospace,"SF Mono",Menlo,monospace'
+
+// Reduced-motion flag for render output: false on the first render (so it
+// matches the prerendered HTML), then the visitor's real setting.
+export function useReduced() {
+  const [r, setR] = useState(false)
+  useEffect(() => setR(REDUCE), [])
+  return r
+}

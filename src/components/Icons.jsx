@@ -56,7 +56,7 @@ export function Logo({ className = 'h-7 w-7', light = false }) {
     <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
       <rect width="32" height="32" rx="8" fill={light ? '#fff' : '#0A0F29'} />
       <path d="M8.5 23.5V8.5h3.2l7.6 9.6V8.5h3.2v15h-3.2l-7.6-9.6v9.6z" fill={light ? '#0A0F29' : '#fff'} />
-      <rect x="23.5" y="4.5" width="4" height="4" rx="1" fill="#2A4BFF" />
+      <rect x="23.5" y="4.5" width="4" height="4" rx="1" fill="#0066dd" />
     </svg>
   )
 }

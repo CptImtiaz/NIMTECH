@@ -4,7 +4,7 @@
 import * as THREE from 'three'
 import { C, type Ctx, type SceneObj, canvasTex, rounded } from '../kit'
 
-const F = '"Geist Variable", "Inter Variable", system-ui, sans-serif'
+const F = '"Inter Variable", system-ui, sans-serif'
 
 function mediaCard(kind: number) {
   const w = 280, h = 200, S = 2
@@ -23,10 +23,10 @@ function mediaCard(kind: number) {
     if (kind === 0 || kind === 1) {
       const g = x.createLinearGradient(0, 12, 0, 130)
       g.addColorStop(0, kind ? '#0a0f29' : '#8fa2ff')
-      g.addColorStop(1, kind ? '#2a4bff' : '#e8ecff')
+      g.addColorStop(1, kind ? '#0a74ff' : '#e8ecff')
       x.fillStyle = g
       x.fillRect(16, 12, w - 32, 118)
-      x.fillStyle = kind ? 'rgba(255,255,255,.18)' : '#2a4bff'
+      x.fillStyle = kind ? 'rgba(255,255,255,.18)' : '#0a74ff'
       x.beginPath()
       x.moveTo(16, 130)
       x.lineTo(90, 70)
@@ -39,7 +39,7 @@ function mediaCard(kind: number) {
         x.beginPath()
         x.arc(140, 70, 24, 0, Math.PI * 2)
         x.fill()
-        x.fillStyle = '#2a4bff'
+        x.fillStyle = '#0a74ff'
         x.beginPath()
         x.moveTo(132, 58)
         x.lineTo(152, 70)
@@ -55,7 +55,7 @@ function mediaCard(kind: number) {
     else {
       x.fillText(title, 30, 44)
       if (kind === 2) for (let i = 0; i < 5; i++) {
-        x.fillStyle = i ? '#dfe4f5' : '#2a4bff'
+        x.fillStyle = i ? '#dfe4f5' : '#0a74ff'
         rounded(x, 30, 62 + i * 18, i === 4 ? 120 : 220, 8, 4)
         x.fill()
       }

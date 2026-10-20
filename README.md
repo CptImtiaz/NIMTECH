@@ -18,18 +18,19 @@ npm run preview   # serve the production build
 
 | Route | Page |
 | --- | --- |
-| `/` | Home: 3D globe hero with a scene switcher, technology strip, capability tabs, facts, industries, client work, live lab, engagement models, delivery path, insights, FAQ |
+| `/` | Home: liquid-glass hero with the glassy orb, capability tabs, facts, industries, AI agents teaser, GitHub projects, live lab, engagement models, delivery path, insights, FAQ |
+| `/services/ai-agents` | Dark, character-driven: the agent cast orbiting the headline, a scroll-scrubbed manifesto, a pinned "Chat anywhere" phone (iMessage, Slack, email) |
+| `/services/apps` | Daylight hero around the concept app "Nestling" with hand-drawn doodle piles, then night falls for the home-screen story (clock rail, Feed card pop-out) |
 | `/services` | All services |
 | `/services/:id` | One page per practice, each with its own 3D scene (`ai-agents`, `computer-vision`, `software`, `apps`, `api-integration`, `ai-content`) |
 | `/insights`, `/insights/:slug` | Insights index and articles (`src/data/insights.js`) |
 | `/industries`, `/work`, `/process`, `/technology`, `/company`, `/careers`, `/contact` | Company pages |
 
-Every page shares one design system, modelled on large engineering firms:
-a full-width navbar with a services mega menu, a hero with copy on the left
-and a 3D scene on the right (above the copy on phones), hairline grids,
-crisp cards and a dark multi-column footer. Extras per practice: live
-vision demos, coded example apps, a 3D dashboard stage (Software) and the
-A.R.I.A typing agent (AI Content).
+The site uses one "liquid glass" design system: a floating glass navbar
+(dark glass over dark sections), glass buttons, Fustat headlines, a white
+page with blue highlights. Two practices get their own art direction on top
+of it: AI Agents (near-black, the puppet cast, Apple-like UI) and Apps
+(earthy daylight to night, hand-drawn doodles, Figtree).
 
 Every route is prerendered to static HTML (`dist/<route>/index.html`) and
 hydrated in the browser, so search engines and AI crawlers get the full
@@ -39,12 +40,27 @@ CloudFront.
 
 ## Design system
 
-- **Palette** (`tailwind.config.js`): white `night` and `surface`, deep
-  navy `ink` and `deep`, electric blue `brand` (#2A4BFF) with teal
-  (`brand-cyan`, #0B7A75 for text) and violet accents. Dark `deep` bands
-  for facts, CTA, consoles and the footer. All text meets WCAG AA contrast.
-- **Type** (self-hosted via Fontsource): Geist for headings and text,
-  Geist Mono for labels and data.
+- **Palette** (`tailwind.config.js`): white surfaces, near-black `ink`,
+  electric blue `brand` (#0066DD, AA as text) with sky highlights #60B1FF
+  and #319AFF, `deep` for dark bands, `star` #FF801E.
+- **Type** (self-hosted via Fontsource): Fustat for headlines, Inter for
+  text, Geist Mono for labels, Figtree on the Apps page.
+- **Glass** (`src/index.css`): `.liquid-nav`, `.glass-btn`, `.glass-chip`,
+  `.glass-menu` and the `.btn-*` buttons.
+- **Agent cast** (`src/components/Puppet.jsx`): 16 claymation-style puppet
+  agents drawn in SVG, each with a name and role.
+- **Doodles** (`src/components/apps/Doodles.jsx`): hand-drawn line
+  illustrations with lemon fills.
+- **Home orb** (`src/components/Orb.jsx`): plays the glassy orb video with
+  its black keyed out in WebGL and the colour grade from the brief; if the
+  video can't load (offline or no CORS) it draws its own orb, and devices
+  without a GPU get a CSS orb.
+
+## Projects
+
+`src/data/projects.js` lists real projects from github.com/CptImtiaz
+(Target Locker, Sultana Food Industry, SeaEscape, SkinScan and two Shopify
+integrations), shown on Home and Work. Media lives in `public/work/`.
 
 ## SEO and AI search
 
@@ -72,8 +88,8 @@ CloudFront.
 
 - `src/data/content.js`: all service, industry, case study and role copy.
   Accent words are wrapped in `<em>…</em>`.
-- `src/data/site.js`: **email, WhatsApp number and HQ. Replace the
-  placeholders before launch.**
+- `src/data/site.js`: email (nimtech.itsolution@gmail.com), WhatsApp
+  number and HQ. **Replace the WhatsApp placeholder before launch.**
 - Case studies on the Work page are illustrative; replace them as real
   projects go live.
 
@@ -86,11 +102,11 @@ the next in.
 
 | Scene | File | Used on |
 | --- | --- | --- |
-| Delivery globe: dotted continents, arcs from Kuala Lumpur, orbiting satellites | `scenes/globe.ts` | Home, Company, Industries, Contact |
-| Agent network: reasoning graph, signals, tool nodes; nodes light near the pointer | `scenes/network.ts` | AI Agents, Technology, Careers |
+| Delivery globe: dotted continents, arcs from Kuala Lumpur, orbiting satellites | `scenes/globe.ts` | Company, Industries, Contact |
+| Agent network: reasoning graph, signals, tool nodes; nodes light near the pointer | `scenes/network.ts` | Technology, Careers |
 | Point-cloud scan with 3D detection boxes | `scenes/scan.ts` | Computer Vision |
 | Architecture stack that parts with the pointer | `scenes/stack.ts` | Software, Work, Process |
-| Phone, tablet and floating UI cards | `scenes/devices.ts` | Apps |
+| Phone, tablet and floating UI cards | `scenes/devices.ts` | (available, not currently used) |
 | API gateway hub with systems and two-way traffic | `scenes/hub.ts` | Integration, Services |
 | Particle wave with media cards; the pointer sends ripples | `scenes/wave.ts` | AI Content |
 

@@ -4,9 +4,9 @@
 import * as THREE from 'three'
 
 export const C = {
-  blue: 0x2a4bff,
-  blueLight: 0x8fa2ff,
-  sky: 0xc9d3ff,
+  blue: 0x0a74ff,
+  blueLight: 0x60b1ff,
+  sky: 0xc4e0ff,
   teal: 0x12b5ad,
   violet: 0x7b61ff,
   navy: 0x0a0f29,
@@ -74,7 +74,7 @@ export function canvasTex(w: number, h: number, draw: (x: CanvasRenderingContext
   return t
 }
 
-const FONT = '"Geist Variable", "Inter Variable", system-ui, sans-serif'
+const FONT = '"Inter Variable", system-ui, sans-serif'
 const MONO = '"Geist Mono Variable", "JetBrains Mono", ui-monospace, monospace'
 
 /** A pill label that always faces the camera. `h` is its height in units. */
@@ -94,7 +94,7 @@ export function label(text: string, opt: { h?: number; dark?: boolean; dot?: str
     x.fillStyle = dark ? 'rgba(10,15,41,.92)' : 'rgba(255,255,255,.96)'
     x.fill()
     x.lineWidth = 2 * S
-    x.strokeStyle = dark ? 'rgba(143,162,255,.5)' : 'rgba(42,75,255,.22)'
+    x.strokeStyle = dark ? 'rgba(96,177,255,.5)' : 'rgba(0,112,240,.22)'
     x.stroke()
     if (dot) {
       x.fillStyle = dot

@@ -30,26 +30,26 @@ function Food() {
   return (
     <>
       <div className="text-[11px] text-white/50">Deliver to · Bangsar</div>
-      <h5>Good evening, <span className="text-[#12b5ad]">Aina</span></h5>
-      <div className="flex h-28 shrink-0 items-end rounded-2xl p-3 text-[13px] font-medium" style={{ background: 'radial-gradient(circle at 30% 20%, #12b5ad, #3a58ff 50%, #0B1A3A)' }}>
+      <p className="scr-title">Good evening, <span className="text-[#12b5ad]">Aina</span></p>
+      <div className="flex h-28 shrink-0 items-end rounded-2xl p-3 text-[13px] font-medium" style={{ background: 'radial-gradient(circle at 30% 20%, #12b5ad, #319aff 50%, #0B1A3A)' }}>
         Today’s picks · 20% off
       </div>
       <Feed>
-        {[['Nasi lemak bowl', '$9.90', '#8fa2ff'], ['Iced kopi', '$3.50', '#3a58ff'], ['Chicken satay', '$11.20', '#3a58ff'], ['Mango sago', '$4.80', '#12b5ad'], ['Laksa', '$10.50', '#3e5bff']].map(([l, r, c]) => (
+        {[['Nasi lemak bowl', '$9.90', '#60b1ff'], ['Iced kopi', '$3.50', '#319aff'], ['Chicken satay', '$11.20', '#319aff'], ['Mango sago', '$4.80', '#12b5ad'], ['Laksa', '$10.50', '#3e5bff']].map(([l, r, c]) => (
           <Row key={l} l={l} r={r} sub="15–20 min" dot={c} />
         ))}
       </Feed>
-      <span className="rounded-xl bg-[#3a58ff] py-2.5 text-center text-[12.5px] font-medium">View cart · 3 items</span>
+      <span className="rounded-xl bg-[#319aff] py-2.5 text-center text-[12.5px] font-medium">View cart · 3 items</span>
     </>
   )
 }
 
 function Fitness() {
-  const rings = [['#3a58ff', 0.78, 40], ['#12b5ad', 0.62, 31], ['#8fa2ff', 0.9, 22]]
+  const rings = [['#319aff', 0.78, 40], ['#12b5ad', 0.62, 31], ['#60b1ff', 0.9, 22]]
   return (
     <>
       <div className="text-[11px] text-white/50">Thursday</div>
-      <h5>Activity</h5>
+      <p className="scr-title">Activity</p>
       <svg viewBox="0 0 100 100" className="mx-auto h-32 w-32 shrink-0 -rotate-90">
         {rings.map(([c, p, r]) => (
           <g key={c}>
@@ -68,7 +68,7 @@ function Fitness() {
       </div>
       <Feed speed={22}>
         {['Morning run · 5.2 km', 'HIIT · 25 min', 'Yoga flow · 30 min', 'Cycling · 12 km'].map((w, i) => (
-          <Row key={w} l={w} sub={['Personal best', 'Streak 6 days', 'Recovery', 'Outdoor'][i]} dot={['#3a58ff', '#12b5ad', '#b794ff', '#8fa2ff'][i]} />
+          <Row key={w} l={w} sub={['Personal best', 'Streak 6 days', 'Recovery', 'Outdoor'][i]} dot={['#319aff', '#12b5ad', '#b794ff', '#60b1ff'][i]} />
         ))}
       </Feed>
     </>
@@ -79,17 +79,17 @@ function Wallet() {
   return (
     <>
       <div className="text-[11px] text-white/50">Total balance</div>
-      <h5 className="!text-2xl">$24,806<span className="text-sm text-white/40">.12</span></h5>
-      <div className="relative h-32 shrink-0 overflow-hidden rounded-2xl p-3" style={{ background: 'linear-gradient(135deg,#3a58ff,#6f5bff 60%,#0B1A3A)' }}>
+      <p className="scr-title !text-2xl">$24,806<span className="text-sm text-white/40">.12</span></p>
+      <div className="relative h-32 shrink-0 overflow-hidden rounded-2xl p-3" style={{ background: 'linear-gradient(135deg,#319aff,#6f5bff 60%,#0B1A3A)' }}>
         <div className="text-[10px] tracking-widest text-white/70">VIRTUAL CARD</div>
         <div className="absolute bottom-3 left-3 font-mono text-[12px]">•••• 4821</div>
         <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10" />
       </div>
       <svg viewBox="0 0 200 50" className="h-12 w-full shrink-0">
-        <path d="M0 40 C20 38 30 30 50 32 S80 18 100 22 140 10 160 14 190 6 200 4" fill="none" stroke="#8fa2ff" strokeWidth="2" strokeDasharray="300" style={{ animation: 'ring 3s ease both' }} />
+        <path d="M0 40 C20 38 30 30 50 32 S80 18 100 22 140 10 160 14 190 6 200 4" fill="none" stroke="#60b1ff" strokeWidth="2" strokeDasharray="300" style={{ animation: 'ring 3s ease both' }} />
       </svg>
       <Feed>
-        {[['Grab', '-$12.40', '#12b5ad'], ['Salary', '+$5,200', '#8fa2ff'], ['Spotify', '-$9.99', '#12b5ad'], ['Rent', '-$1,450', '#8fa2ff'], ['Transfer · Hana', '+$80', '#b794ff']].map(([l, r, c]) => (
+        {[['Grab', '-$12.40', '#12b5ad'], ['Salary', '+$5,200', '#60b1ff'], ['Spotify', '-$9.99', '#12b5ad'], ['Rent', '-$1,450', '#60b1ff'], ['Transfer · Hana', '+$80', '#b794ff']].map(([l, r, c]) => (
           <Row key={l} l={l} r={r} sub="Today" dot={c} />
         ))}
       </Feed>
@@ -101,7 +101,7 @@ function Field() {
   return (
     <>
       <div className="text-[11px] text-white/50">Site 14 · Pump room</div>
-      <h5>Inspection</h5>
+      <p className="scr-title">Inspection</p>
       <div className="relative h-40 shrink-0 overflow-hidden rounded-2xl" style={{ background: 'repeating-linear-gradient(45deg,#0e1a30 0 10px,#0a1426 10px 20px)' }}>
         <div className="absolute left-[18%] top-[22%] h-[50%] w-[40%] animate-pulse rounded border-[1.5px] border-[#FF5A6A]">
           <span className="absolute -top-4 left-0 whitespace-nowrap rounded-sm bg-[#FF5A6A] px-1 font-mono text-[9px] text-black">corrosion 0.93</span>
@@ -116,7 +116,7 @@ function Field() {
           <Row key={l} l={l} r={r} dot={r === '1 issue' ? '#FF5A6A' : '#12b5ad'} />
         ))}
       </Feed>
-      <span className="rounded-xl bg-[#3a58ff] py-2.5 text-center text-[12.5px] font-medium">Submit report</span>
+      <span className="rounded-xl bg-[#319aff] py-2.5 text-center text-[12.5px] font-medium">Submit report</span>
     </>
   )
 }
@@ -125,7 +125,7 @@ function Health() {
   return (
     <>
       <div className="text-[11px] text-white/50">Your care team</div>
-      <h5>Book a visit</h5>
+      <p className="scr-title">Book a visit</p>
       <div className="flex shrink-0 items-center gap-3 rounded-2xl bg-white/[.06] p-3">
         <span className="h-11 w-11 rounded-full" style={{ background: 'radial-gradient(circle at 35% 30%,#c9d4ff,#5a72ff)' }} />
         <div>
@@ -152,12 +152,12 @@ function Health() {
 }
 
 function Home() {
-  const tiles = [['Lights', 'Living room', true, '#12b5ad'], ['AC', '23°C', true, '#8fa2ff'], ['Door', 'Locked', true, '#12b5ad'], ['Camera', 'Recording', false, '#3a58ff']]
+  const tiles = [['Lights', 'Living room', true, '#12b5ad'], ['AC', '23°C', true, '#60b1ff'], ['Door', 'Locked', true, '#12b5ad'], ['Camera', 'Recording', false, '#319aff']]
   return (
     <>
       <div className="text-[11px] text-white/50">Home · 4 devices on</div>
-      <h5>Haven</h5>
-      <div className="relative mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full" style={{ background: 'conic-gradient(from 220deg,#8fa2ff,#b794ff 40%,rgba(255,255,255,.06) 40%)' }}>
+      <p className="scr-title">Haven</p>
+      <div className="relative mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full" style={{ background: 'conic-gradient(from 220deg,#60b1ff,#b794ff 40%,rgba(255,255,255,.06) 40%)' }}>
         <div className="grid h-24 w-24 place-items-center rounded-full bg-[#070d1a] text-center">
           <b className="text-[22px]">23°</b>
           <span className="-mt-3 text-[9px] text-white/50">cooling</span>
@@ -182,10 +182,10 @@ function Home() {
 }
 
 const APPS = [
-  { C: Food, name: 'Kopi & Co', kind: 'Food ordering & loyalty', tech: 'Flutter · iOS & Android', glow: '#3a58ff' },
-  { C: Fitness, name: 'Pulse', kind: 'Fitness & wearables', tech: 'SwiftUI · Kotlin · HealthKit', glow: '#3a58ff' },
+  { C: Food, name: 'Kopi & Co', kind: 'Food ordering & loyalty', tech: 'Flutter · iOS & Android', glow: '#319aff' },
+  { C: Fitness, name: 'Pulse', kind: 'Fitness & wearables', tech: 'SwiftUI · Kotlin · HealthKit', glow: '#319aff' },
   { C: Wallet, name: 'Vault', kind: 'Fintech wallet', tech: 'React Native · secure enclave', glow: '#6f5bff' },
-  { C: Field, name: 'FieldEye', kind: 'Field inspection with on‑device AI', tech: 'Flutter · Core ML · offline‑first', glow: '#3a58ff' },
+  { C: Field, name: 'FieldEye', kind: 'Field inspection with on‑device AI', tech: 'Flutter · Core ML · offline‑first', glow: '#319aff' },
   { C: Health, name: 'CareNow', kind: 'Telehealth booking', tech: 'React Native · video calls', glow: '#12b5ad' },
   { C: Home, name: 'Haven', kind: 'Smart home & IoT', tech: 'Kotlin · Swift · BLE', glow: '#b794ff' },
 ]

@@ -116,7 +116,7 @@ export default function Hero({ core = 'globe', layout = 'side', badge, h1, lede,
             lines={h1}
             delay={0.2}
             stagger={0.045}
-            className={`mt-5 font-display font-semibold leading-[1.02] tracking-[-.04em] text-ink ${home ? 'text-[clamp(40px,4.3vw,64px)]' : 'text-[clamp(36px,3.7vw,56px)]'}`}
+            className={`mt-5 font-display font-bold leading-[1.05] tracking-[-.03em] text-ink ${home ? 'text-[clamp(40px,4.3vw,64px)]' : 'text-[clamp(36px,3.7vw,56px)]'}`}
           />
           {lede && (
             <motion.p {...fade(0.6)} className="mt-6 max-w-[36rem] text-[clamp(16px,1.2vw,18.5px)] leading-[1.6] text-ink-soft">

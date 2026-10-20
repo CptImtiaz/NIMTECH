@@ -7,6 +7,7 @@ import VisionLanding from './pages/landings/VisionLanding'
 import SoftwareLanding from './pages/landings/SoftwareLanding'
 import AppsLanding from './pages/landings/AppsLanding'
 import ContentLanding from './pages/landings/ContentLanding'
+import AgentsLanding from './pages/landings/AgentsLanding.jsx'
 import { Article, InsightsIndex } from './pages/Insights.jsx'
 import { Careers, Company, Industries, NotFound, Process, Services, Technology, Work } from './pages/Pages.jsx'
 
@@ -16,6 +17,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="services" element={<Services />} />
+        <Route path="services/ai-agents" element={<AgentsLanding />} />
         <Route path="services/computer-vision" element={<VisionLanding />} />
         <Route path="services/software" element={<SoftwareLanding />} />
         <Route path="services/apps" element={<AppsLanding />} />
