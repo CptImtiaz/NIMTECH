@@ -57,11 +57,11 @@ function Aria() {
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         {ACTIONS.map(([l, to]) => (
-          <Link key={l} to={to} className={`${pill} border border-line bg-white/[.06] text-ink backdrop-blur-md hover:border-brand hover:bg-brand hover:text-white`}>
+          <Link key={l} to={to} className={`${pill} border border-line bg-white text-ink shadow-sm hover:border-brand hover:bg-brand hover:text-white`}>
             {l}
           </Link>
         ))}
-        <button type="button" onClick={copy} className={`${pill} gap-2 border border-brand-cyan/50 text-brand-cyan hover:bg-brand-cyan hover:text-night`}>
+        <button type="button" onClick={copy} className={`${pill} gap-2 border border-brand-cyan/50 text-brand-cyan hover:bg-brand-cyan hover:text-white`}>
           <span>
             {copied ? 'Copied! ' : 'Reach us: '}
             <span className="underline underline-offset-2">{EMAIL}</span>

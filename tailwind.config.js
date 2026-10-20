@@ -12,13 +12,15 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'Menlo', 'monospace'],
       },
       colors: {
-        // Site palette: deep-space navy, electric indigo -> cyan, violet highlight
-        ink: { DEFAULT: '#F4F6FF', soft: '#A3ABC7', dim: '#646D8E' },
-        line: 'rgba(164,180,255,0.12)',
-        night: '#05060F',
-        surface: '#0C1022',
+        // Site palette: white surfaces, navy ink, indigo -> cyan -> violet accents.
+        // `night` is the page background; `deep` is for the dark accent bands.
+        ink: { DEFAULT: '#0B1020', soft: '#4A5372', dim: '#646D88' },
+        line: 'rgba(15,23,60,0.10)',
+        night: '#FFFFFF',
+        surface: '#F6F8FC',
+        deep: '#070A1A',
         star: '#FF801E',
-        brand: { DEFAULT: '#5B7CFF', light: '#8EA6FF', mid: '#6F8CFF', cyan: '#3EE7FF', violet: '#B794FF' },
+        brand: { DEFAULT: '#4C63F6', light: '#6E86FF', mid: '#5A72FF', cyan: '#0891B2', violet: '#7C5CFA' },
         // Semantic tokens for the Software landing (vars are scoped to .nexora)
         background: 'hsl(var(--background) / <alpha-value>)',
         foreground: 'hsl(var(--foreground) / <alpha-value>)',

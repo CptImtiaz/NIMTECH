@@ -69,7 +69,7 @@ export default function Navbar() {
                           {ORDER.map((id, i) => (
                             <motion.div key={id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * i, duration: 0.4, ease: EASE }}>
                               <Link to={`/services/${id}`} role="menuitem" className="group grid grid-cols-[38px_1fr] gap-3 rounded-xl p-3 transition-colors hover:bg-brand/[.06]">
-                                <span className="grid h-[38px] w-[38px] place-items-center rounded-[10px] border border-line bg-white/5 text-brand-light transition-colors group-hover:bg-brand group-hover:text-white">
+                                <span className="grid h-[38px] w-[38px] place-items-center rounded-[10px] border border-line bg-brand/5 text-brand transition-colors group-hover:bg-brand group-hover:text-white">
                                   <Icon name={SERVICES[id].icon} className="h-[18px] w-[18px]" />
                                 </span>
                                 <span>
@@ -128,7 +128,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 overflow-y-auto bg-black/75 px-5 pb-10 pt-32 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-40 overflow-y-auto bg-white/95 px-5 pb-10 pt-32 backdrop-blur-2xl lg:hidden"
           >
             <MobileGroup label="Services" delay={0}>
               <div className="grid grid-cols-2 gap-2">

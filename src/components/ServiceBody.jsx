@@ -11,7 +11,7 @@ export default function ServiceBody({ id, extra = null, showcase = true }) {
   const next = ORDER[(ORDER.indexOf(id) + 1) % ORDER.length]
   const Show = SHOWCASES[s.vis]
   return (
-    <div className="relative bg-black">
+    <div className="relative">
       <Marquee items={s.caps.map((c) => c[1])} />
 
       <Section>

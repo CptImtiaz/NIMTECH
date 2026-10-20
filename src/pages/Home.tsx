@@ -52,10 +52,10 @@ function ServiceCard({ id, i }: { id: string; i: number }) {
         <div className="relative h-[46%] min-h-[180px] overflow-hidden">
           <LazyVideo src={SERVICE_VIDEOS[id]} />
           <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent" />
-          <span className="absolute left-6 top-6 grid h-12 w-12 place-items-center rounded-2xl border border-white/15 bg-night/50 text-brand-cyan backdrop-blur-md">
+          <span className="absolute left-6 top-6 grid h-12 w-12 place-items-center rounded-2xl border border-white/70 bg-white/80 text-brand backdrop-blur-md">
             <Icon name={s.icon} className="h-5 w-5" />
           </span>
-          <span className="absolute right-6 top-6 font-mono text-xs text-white/60">0{i + 1} / 06</span>
+          <span className="absolute right-6 top-6 rounded-full bg-white/80 px-2 py-0.5 font-mono text-xs text-ink-soft">0{i + 1} / 06</span>
         </div>
         <div className="flex flex-1 flex-col p-7">
           <h3 className="font-display text-[clamp(26px,2.4vw,34px)] font-semibold tracking-[-.03em] text-ink">{svcName(id)}</h3>
@@ -184,7 +184,7 @@ function StackCard({ step, i, n, progress }: { step: string[]; i: number; n: num
   const start = i / n
   const scale = useTransform(progress, [start, 1], [1, 1 - (n - i) * 0.04])
   const rotateX = useTransform(progress, [start, 1], [0, (n - i) * 2.5])
-  const brightness = useTransform(progress, [start, 1], [1, 0.55 + i * 0.08])
+  const brightness = useTransform(progress, [start, 1], [1, 0.9 + i * 0.02])
   const filter = useTransform(brightness, (b) => `brightness(${b})`)
   return (
     <div className="sticky flex h-[70vh] items-start justify-center" style={{ top: `calc(18vh + ${i * 22}px)` }}>
@@ -196,7 +196,7 @@ function StackCard({ step, i, n, progress }: { step: string[]; i: number; n: num
             <h3 className="mt-3 font-display text-[clamp(34px,4.6vw,64px)] font-semibold leading-none tracking-[-.04em] text-ink">{step[0]}</h3>
             <p className="mt-5 max-w-[46ch] text-[17px] leading-relaxed text-ink-soft">{step[1]}</p>
           </div>
-          <span className="hidden h-16 w-16 shrink-0 place-items-center rounded-2xl border border-line bg-white/[.03] text-brand-cyan md:grid">
+          <span className="hidden h-16 w-16 shrink-0 place-items-center rounded-2xl border border-line bg-surface text-brand md:grid">
             <Icon name={step[2]} className="h-7 w-7" />
           </span>
         </div>
@@ -310,7 +310,7 @@ function HomeHero() {
       onStage={(h) => (stage.current = h)}
     >
       <div className="mt-8 flex items-center gap-3">
-        <span className="grid h-11 w-11 place-items-center rounded-xl border border-line bg-white/[.04] text-brand-cyan">
+        <span className="grid h-11 w-11 place-items-center rounded-xl border border-line bg-white text-brand">
           <Icon name="vision" className="h-5 w-5" />
         </span>
         <span className="leading-tight">

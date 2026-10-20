@@ -231,9 +231,9 @@ function Phone({ app, i }) {
           </div>
         </motion.div>
         <div className="mt-8 text-center">
-          <h3 className="font-fustat text-xl font-bold tracking-[-.02em] text-white">{app.name}</h3>
-          <p className="mt-1 text-[14px] text-white/60">{app.kind}</p>
-          <span className="mt-2 inline-block rounded-full border border-white/10 px-3 py-1 font-mono text-[10.5px] text-brand-light">{app.tech}</span>
+          <h3 className="font-fustat text-xl font-bold tracking-[-.02em] text-ink">{app.name}</h3>
+          <p className="mt-1 text-[14px] text-ink-soft">{app.kind}</p>
+          <span className="mt-2 inline-block rounded-full border border-line bg-white px-3 py-1 font-mono text-[10.5px] text-brand">{app.tech}</span>
         </div>
       </div>
     </Reveal>

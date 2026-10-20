@@ -12,8 +12,8 @@ import { THEMES, type CoreId, type NodeLayout } from './themes'
 export { THEMES }
 export type { CoreId, NodeLayout }
 
-const ACCENT = 0x3ee7ff
-const TINT: Record<CoreId, number> = { ai: 0x8ea6ff, vision: 0x3ee7ff, software: 0xb794ff, apps: 0x8ea6ff, api: 0x5be0d0, content: 0xd28cff, helmet: 0x8ea6ff, brand: 0x8ea6ff }
+const ACCENT = 0x4c63f6
+const TINT: Record<CoreId, number> = { ai: 0x6e86ff, vision: 0x22b8d6, software: 0x9b7bff, apps: 0x6e9bff, api: 0x2cc7b3, content: 0xc77cf0, helmet: 0x6e86ff, brand: 0x6e86ff }
 
 interface Options {
   host: HTMLElement
@@ -85,7 +85,7 @@ export function createStage(o: Options) {
   /* ---------- renderers ---------- */
   function envScene() {
     const sc = new THREE.Scene()
-    sc.add(new THREE.Mesh(new THREE.SphereGeometry(50, 32, 16), new THREE.MeshBasicMaterial({ side: THREE.BackSide, color: 0x141c38 })))
+    sc.add(new THREE.Mesh(new THREE.SphereGeometry(50, 32, 16), new THREE.MeshBasicMaterial({ side: THREE.BackSide, color: 0x8a93b2 })))
     const panel = (c: THREE.Color, x: number, y: number, z: number, w: number, h: number) => {
       const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide }))
       m.position.set(x, y, z)
@@ -182,7 +182,7 @@ export function createStage(o: Options) {
     let base = { x: 0, y: 0, z: 0 }
     if (id === 'ai') {
       const geo = new THREE.IcosahedronGeometry(S, 1)
-      g.add(new THREE.Mesh(geo, gloss(0xe4ebff, 0.25, 0.05, { flatShading: true })))
+      g.add(new THREE.Mesh(geo, gloss(0xc9d2ff, 0.25, 0.05, { flatShading: true })))
       const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.6 }))
       e.scale.setScalar(1.004)
       g.add(e)
@@ -289,7 +289,7 @@ export function createStage(o: Options) {
         return new THREE.TorusGeometry(0.34, 0.12, 20, 56)
     }
   }
-  const nodeColor = (id: CoreId, i: number) => [ACCENT, 0xffffff, TINT[id]][i % 3]
+  const nodeColor = (id: CoreId, i: number) => [ACCENT, 0xf2f4ff, TINT[id]][i % 3]
   const nodeMat = (id: CoreId, i: number, op: number) => gloss(nodeColor(id, i), 0.2, 0.1, { transparent: true, opacity: op, flatShading: id === 'ai' })
 
   const nodes: Node[] = []
@@ -299,7 +299,7 @@ export function createStage(o: Options) {
       const idx = nodes.length
       const mesh =
         kind === 'lv'
-          ? new THREE.Mesh(new THREE.OctahedronGeometry(0.5, 0), new THREE.MeshBasicMaterial({ color: 0xb8c6ff, wireframe: true, transparent: true, opacity: op * 0.35 }))
+          ? new THREE.Mesh(new THREE.OctahedronGeometry(0.5, 0), new THREE.MeshBasicMaterial({ color: 0x4c63f6, wireframe: true, transparent: true, opacity: op * 0.3 }))
           : new THREE.Mesh(nodeGeo(o.id), nodeMat(o.id, idx, op))
       L[target].s.add(mesh)
       nodes.push({ kind, mesh, top, left, size, op, i: idx, angle: Math.random() * 360, rx: 0, ry: 0, baseX: 0, baseY: 0, ax: 0, ay: 0, as: 1, ao: 1, sz: size, tilt: Math.random() * Math.PI })
