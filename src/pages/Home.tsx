@@ -5,8 +5,7 @@ import { INDUSTRIES, ORDER, SERVICES } from '../data/content.js'
 import { INSIGHTS } from '../data/insights.js'
 import GlassHero from '../components/GlassHero.jsx'
 import AgentsTeaser from '../components/agents/AgentsTeaser.jsx'
-import Projects from '../components/Projects.jsx'
-import { GITHUB } from '../data/projects.js'
+import ServiceOverview from '../components/ServiceOverview.jsx'
 import { CTA, Eyebrow, FAQ, Marquee, Section, SectionHead, svcName } from '../components/blocks.jsx'
 import { ArrowRight, ArrowUpRight, Icon } from '../components/Icons.jsx'
 import { EASE, Reveal, SplitText } from '../components/motion.jsx'
@@ -292,17 +291,8 @@ export default function Home() {
       <Industries />
       <AgentsTeaser />
       <Section>
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <Eyebrow>Projects</Eyebrow>
-            <SplitText as="h2" lines={['Real work, <em>open on GitHub.</em>']} inView className="h2" />
-            <p className="lede mt-4">A selection of what our team has built and published: vision research, booking platforms, brand sites and commerce integrations.</p>
-          </div>
-          <a href={GITHUB} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[14.5px] font-medium text-brand">
-            Our GitHub <ArrowUpRight className="h-4 w-4" />
-          </a>
-        </div>
-        <Projects />
+        <SectionHead eyebrow="Our services" title="What each service <em>delivers.</em>" lede="Six practices, each with clear deliverables and a delivery path you can follow from the first workshop to launch and beyond." />
+        <ServiceOverview />
       </Section>
       <LiveLab />
       <Engage />

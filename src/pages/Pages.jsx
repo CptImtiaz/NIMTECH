@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
 import { CASES, INDUSTRIES, ORDER, ROLES } from '../data/content.js'
 import { PageHero } from '../components/Heroes.jsx'
-import Projects from '../components/Projects.jsx'
 import { CaseCard, Cards, CTA, NextLink, Panel, Section, SectionHead, ServiceRows, StackTable, Statement, Steps, svcName } from '../components/blocks.jsx'
 import { ArrowUpRight } from '../components/Icons.jsx'
 import { Tracker } from '../components/Showcases.jsx'
@@ -83,12 +82,8 @@ export function Work() {
   const shown = CASES.filter((c) => f === 'all' || c.s === f)
   return (
     <>
-      <PageHero vis="software" badge="Work" h1={['Problems in.', '<em>Systems out.</em>']} lede="Projects our team has built and published, plus illustrative scenarios across our six practices." primary={['Start a Project', '/contact']} secondary={['Our services', '/services']} />
+      <PageHero vis="software" badge="Work" h1={['Problems in.', '<em>Systems out.</em>']} lede="Illustrative examples across our six practices, showing the challenge, what we build and the outcome we design for." primary={['Start a Project', '/contact']} secondary={['Our services', '/services']} />
       <Section>
-        <SectionHead eyebrow="From our GitHub" title="Built and <em>published.</em>" lede="Open repositories you can read, run and fork: vision research, booking platforms, brand sites and commerce integrations." />
-        <Projects />
-      </Section>
-      <Section tight>
         <SectionHead eyebrow="Scenarios" title="What a project <em>looks like.</em>" lede="Illustrative examples of the problems we solve and the outcomes we design for." />
         <LayoutGroup>
           <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter by service">

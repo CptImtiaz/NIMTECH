@@ -18,7 +18,7 @@ npm run preview   # serve the production build
 
 | Route | Page |
 | --- | --- |
-| `/` | Home: liquid-glass hero with the glassy orb, capability tabs, facts, industries, AI agents teaser, GitHub projects, live lab, engagement models, delivery path, insights, FAQ |
+| `/` | Home: liquid-glass hero with the glassy orb, capability tabs, facts, industries, AI agents teaser, service overview, live lab, engagement models, delivery path, insights, FAQ |
 | `/services/ai-agents` | Dark, character-driven: the agent cast orbiting the headline, a scroll-scrubbed manifesto, a pinned "Chat anywhere" phone (iMessage, Slack, email) |
 | `/services/apps` | Daylight hero around the concept app "Nestling" with hand-drawn doodle piles, then night falls for the home-screen story (clock rail, Feed card pop-out) |
 | `/services` | All services |
@@ -55,12 +55,6 @@ CloudFront.
   its black keyed out in WebGL and the colour grade from the brief; if the
   video can't load (offline or no CORS) it draws its own orb, and devices
   without a GPU get a CSS orb.
-
-## Projects
-
-`src/data/projects.js` lists real projects from github.com/CptImtiaz
-(Target Locker, Sultana Food Industry, SeaEscape, SkinScan and two Shopify
-integrations), shown on Home and Work. Media lives in `public/work/`.
 
 ## SEO and AI search
 
