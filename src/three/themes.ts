@@ -1,20 +1,18 @@
 // Light-weight data for the 3D stage, kept apart so pages can use it
 // without loading three.js up front.
-export type CoreId = 'ai' | 'vision' | 'software' | 'apps' | 'api' | 'content' | 'helmet' | 'brand'
+export type CoreId = 'globe' | 'ai' | 'vision' | 'software' | 'apps' | 'api' | 'content'
 export type NodeLayout = 'home' | 'side'
 
-// Hero colour themes [inner, mid, outer] of the radial background
+// Hero background tint per scene [glow, mid, outer] of the radial wash
 export const THEMES: Record<CoreId, [string, string, string]> = {
-  ai: ['#c3cdff', '#eef1ff', '#ffffff'],
-  vision: ['#b6ebf6', '#eaf9fc', '#ffffff'],
-  software: ['#d9cbff', '#f4f0ff', '#ffffff'],
-  apps: ['#c2d6ff', '#edf3ff', '#ffffff'],
-  api: ['#b9eee6', '#ebfaf7', '#ffffff'],
-  content: ['#efc9fa', '#fbf0fe', '#ffffff'],
-  helmet: ['#cad3ff', '#f0f2ff', '#ffffff'],
-  brand: ['#c3cdff', '#eef1ff', '#ffffff'],
+  globe: ['#dfe5ff', '#f3f5ff', '#ffffff'],
+  ai: ['#dde3ff', '#f3f5ff', '#ffffff'],
+  vision: ['#d6f3f1', '#f1fbfa', '#ffffff'],
+  software: ['#e6e0ff', '#f6f4ff', '#ffffff'],
+  apps: ['#dde6ff', '#f3f6ff', '#ffffff'],
+  api: ['#d8f2ef', '#f1faf9', '#ffffff'],
+  content: ['#ebe3ff', '#f8f5ff', '#ffffff'],
 }
-
 
 // True when the browser has hardware-accelerated WebGL. Software renderers
 // (no GPU, blocklisted drivers) report a major performance caveat; they get

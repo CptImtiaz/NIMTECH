@@ -27,44 +27,21 @@ export interface StageHandle {
 }
 
 const fade = (d: number) => ({
-  initial: { opacity: 0, y: 24, filter: 'blur(8px)' },
-  animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
-  transition: { duration: 1.1, ease: EASE, delay: d },
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.9, ease: EASE, delay: d },
 })
 
-// Bubbles rising through the hero, as in the original stage.
-function Bubbles() {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (REDUCE) return
-    const iv = setInterval(() => {
-      const box = ref.current
-      if (!box || document.hidden) return
-      const b = document.createElement('span')
-      const size = Math.random() * 20 + 10
-      const d = Math.random() * 6 + 4
-      b.className = 'bubble'
-      b.style.width = `${size}px`
-      b.style.left = `${Math.random() * 100}%`
-      b.style.opacity = String(Math.random() * 0.4 + 0.2)
-      b.style.animation = `floatUp ${d}s linear forwards`
-      box.appendChild(b)
-      setTimeout(() => b.remove(), d * 1000)
-    }, 450)
-    return () => clearInterval(iv)
-  }, [])
-  return <div ref={ref} className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true" />
-}
-
-// The shared hero: theme-tinted radial background, the 3D stage anchored to
-// a layout slot, copy in a fixed column, optional right-hand aside (home).
-export default function Hero({ core = 'brand', layout = 'side', badge, h1, lede, primary, secondary, stats, children, aside, onStage }: Props) {
+// The shared hero: copy on the left, the service's 3D scene centred on an
+// anchor slot on the right (above the copy on phones), stats along the base.
+export default function Hero({ core = 'globe', layout = 'side', badge, h1, lede, primary, secondary, stats, children, aside, onStage }: Props) {
   const host = useRef<HTMLElement>(null)
   const anchor = useRef<HTMLDivElement>(null)
-  const coreCv = useRef<HTMLCanvasElement>(null)
-  const fg = useRef<HTMLCanvasElement>(null)
+  const cv = useRef<HTMLCanvasElement>(null)
   // null until mounted, so the prerendered HTML and hydration agree
   const [webgl, setWebgl] = useState<boolean | null>(null)
+  const [ready, setReady] = useState(false)
+  const [poster, setPoster] = useState(core)
   useEffect(() => {
     const run = () => setWebgl(hasWebGL())
     if (!('requestIdleCallback' in window)) return void setTimeout(run, 200)
@@ -72,33 +49,36 @@ export default function Hero({ core = 'brand', layout = 'side', badge, h1, lede,
     return () => cancelIdleCallback(id)
   }, [])
   const { scrollYProgress } = useScroll({ target: host, offset: ['start start', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], [0, -80])
-  const o = useTransform(scrollYProgress, [0, 0.75], [1, 0])
+  const y = useTransform(scrollYProgress, [0, 1], [0, -60])
+  const o = useTransform(scrollYProgress, [0, 0.8], [1, 0])
   const theme = THEMES[core]
 
   useEffect(() => {
-    if (!webgl || !host.current || !anchor.current || !coreCv.current || !fg.current) return
+    if (!webgl || !host.current || !anchor.current || !cv.current) return
     let stage: Stage | undefined
     let dead = false
     const h = host.current
-    const els = { host: h, anchor: anchor.current, core: coreCv.current, fg: fg.current }
+    const els = { host: h, anchor: anchor.current, canvas: cv.current }
     // three.js loads on demand, and the scene is built once the browser is
     // idle, so the copy paints and responds first
     const idle = (cb: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 1500 }) : setTimeout(cb, 300))
     import('../three/Stage').then(({ createStage }) => new Promise<typeof createStage>((ok) => idle(() => ok(createStage)))).then((createStage) => {
       if (dead) return
       try {
-        stage = createStage({ ...els, id: core, layout, reduce: REDUCE })
+        stage = createStage({ ...els, id: core, reduce: REDUCE })
       } catch (e) {
         console.error('3D stage unavailable', e)
+        setWebgl(false)
         return
       }
+      setReady(true)
+      if (new URLSearchParams(location.search).has('poster')) (window as unknown as { __stage: Stage }).__stage = stage
       onStage?.({
         switchTo: (id) => {
           const ok = stage!.switchTo(id)
           if (ok) {
             const t = THEMES[id]
-            gsap.to(h, { '--bg-inner': t[0], '--bg-mid': t[1], '--bg-outer': t[2], duration: REDUCE ? 0 : 1.5, ease: 'power2.inOut' })
+            gsap.to(h, { '--bg-inner': t[0], '--bg-mid': t[1], '--bg-outer': t[2], duration: REDUCE ? 0 : 1.2, ease: 'power2.inOut' })
           }
           return ok
         },
@@ -109,7 +89,13 @@ export default function Hero({ core = 'brand', layout = 'side', badge, h1, lede,
       stage?.destroy()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [webgl, core, layout])
+  }, [webgl, core])
+
+  // without WebGL the switcher still changes the static poster
+  useEffect(() => {
+    if (webgl === false) onStage?.({ switchTo: (id) => (setPoster(id), true) })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [webgl])
 
   const home = layout === 'home'
   return (
@@ -118,32 +104,31 @@ export default function Hero({ core = 'brand', layout = 'side', badge, h1, lede,
       className="stage-hero relative isolate overflow-hidden"
       style={{ '--bg-inner': theme[0], '--bg-mid': theme[1], '--bg-outer': theme[2] } as React.CSSProperties}
     >
-      <Bubbles />
-      <canvas ref={coreCv} className="stage-core pointer-events-none absolute inset-0 z-[2] h-full w-full" aria-hidden="true" />
+      <div className="hero-grid pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
+      <canvas ref={cv} className={`pointer-events-none absolute inset-0 z-[1] h-full w-full transition-opacity duration-1000 ${ready ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
 
-      <motion.div style={{ y, opacity: o }} className="wrap relative z-[3] grid min-h-[100svh] items-center gap-y-6 pb-32 pt-28 lg:grid-cols-12 lg:gap-x-8 lg:pb-28 lg:pt-32">
-        <div className={`order-2 min-w-0 lg:order-1 ${home ? 'lg:col-span-5' : 'lg:col-span-7'}`}>
-          <motion.span {...fade(0.15)} className="badge">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-cyan shadow-[0_0_12px_#3EE7FF]" />
+      <motion.div style={{ y, opacity: o }} className="wrap relative z-[3] grid min-h-[100svh] items-center gap-y-4 pb-36 pt-28 lg:grid-cols-12 lg:gap-x-10 lg:pb-32 lg:pt-36">
+        <div className={`order-2 min-w-0 lg:order-1 ${home ? 'lg:col-span-5' : 'lg:col-span-6'}`}>
+          <motion.span {...fade(0.1)} className="kicker">
             {badge}
           </motion.span>
           <SplitText
             lines={h1}
-            delay={0.3}
-            stagger={0.05}
-            className={`mt-6 font-display font-semibold leading-[1.04] tracking-[-.035em] text-ink ${home ? 'text-[clamp(42px,4.8vw,76px)]' : 'text-[clamp(36px,3.9vw,60px)]'}`}
+            delay={0.2}
+            stagger={0.045}
+            className={`mt-5 font-display font-semibold leading-[1.02] tracking-[-.04em] text-ink ${home ? 'text-[clamp(40px,4.3vw,64px)]' : 'text-[clamp(36px,3.7vw,56px)]'}`}
           />
           {lede && (
-            <motion.p {...fade(0.75)} className="mt-6 max-w-[34rem] text-[clamp(16px,1.2vw,18px)] leading-[1.65] text-ink-soft">
+            <motion.p {...fade(0.6)} className="mt-6 max-w-[36rem] text-[clamp(16px,1.2vw,18.5px)] leading-[1.6] text-ink-soft">
               <Rich text={lede} />
             </motion.p>
           )}
-          {children && <motion.div {...fade(0.85)}>{children}</motion.div>}
+          {children && <motion.div {...fade(0.7)}>{children}</motion.div>}
           {(primary || secondary) && (
-            <motion.div {...fade(0.95)} className="mt-9 flex flex-wrap gap-3">
+            <motion.div {...fade(0.8)} className="mt-9 flex flex-wrap gap-3">
               {primary && <Button to={primary[1]}>{primary[0]}</Button>}
               {secondary && (
-                <Button to={secondary[1]} variant="glass">
+                <Button to={secondary[1]} variant="ghost">
                   {secondary[0]}
                 </Button>
               )}
@@ -151,22 +136,24 @@ export default function Hero({ core = 'brand', layout = 'side', badge, h1, lede,
           )}
         </div>
 
-        <div ref={anchor} className={`order-1 h-[38svh] min-h-[260px] lg:order-2 lg:h-[64vh] ${home ? 'lg:col-span-4' : 'lg:col-span-5'}`} aria-hidden="true">
-          {webgl === false && <div className="grid h-full place-items-center"><div className="orb-fallback rounded-full" /></div>}
+        <div ref={anchor} className={`order-1 h-[40svh] min-h-[280px] lg:order-2 lg:h-[66vh] ${home ? 'lg:col-span-5' : 'lg:col-span-6'}`} aria-hidden="true">
+          {webgl === false && (
+            <div className="grid h-full place-items-center">
+              <img src={`/posters/${poster}.webp`} alt="" width="900" height="900" className="poster max-h-full w-auto max-w-full" />
+            </div>
+          )}
         </div>
 
-        {aside && <div className="order-3 min-w-0 lg:col-span-3">{aside}</div>}
+        {aside && <div className="order-3 hidden min-w-0 lg:col-span-2 lg:block">{aside}</div>}
       </motion.div>
 
-      <canvas ref={fg} className="pointer-events-none absolute inset-0 z-[4] h-full w-full" aria-hidden="true" />
-
       {stats && (
-        <div className="relative z-[5] -mt-24 pb-7 lg:absolute lg:inset-x-0 lg:bottom-0 lg:mt-0">
+        <div className="relative z-[5] -mt-28 pb-8 lg:absolute lg:inset-x-0 lg:bottom-0 lg:mt-0">
           <div className="wrap">
-            <div className="grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
+            <div className="grid border-t border-line sm:grid-cols-3">
               {stats.map((s, i) => (
-                <motion.div key={s} {...fade(1.1 + i * 0.12)} className="flex items-center gap-3 bg-night/75 px-5 py-4 text-[14px] text-ink backdrop-blur-xl">
-                  <span className="font-mono text-[11px] text-brand-cyan">0{i + 1}</span>
+                <motion.div key={s} {...fade(0.9 + i * 0.1)} className="flex items-baseline gap-3 py-5 pr-6 text-[14.5px] text-ink sm:border-l sm:border-line sm:pl-6 sm:first:border-l-0 sm:first:pl-0">
+                  <span className="font-mono text-[11px] text-brand">0{i + 1}</span>
                   {s}
                 </motion.div>
               ))}

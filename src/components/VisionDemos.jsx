@@ -4,7 +4,7 @@ import { Reveal } from './motion.jsx'
 
 // Synthetic, procedurally drawn computer-vision examples. Every scene is
 // illustrative: shapes stand in for real camera frames.
-const HUD = '#3ee7ff'
+const HUD = '#12b5ad'
 const OK = '#3DDC97'
 const BAD = '#FF5A6A'
 
@@ -87,7 +87,7 @@ function defects(c) {
 
 /* 2. Retail shelf monitoring */
 function shelf(c) {
-  const COLORS = ['#5b7cff', '#8ea6ff', '#3ee7ff', '#6f8cff', '#3e5bff', '#b8c6ff']
+  const COLORS = ['#3a58ff', '#8fa2ff', '#12b5ad', '#5a72ff', '#3e5bff', '#b8c6ff']
   return run(c, (x, W, H, t) => {
     x.clearRect(0, 0, W, H)
     x.fillStyle = '#070c16'; x.fillRect(0, 0, W, H)
@@ -226,7 +226,7 @@ function traffic(c) {
       car.trail.push([X, Y]); if (car.trail.length > 30 || Math.abs(car.trail[0][0] - X) > W * 0.5) car.trail.shift()
       x.strokeStyle = 'rgba(62, 231, 255,.35)'; x.beginPath(); car.trail.forEach((q, i) => (i ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]))); x.stroke()
       const w = 46, h = lh * 0.55
-      x.fillStyle = ['#5b7cff', '#e6edf7', '#8ea6ff', '#8a95a8'][car.id % 4]; rrect(x, X - w / 2, Y - h / 2, w, h, 6); x.fill()
+      x.fillStyle = ['#3a58ff', '#e6edf7', '#8fa2ff', '#8a95a8'][car.id % 4]; rrect(x, X - w / 2, Y - h / 2, w, h, 6); x.fill()
       x.fillStyle = 'rgba(0,0,0,.4)'; x.fillRect(X + (dir > 0 ? 6 : -16), Y - h / 2 + 3, 10, h - 6)
       corners(x, X - w / 2 - 4, Y - h / 2 - 4, w + 8, h + 8, HUD, 7)
       tag(x, X - w / 2 - 4, Y - h / 2 - 5, `car #${car.id}`)

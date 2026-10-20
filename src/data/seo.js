@@ -2,6 +2,7 @@
 // head updater and by scripts/prerender.mjs, which writes them into the
 // static HTML of every route.
 import { ORDER, SERVICES } from './content.js'
+import { INSIGHTS } from './insights.js'
 import { EMAIL, HOME_FAQ, HQ } from './site.js'
 
 // Production origin. Set VITE_SITE_URL at build time when the domain changes.
@@ -16,8 +17,8 @@ const strip = (t) => String(t).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim
 
 const PAGES = {
   '/': {
-    title: 'NIMTECH | AI Agents, Computer Vision & Software Studio',
-    description: 'NIMTECH is a global engineering studio that builds AI agents, computer vision systems, custom software, mobile apps, systems integration and AI content, from first prototype to production.',
+    title: 'NIMTECH | AI, Computer Vision & Software Engineering Firm',
+    description: 'NIMTECH is a global engineering firm that designs, builds and runs AI agents, computer vision, custom software, mobile apps, systems integration and AI content, from first prototype to production at scale.',
   },
   '/services': {
     title: 'Services | AI, Computer Vision, Software & Apps | NIMTECH',
@@ -78,6 +79,20 @@ for (const id of ORDER) {
     description: strip(s.lede),
     crumb: s.name,
     service: id,
+  }
+}
+
+PAGES['/insights'] = {
+  title: 'Insights | Guides on AI Agents, Vision & Integration | NIMTECH',
+  description: 'Practical guides and perspectives from NIMTECH engineers on AI agents, computer vision, software and systems integration.',
+  crumb: 'Insights',
+}
+for (const a of INSIGHTS) {
+  PAGES[`/insights/${a.slug}`] = {
+    title: `${a.seo || a.title} | NIMTECH`,
+    description: a.sum,
+    crumb: a.title,
+    article: a,
   }
 }
 
@@ -142,6 +157,7 @@ export function schema(path) {
   if (m.crumb) {
     const items = [['Home', '/']]
     if (m.service) items.push(['Services', '/services'])
+    if (m.article) items.push(['Insights', '/insights'])
     items.push([m.crumb, m.path])
     graph.push({
       '@type': 'BreadcrumbList',
@@ -161,6 +177,23 @@ export function schema(path) {
       url,
     })
     if (s.faq?.length) graph.push(faqPage(s.faq))
+  }
+  if (m.article) {
+    const a = m.article
+    graph.push({
+      '@type': 'Article',
+      '@id': `${url}#article`,
+      headline: a.title,
+      description: a.sum,
+      datePublished: a.date,
+      dateModified: a.date,
+      author: { '@type': 'Organization', name: 'NIMTECH engineering team', url: `${SITE_URL}/company` },
+      publisher: { '@id': ORG_ID },
+      mainEntityOfPage: url,
+      image: `${SITE_URL}${OG_IMAGE}`,
+      about: SERVICES[a.s].name,
+      inLanguage: 'en',
+    })
   }
   if (m.path === '/services') {
     graph.push({

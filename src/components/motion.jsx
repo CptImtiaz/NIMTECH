@@ -6,12 +6,12 @@ export const EASE = [0.16, 1, 0.3, 1]
 
 // Swings its children up out of perspective, un-blurring as they arrive.
 /** @param {Record<string, any>} props */
-export function Reveal({ children, delay = 0, y = 50, className = '', as = 'div', ...rest }) {
+export function Reveal({ children, delay = 0, y = 36, className = '', as = 'div', ...rest }) {
   const M = motion[as]
   return (
     <M
       className={className}
-      initial={{ opacity: 0, y, rotateX: 14, filter: 'blur(8px)', transformPerspective: 1200 }}
+      initial={{ opacity: 0, y, rotateX: 8, filter: 'blur(6px)', transformPerspective: 1200 }}
       whileInView={{ opacity: 1, y: 0, rotateX: 0, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
       viewport={{ once: true, margin: '0px 0px -12% 0px' }}
       transition={{ duration: 1, ease: EASE, delay }}
@@ -111,7 +111,7 @@ export function Magnetic({ children, strength = 0.25, className = '' }) {
 
 // 3D tilt toward the pointer with a moving glare highlight.
 /** @param {Record<string, any>} props */
-export function Tilt({ children, className = '', max = 8 }) {
+export function Tilt({ children, className = '', max = 5 }) {
   const ref = useRef(null)
   const rx = useMotionValue(0)
   const ry = useMotionValue(0)
@@ -121,7 +121,7 @@ export function Tilt({ children, className = '', max = 8 }) {
   const glareOpacity = useSpring(on, { stiffness: 200, damping: 25 })
   const sx = useSpring(rx, { stiffness: 180, damping: 18 })
   const sy = useSpring(ry, { stiffness: 180, damping: 18 })
-  const glare = useTransform([gx, gy], ([x, y]) => `radial-gradient(420px circle at ${x}% ${y}%, rgba(76, 99, 246,.10), transparent 60%)`)
+  const glare = useTransform([gx, gy], ([x, y]) => `radial-gradient(420px circle at ${x}% ${y}%, rgba(42, 75, 255,.10), transparent 60%)`)
   const move = (e) => {
     const r = ref.current.getBoundingClientRect()
     const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height
@@ -139,7 +139,7 @@ export function Tilt({ children, className = '', max = 8 }) {
   return (
     <motion.div ref={ref} onPointerMove={move} onPointerLeave={leave} style={{ rotateX: sx, rotateY: sy, transformPerspective: 1000, transformStyle: 'preserve-3d' }} className={`relative h-full ${className}`}>
       {children}
-      <motion.span aria-hidden="true" style={{ background: glare, opacity: glareOpacity }} className="pointer-events-none absolute inset-0 z-10 rounded-[20px]" />
+      <motion.span aria-hidden="true" style={{ background: glare, opacity: glareOpacity }} className="pointer-events-none absolute inset-0 z-10 rounded-[14px]" />
     </motion.div>
   )
 }

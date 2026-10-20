@@ -6,7 +6,6 @@ import { REDUCE } from '../lib/canvas.js'
 import Navbar from './Navbar.jsx'
 import Footer from './Footer.jsx'
 import { EASE } from './motion.jsx'
-import { Backdrop, Cursor } from './Ambient.jsx'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -32,8 +31,7 @@ export default function Layout() {
 
   return (
     <div className="relative min-h-screen overflow-x-clip bg-night">
-      <Backdrop />
-      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-gradient-to-r from-brand to-brand-cyan" />
+      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-brand" />
       <Navbar />
       {/* initial={false}: no curtain or page fade on first load, so the
           prerendered page shows at once */}
@@ -41,7 +39,7 @@ export default function Layout() {
         <motion.div
           key={pathname}
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-[65] origin-top bg-gradient-to-b from-brand via-brand-mid to-night"
+          className="pointer-events-none fixed inset-0 z-[65] origin-top bg-gradient-to-b from-deep via-brand to-night"
           initial={{ scaleY: 1 }}
           animate={{ scaleY: 0, transition: { duration: 0.8, ease: EASE, delay: 0.05 } }}
           exit={{ opacity: 0, transition: { duration: 0.01 } }}
@@ -60,8 +58,6 @@ export default function Layout() {
         </motion.main>
       </AnimatePresence>
       <Footer />
-      <div className="grain" aria-hidden="true" />
-      <Cursor />
     </div>
   )
 }

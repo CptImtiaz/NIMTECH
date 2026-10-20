@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = join(root, 'dist')
 const ssr = join(root, 'dist-ssr')
-const { render, ROUTES, headTags, SITE_URL, UPDATED, pageMeta, ORDER, SERVICES, EMAIL, HQ } = await import(
+const { render, ROUTES, headTags, SITE_URL, UPDATED, pageMeta, ORDER, SERVICES, EMAIL, HQ, INSIGHTS } = await import(
   pathToFileURL(join(ssr, 'entry-server.js')).href
 )
 
@@ -62,9 +62,13 @@ const md = [
     return `- [${s.name}](${SITE_URL}/services/${id}): ${strip(s.lede)} Typical work: ${s.tags.join(', ')}.`
   }),
   '',
+  '## Insights',
+  '',
+  ...INSIGHTS.map((a) => `- [${a.title}](${SITE_URL}/insights/${a.slug}): ${a.sum} Key points: ${a.takeaways.join(' ')}`),
+  '',
   '## Company',
   '',
-  ...['/industries', '/work', '/process', '/technology', '/company', '/careers', '/contact'].map(
+  ...['/industries', '/work', '/process', '/technology', '/company', '/careers', '/insights', '/contact'].map(
     (u) => `- [${pageMeta(u).title.split(' | ')[0]}](${SITE_URL}${u}): ${pageMeta(u).description}`,
   ),
   '',

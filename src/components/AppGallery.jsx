@@ -30,22 +30,22 @@ function Food() {
   return (
     <>
       <div className="text-[11px] text-white/50">Deliver to · Bangsar</div>
-      <h5>Good evening, <span className="text-[#3ee7ff]">Aina</span></h5>
-      <div className="flex h-28 shrink-0 items-end rounded-2xl p-3 text-[13px] font-medium" style={{ background: 'radial-gradient(circle at 30% 20%, #3ee7ff, #5b7cff 50%, #0B1A3A)' }}>
+      <h5>Good evening, <span className="text-[#12b5ad]">Aina</span></h5>
+      <div className="flex h-28 shrink-0 items-end rounded-2xl p-3 text-[13px] font-medium" style={{ background: 'radial-gradient(circle at 30% 20%, #12b5ad, #3a58ff 50%, #0B1A3A)' }}>
         Today’s picks · 20% off
       </div>
       <Feed>
-        {[['Nasi lemak bowl', '$9.90', '#8ea6ff'], ['Iced kopi', '$3.50', '#5b7cff'], ['Chicken satay', '$11.20', '#5b7cff'], ['Mango sago', '$4.80', '#3ee7ff'], ['Laksa', '$10.50', '#3e5bff']].map(([l, r, c]) => (
+        {[['Nasi lemak bowl', '$9.90', '#8fa2ff'], ['Iced kopi', '$3.50', '#3a58ff'], ['Chicken satay', '$11.20', '#3a58ff'], ['Mango sago', '$4.80', '#12b5ad'], ['Laksa', '$10.50', '#3e5bff']].map(([l, r, c]) => (
           <Row key={l} l={l} r={r} sub="15–20 min" dot={c} />
         ))}
       </Feed>
-      <span className="rounded-xl bg-[#5b7cff] py-2.5 text-center text-[12.5px] font-medium">View cart · 3 items</span>
+      <span className="rounded-xl bg-[#3a58ff] py-2.5 text-center text-[12.5px] font-medium">View cart · 3 items</span>
     </>
   )
 }
 
 function Fitness() {
-  const rings = [['#5b7cff', 0.78, 40], ['#3ee7ff', 0.62, 31], ['#8ea6ff', 0.9, 22]]
+  const rings = [['#3a58ff', 0.78, 40], ['#12b5ad', 0.62, 31], ['#8fa2ff', 0.9, 22]]
   return (
     <>
       <div className="text-[11px] text-white/50">Thursday</div>
@@ -68,7 +68,7 @@ function Fitness() {
       </div>
       <Feed speed={22}>
         {['Morning run · 5.2 km', 'HIIT · 25 min', 'Yoga flow · 30 min', 'Cycling · 12 km'].map((w, i) => (
-          <Row key={w} l={w} sub={['Personal best', 'Streak 6 days', 'Recovery', 'Outdoor'][i]} dot={['#5b7cff', '#3ee7ff', '#b794ff', '#8ea6ff'][i]} />
+          <Row key={w} l={w} sub={['Personal best', 'Streak 6 days', 'Recovery', 'Outdoor'][i]} dot={['#3a58ff', '#12b5ad', '#b794ff', '#8fa2ff'][i]} />
         ))}
       </Feed>
     </>
@@ -80,16 +80,16 @@ function Wallet() {
     <>
       <div className="text-[11px] text-white/50">Total balance</div>
       <h5 className="!text-2xl">$24,806<span className="text-sm text-white/40">.12</span></h5>
-      <div className="relative h-32 shrink-0 overflow-hidden rounded-2xl p-3" style={{ background: 'linear-gradient(135deg,#5b7cff,#6f5bff 60%,#0B1A3A)' }}>
+      <div className="relative h-32 shrink-0 overflow-hidden rounded-2xl p-3" style={{ background: 'linear-gradient(135deg,#3a58ff,#6f5bff 60%,#0B1A3A)' }}>
         <div className="text-[10px] tracking-widest text-white/70">VIRTUAL CARD</div>
         <div className="absolute bottom-3 left-3 font-mono text-[12px]">•••• 4821</div>
         <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-white/10" />
       </div>
       <svg viewBox="0 0 200 50" className="h-12 w-full shrink-0">
-        <path d="M0 40 C20 38 30 30 50 32 S80 18 100 22 140 10 160 14 190 6 200 4" fill="none" stroke="#8ea6ff" strokeWidth="2" strokeDasharray="300" style={{ animation: 'ring 3s ease both' }} />
+        <path d="M0 40 C20 38 30 30 50 32 S80 18 100 22 140 10 160 14 190 6 200 4" fill="none" stroke="#8fa2ff" strokeWidth="2" strokeDasharray="300" style={{ animation: 'ring 3s ease both' }} />
       </svg>
       <Feed>
-        {[['Grab', '-$12.40', '#3ee7ff'], ['Salary', '+$5,200', '#8ea6ff'], ['Spotify', '-$9.99', '#3ee7ff'], ['Rent', '-$1,450', '#8ea6ff'], ['Transfer · Hana', '+$80', '#b794ff']].map(([l, r, c]) => (
+        {[['Grab', '-$12.40', '#12b5ad'], ['Salary', '+$5,200', '#8fa2ff'], ['Spotify', '-$9.99', '#12b5ad'], ['Rent', '-$1,450', '#8fa2ff'], ['Transfer · Hana', '+$80', '#b794ff']].map(([l, r, c]) => (
           <Row key={l} l={l} r={r} sub="Today" dot={c} />
         ))}
       </Feed>
@@ -106,17 +106,17 @@ function Field() {
         <div className="absolute left-[18%] top-[22%] h-[50%] w-[40%] animate-pulse rounded border-[1.5px] border-[#FF5A6A]">
           <span className="absolute -top-4 left-0 whitespace-nowrap rounded-sm bg-[#FF5A6A] px-1 font-mono text-[9px] text-black">corrosion 0.93</span>
         </div>
-        <div className="absolute bottom-[14%] right-[10%] h-[30%] w-[26%] rounded border-[1.5px] border-[#3ee7ff]">
-          <span className="absolute -top-4 left-0 whitespace-nowrap rounded-sm bg-[#3ee7ff] px-1 font-mono text-[9px] text-black">gauge ok</span>
+        <div className="absolute bottom-[14%] right-[10%] h-[30%] w-[26%] rounded border-[1.5px] border-[#12b5ad]">
+          <span className="absolute -top-4 left-0 whitespace-nowrap rounded-sm bg-[#12b5ad] px-1 font-mono text-[9px] text-black">gauge ok</span>
         </div>
         <span className="absolute bottom-2 left-2 font-mono text-[9px] text-white/60">on‑device · offline</span>
       </div>
       <Feed speed={20}>
         {[['Valve seals', 'Checked'], ['Pressure gauge', 'OK'], ['Pipe joint', '1 issue'], ['Fire extinguisher', 'Checked'], ['Signage', 'Checked']].map(([l, r]) => (
-          <Row key={l} l={l} r={r} dot={r === '1 issue' ? '#FF5A6A' : '#3ee7ff'} />
+          <Row key={l} l={l} r={r} dot={r === '1 issue' ? '#FF5A6A' : '#12b5ad'} />
         ))}
       </Feed>
-      <span className="rounded-xl bg-[#5b7cff] py-2.5 text-center text-[12.5px] font-medium">Submit report</span>
+      <span className="rounded-xl bg-[#3a58ff] py-2.5 text-center text-[12.5px] font-medium">Submit report</span>
     </>
   )
 }
@@ -127,7 +127,7 @@ function Health() {
       <div className="text-[11px] text-white/50">Your care team</div>
       <h5>Book a visit</h5>
       <div className="flex shrink-0 items-center gap-3 rounded-2xl bg-white/[.06] p-3">
-        <span className="h-11 w-11 rounded-full" style={{ background: 'radial-gradient(circle at 35% 30%,#c9d4ff,#6f8cff)' }} />
+        <span className="h-11 w-11 rounded-full" style={{ background: 'radial-gradient(circle at 35% 30%,#c9d4ff,#5a72ff)' }} />
         <div>
           <div className="text-[12.5px] font-medium">Dr. Lim Wei</div>
           <div className="text-[10px] text-white/45">General practice · 4.9 ★</div>
@@ -135,7 +135,7 @@ function Health() {
       </div>
       <div className="grid shrink-0 grid-cols-5 gap-1 text-center text-[10px]">
         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((d, i) => (
-          <span key={d} className={`rounded-lg py-2 ${i === 2 ? 'bg-[#3ee7ff] text-[#05060f]' : 'bg-white/[.05]'}`}>
+          <span key={d} className={`rounded-lg py-2 ${i === 2 ? 'bg-[#12b5ad] text-[#05060f]' : 'bg-white/[.05]'}`}>
             {d}
             <b className="block text-[12px]">{14 + i}</b>
           </span>
@@ -143,21 +143,21 @@ function Health() {
       </div>
       <Feed speed={16}>
         {['09:00', '10:30', '11:15', '14:00', '15:45', '17:30'].map((t, i) => (
-          <Row key={t} l={t} sub={i % 2 ? 'In person' : 'Video call'} r={i === 1 ? 'Selected' : ''} dot={i === 1 ? '#3ee7ff' : 'rgba(255,255,255,.1)'} />
+          <Row key={t} l={t} sub={i % 2 ? 'In person' : 'Video call'} r={i === 1 ? 'Selected' : ''} dot={i === 1 ? '#12b5ad' : 'rgba(255,255,255,.1)'} />
         ))}
       </Feed>
-      <span className="rounded-xl bg-[#3ee7ff] py-2.5 text-center text-[12.5px] font-medium text-black">Confirm 10:30</span>
+      <span className="rounded-xl bg-[#12b5ad] py-2.5 text-center text-[12.5px] font-medium text-black">Confirm 10:30</span>
     </>
   )
 }
 
 function Home() {
-  const tiles = [['Lights', 'Living room', true, '#3ee7ff'], ['AC', '23°C', true, '#8ea6ff'], ['Door', 'Locked', true, '#3ee7ff'], ['Camera', 'Recording', false, '#5b7cff']]
+  const tiles = [['Lights', 'Living room', true, '#12b5ad'], ['AC', '23°C', true, '#8fa2ff'], ['Door', 'Locked', true, '#12b5ad'], ['Camera', 'Recording', false, '#3a58ff']]
   return (
     <>
       <div className="text-[11px] text-white/50">Home · 4 devices on</div>
       <h5>Haven</h5>
-      <div className="relative mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full" style={{ background: 'conic-gradient(from 220deg,#8ea6ff,#b794ff 40%,rgba(255,255,255,.06) 40%)' }}>
+      <div className="relative mx-auto grid h-32 w-32 shrink-0 place-items-center rounded-full" style={{ background: 'conic-gradient(from 220deg,#8fa2ff,#b794ff 40%,rgba(255,255,255,.06) 40%)' }}>
         <div className="grid h-24 w-24 place-items-center rounded-full bg-[#070d1a] text-center">
           <b className="text-[22px]">23°</b>
           <span className="-mt-3 text-[9px] text-white/50">cooling</span>
@@ -182,11 +182,11 @@ function Home() {
 }
 
 const APPS = [
-  { C: Food, name: 'Kopi & Co', kind: 'Food ordering & loyalty', tech: 'Flutter · iOS & Android', glow: '#5b7cff' },
-  { C: Fitness, name: 'Pulse', kind: 'Fitness & wearables', tech: 'SwiftUI · Kotlin · HealthKit', glow: '#5b7cff' },
+  { C: Food, name: 'Kopi & Co', kind: 'Food ordering & loyalty', tech: 'Flutter · iOS & Android', glow: '#3a58ff' },
+  { C: Fitness, name: 'Pulse', kind: 'Fitness & wearables', tech: 'SwiftUI · Kotlin · HealthKit', glow: '#3a58ff' },
   { C: Wallet, name: 'Vault', kind: 'Fintech wallet', tech: 'React Native · secure enclave', glow: '#6f5bff' },
-  { C: Field, name: 'FieldEye', kind: 'Field inspection with on‑device AI', tech: 'Flutter · Core ML · offline‑first', glow: '#5b7cff' },
-  { C: Health, name: 'CareNow', kind: 'Telehealth booking', tech: 'React Native · video calls', glow: '#3ee7ff' },
+  { C: Field, name: 'FieldEye', kind: 'Field inspection with on‑device AI', tech: 'Flutter · Core ML · offline‑first', glow: '#3a58ff' },
+  { C: Health, name: 'CareNow', kind: 'Telehealth booking', tech: 'React Native · video calls', glow: '#12b5ad' },
   { C: Home, name: 'Haven', kind: 'Smart home & IoT', tech: 'Kotlin · Swift · BLE', glow: '#b794ff' },
 ]
 

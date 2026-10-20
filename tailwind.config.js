@@ -4,23 +4,23 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Sora for headings, Inter for text, JetBrains Mono for labels (self-hosted)
-        fustat: ['"Sora Variable"', 'Inter Variable', 'system-ui', 'sans-serif'],
-        display: ['"Sora Variable"', 'Inter Variable', 'system-ui', 'sans-serif'],
-        body: ['"Inter Variable"', 'system-ui', 'sans-serif'],
-        inter: ['"Inter Variable"', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'Menlo', 'monospace'],
+        // Geist for everything, Geist Mono for labels and data (self-hosted)
+        fustat: ['"Geist Variable"', 'system-ui', 'sans-serif'],
+        display: ['"Geist Variable"', 'system-ui', 'sans-serif'],
+        body: ['"Geist Variable"', 'system-ui', 'sans-serif'],
+        inter: ['"Geist Variable"', 'system-ui', 'sans-serif'],
+        mono: ['"Geist Mono Variable"', 'ui-monospace', 'Menlo', 'monospace'],
       },
       colors: {
-        // Site palette: white surfaces, navy ink, indigo -> cyan -> violet accents.
-        // `night` is the page background; `deep` is for the dark accent bands.
-        ink: { DEFAULT: '#0B1020', soft: '#4A5372', dim: '#646D88' },
-        line: 'rgba(15,23,60,0.10)',
+        // Enterprise palette: white surfaces, deep navy ink, electric blue
+        // with teal and violet accents. `deep` is for dark bands.
+        ink: { DEFAULT: '#0A0F29', soft: '#4B5375', dim: '#5F6785' },
+        line: 'rgba(10,15,41,0.10)',
         night: '#FFFFFF',
-        surface: '#F6F8FC',
-        deep: '#070A1A',
-        star: '#FF801E',
-        brand: { DEFAULT: '#4C63F6', light: '#6E86FF', mid: '#5A72FF', cyan: '#0E7490', violet: '#7C5CFA' },
+        surface: '#F5F7FB',
+        deep: '#070B1F',
+        star: '#F5A524',
+        brand: { DEFAULT: '#2A4BFF', light: '#8FA2FF', mid: '#3A58FF', cyan: '#0B7A75', violet: '#6D4AFF' },
         // Semantic tokens for the Software landing (vars are scoped to .nexora)
         background: 'hsl(var(--background) / <alpha-value>)',
         foreground: 'hsl(var(--foreground) / <alpha-value>)',

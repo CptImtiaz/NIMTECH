@@ -4,8 +4,8 @@ import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { Rich } from '../lib/rich.jsx'
 import { ORDER, SERVICES } from '../data/content.js'
 import { EMAIL } from '../data/site.js'
-import { ArrowRight, ArrowUpRight, Icon, Spark } from './Icons.jsx'
-import { EASE, Magnetic, Reveal, ScrollWords, SplitText, Tilt } from './motion.jsx'
+import { ArrowRight, ArrowUpRight, Icon } from './Icons.jsx'
+import { EASE, Reveal, ScrollWords, SplitText, Tilt } from './motion.jsx'
 import { useToast } from './Toast.jsx'
 
 export const svcName = (id) => SERVICES[id].nav || SERVICES[id].name
@@ -13,13 +13,15 @@ export const svcName = (id) => SERVICES[id].nav || SERVICES[id].name
 /* ---------- buttons ---------- */
 /** @param {Record<string, any>} props */
 export function Button({ to, href, children, variant = 'primary', arrow = true, className = '', ...rest }) {
-  const cls = `btn ${variant === 'primary' ? 'btn-primary' : variant === 'dark' ? 'btn-dark' : 'btn-glass'} ${className}`
+  // full class names so Tailwind keeps them
+  const v = { primary: 'btn-primary', ghost: 'btn-ghost', glass: 'btn-ghost', dark: 'btn-dark', light: 'btn-light' }[variant] || 'btn-primary'
+  const cls = `btn ${v} ${className}`
   const inner = (
     <>
       <span>{children}</span>
       {arrow && (
         <span className="btn-icon">
-          <ArrowRight className="h-3.5 w-3.5" />
+          <ArrowRight className="h-4 w-4" />
         </span>
       )}
     </>
@@ -28,7 +30,7 @@ export function Button({ to, href, children, variant = 'primary', arrow = true, 
     e.preventDefault()
     document.getElementById(to.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
-  const el = to?.startsWith('#') ? (
+  return to?.startsWith('#') ? (
     <a href={to} onClick={jump} className={cls} {...rest}>
       {inner}
     </a>
@@ -45,10 +47,9 @@ export function Button({ to, href, children, variant = 'primary', arrow = true, 
       {inner}
     </button>
   )
-  return <Magnetic strength={0.18}>{el}</Magnetic>
 }
 
-export function CopyEmail({ variant = 'glass', label }) {
+export function CopyEmail({ variant = 'ghost', label }) {
   const toast = useToast()
   const copy = () => {
     const ok = () => toast(`Copied ${EMAIL}`)
@@ -69,7 +70,7 @@ export function CopyEmail({ variant = 'glass', label }) {
 /** @param {Record<string, any>} props */
 export function Section({ children, className = '', id, tight = false, dark = false }) {
   return (
-    <section id={id} className={`relative ${tight ? 'pb-24 pt-0 md:pb-32' : 'py-24 md:py-36'} ${dark ? 'dark-band' : ''} ${className}`}>
+    <section id={id} className={`relative ${tight ? 'pb-20 pt-0 md:pb-28' : 'py-20 md:py-28'} ${dark ? 'dark-band' : ''} ${className}`}>
       <div className="wrap">{children}</div>
     </section>
   )
@@ -117,8 +118,8 @@ export function Marquee({ items, dark = false }) {
       <div className="marquee-track">
         {list.map((m, i) => (
           <span key={i} className="marquee-item">
-            <span className={i % 2 ? 'accent' : ''}>{m}</span>
-            <Spark className="h-4 w-4 text-brand" />
+            {m}
+            <span className="h-1.5 w-1.5 bg-brand" />
           </span>
         ))}
       </div>
@@ -236,7 +237,7 @@ function Step({ s, i }) {
       <motion.span
         className="absolute -left-[6px] top-1.5 h-[13px] w-[13px] rounded-full border border-brand/50 bg-white"
         initial={{ scale: 0.6 }}
-        whileInView={{ scale: 1, backgroundColor: '#6f8cff', boxShadow: '0 0 0 6px rgba(111, 140, 255,.2), 0 0 18px rgba(96,177,255,.8)' }}
+        whileInView={{ scale: 1, backgroundColor: '#2a4bff', boxShadow: '0 0 0 6px rgba(42, 75, 255,.14)' }}
         viewport={{ margin: '0px 0px -45% 0px' }}
         transition={{ duration: 0.5, ease: EASE }}
       />
@@ -285,12 +286,12 @@ export function FAQ({ list }) {
         const on = open === i
         return (
           <Reveal key={i} className="border-b border-line">
-            <button type="button" onClick={() => setOpen(on ? -1 : i)} aria-expanded={on} className="flex w-full items-center justify-between gap-5 py-6 text-left font-fustat text-[clamp(17px,1.6vw,21px)] font-bold tracking-[-.02em]">
+            <button type="button" onClick={() => setOpen(on ? -1 : i)} aria-expanded={on} className="flex w-full items-center justify-between gap-5 py-6 text-left font-display text-[clamp(17px,1.5vw,20px)] font-semibold tracking-[-.015em]">
               {f[0]}
-              <motion.span animate={{ rotate: on ? 45 : 0, backgroundColor: on ? '#4c63f6' : 'rgba(255,255,255,0)', color: on ? '#fff' : '#0B1020' }} transition={{ duration: 0.4, ease: EASE }} className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full border border-line">
-                <svg viewBox="0 0 12 12" className="h-3 w-3" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+              <motion.span animate={{ backgroundColor: on ? '#2a4bff' : 'rgba(255,255,255,0)', color: on ? '#fff' : '#0A0F29' }} transition={{ duration: 0.3, ease: EASE }} className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-[10px] border border-line">
+                <motion.svg animate={{ rotate: on ? 45 : 0 }} transition={{ duration: 0.4, ease: EASE }} viewBox="0 0 12 12" className="h-3 w-3" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                   <path d="M6 1v10M1 6h10" />
-                </svg>
+                </motion.svg>
               </motion.span>
             </button>
             <AnimatePresence initial={false}>
@@ -311,18 +312,18 @@ export function FAQ({ list }) {
 export function CTA({ title = 'Have a problem <em>worth solving?</em>', text = 'Tell us what you’re trying to achieve. A senior engineer will reply within one working day.' }) {
   return (
     <Section>
-      <Reveal y={60} className="cta-ring">
-        <div className="cta-inner">
-          <div className="cta-glow" aria-hidden="true" />
-          <span className="eyebrow eyebrow-dark">
-            <span className="eyebrow-dot" />
-            Start a project
-          </span>
-          <SplitText as="h2" lines={[title]} inView className="h2 max-w-[16ch] text-white md:text-[clamp(40px,5.6vw,84px)]" />
-          <p className="max-w-[52ch] text-[17px] text-white/60">{text}</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Button to="/contact">Start a Project</Button>
-            <CopyEmail variant="dark" />
+      <Reveal y={40} className="cta-panel">
+        <div className="relative grid items-end gap-10 lg:grid-cols-[1.4fr_1fr]">
+          <div>
+            <span className="kicker kicker-dark">Start a project</span>
+            <SplitText as="h2" lines={[title]} inView className="h2 mt-5 max-w-[18ch] text-white [&_.accent]:text-brand-light" />
+          </div>
+          <div className="grid gap-6 lg:justify-items-end">
+            <p className="max-w-[42ch] text-[16.5px] leading-relaxed text-white/70 lg:text-right">{text}</p>
+            <div className="flex flex-wrap gap-3">
+              <Button to="/contact" variant="light">Start a Project</Button>
+              <CopyEmail variant="dark" />
+            </div>
           </div>
         </div>
       </Reveal>
@@ -363,9 +364,9 @@ export function NextLink({ to, label, small }) {
       <Link to={to} className="group flex flex-wrap items-center justify-between gap-6 border-t border-line py-14">
         <div>
           <small className="mb-1.5 block text-sm text-ink-soft">{small}</small>
-          <span className="h2 block transition-[letter-spacing,color] duration-500 group-hover:tracking-[-.02em] group-hover:text-brand">{label}</span>
+          <span className="h2 block transition-colors duration-300 group-hover:text-brand">{label}</span>
         </div>
-        <span className="grid h-16 w-16 place-items-center rounded-full border border-line transition-all duration-500 group-hover:-rotate-45 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
+        <span className="grid h-14 w-14 place-items-center rounded-[12px] border border-line transition-all duration-300 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
           <ArrowRight className="h-5 w-5" />
         </span>
       </Link>

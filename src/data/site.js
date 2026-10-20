@@ -7,12 +7,15 @@ export const HQ = 'Kuala Lumpur, Malaysia'
 export const NAV = [
   { to: '/services', label: 'Services', mega: true },
   { to: '/industries', label: 'Industries' },
+  { to: '/insights', label: 'Insights' },
   { to: '/work', label: 'Work' },
   { to: '/company', label: 'Company' },
+  { to: '/careers', label: 'Careers' },
 ]
 
 export const COMPANY_LINKS = [
   ['/company', 'About us'],
+  ['/insights', 'Insights'],
   ['/industries', 'Industries'],
   ['/work', 'Work'],
   ['/process', 'How we work'],

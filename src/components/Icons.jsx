@@ -50,17 +50,13 @@ export function Spark({ className = 'h-4 w-4' }) {
   )
 }
 
-export function Logo({ className = 'h-7 w-7' }) {
+// `light` inverts the tile for dark backgrounds
+export function Logo({ className = 'h-7 w-7', light = false }) {
   return (
     <svg viewBox="0 0 32 32" className={className} aria-hidden="true">
-      <defs>
-        <linearGradient id="nimtech-logo" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#3ee7ff" />
-          <stop offset="1" stopColor="#5b7cff" />
-        </linearGradient>
-      </defs>
-      <rect width="32" height="32" rx="9" fill="url(#nimtech-logo)" />
-      <path d="M9 23V9h3l8 9.5V9h3v14h-3l-8-9.5V23z" fill="#fff" />
+      <rect width="32" height="32" rx="8" fill={light ? '#fff' : '#0A0F29'} />
+      <path d="M8.5 23.5V8.5h3.2l7.6 9.6V8.5h3.2v15h-3.2l-7.6-9.6v9.6z" fill={light ? '#0A0F29' : '#fff'} />
+      <rect x="23.5" y="4.5" width="4" height="4" rx="1" fill="#2A4BFF" />
     </svg>
   )
 }

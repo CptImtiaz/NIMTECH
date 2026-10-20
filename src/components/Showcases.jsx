@@ -99,9 +99,9 @@ function VisionTraining() {
         x.strokeStyle = 'rgba(255,255,255,.85)'; line(tl, [], 1.4)
         x.strokeStyle = '#7f9bc4'; line(vl, [4, 3], 1.2)
         const g = x.createLinearGradient(0, 0, W, 0)
-        g.addColorStop(0, '#8ea6ff'); g.addColorStop(1, '#3ee7ff')
+        g.addColorStop(0, '#8fa2ff'); g.addColorStop(1, '#12b5ad')
         x.strokeStyle = g; line(mp, [], 2.8)
-        x.fillStyle = '#8ea6ff'
+        x.fillStyle = '#8fa2ff'
         x.beginPath(); x.arc(X(p), Y(mp(p)), 4.5, 0, 7); x.fill()
         if (t - lastSet > 90 || !t) {
           lastSet = t
@@ -349,14 +349,14 @@ export function Tracker() {
         x.beginPath(); x.arc(X, Y - h * 0.82, w * 0.32, 0, 7); x.fill()
         rrect(x, X - w * 0.32, Y - h * 0.66, w * 0.64, h * 0.66, 6); x.fill()
         if (p.t) {
-          x.fillStyle = '#8ea6ff'
+          x.fillStyle = '#8fa2ff'
           x.fillRect(X + w * 0.2, Y - h * 0.5, w * 0.5, w * 0.4)
           trail.push([X, Y]); if (trail.length > 90) trail.shift()
-          x.strokeStyle = '#8ea6ff'; x.lineWidth = 1.5
+          x.strokeStyle = '#8fa2ff'; x.lineWidth = 1.5
           x.strokeRect(X - w * 0.7, Y - h - 6, w * 1.6, h + 12)
           x.font = MONO
           const lb = 'ID 07 · tracked · 0.94', tw = x.measureText(lb).width + 10
-          x.fillStyle = '#8ea6ff'; x.fillRect(X - w * 0.7, Y - h - 24, tw, 17)
+          x.fillStyle = '#8fa2ff'; x.fillRect(X - w * 0.7, Y - h - 24, tw, 17)
           x.fillStyle = '#06101f'; x.fillText(lb, X - w * 0.7 + 5, Y - h - 12)
         } else {
           x.strokeStyle = 'rgba(255,255,255,.22)'; x.lineWidth = 1

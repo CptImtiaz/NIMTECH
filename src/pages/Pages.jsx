@@ -20,7 +20,7 @@ const TRACKER_COPY = 'An open‑vocabulary tracking model developed by our resea
 export function Services() {
   return (
     <>
-      <PageHero badge="Services" h1={['Six practices,', '<em>one engineering team.</em>']} lede="Pick one, or combine them into a single project with one plan, one timeline and one point of contact." primary={['Start a Project', '/contact']} secondary={['How we work', '/process']} />
+      <PageHero vis="api" badge="Services" h1={['Six practices,', '<em>one engineering team.</em>']} lede="Pick one, or combine them into a single project with one plan, one timeline and one point of contact." primary={['Start a Project', '/contact']} secondary={['How we work', '/process']} />
       <Section>
         <ServiceRows />
       </Section>
@@ -82,7 +82,7 @@ export function Work() {
   const shown = CASES.filter((c) => f === 'all' || c.s === f)
   return (
     <>
-      <PageHero badge="Work" h1={['Problems in.', '<em>Systems out.</em>']} lede="Illustrative examples across our six practices, showing the challenge, what we build and the outcome we design for." primary={['Start a Project', '/contact']} secondary={['Our services', '/services']} />
+      <PageHero vis="software" badge="Work" h1={['Problems in.', '<em>Systems out.</em>']} lede="Illustrative examples across our six practices, showing the challenge, what we build and the outcome we design for." primary={['Start a Project', '/contact']} secondary={['Our services', '/services']} />
       <Section>
         <LayoutGroup>
           <div className="mb-8 flex flex-wrap gap-2" role="group" aria-label="Filter by service">
@@ -114,7 +114,7 @@ export function Work() {
 export function Process() {
   return (
     <>
-      <PageHero badge="How we work" h1={['A clear path from', '<em>idea to production.</em>']} lede="The same disciplined process on every project, adapted to the size of the problem." primary={['Start a Project', '/contact']} secondary={['Our technology', '/technology']} />
+      <PageHero vis="software" badge="How we work" h1={['A clear path from', '<em>idea to production.</em>']} lede="The same disciplined process on every project, adapted to the size of the problem." primary={['Start a Project', '/contact']} secondary={['Our technology', '/technology']} />
       <Steps
         title="Five <em>phases.</em>"
         list={[
@@ -163,7 +163,7 @@ export function Process() {
 export function Technology() {
   return (
     <>
-      <PageHero vis="helmet" badge="Technology" h1={['The right tools for', '<em>each problem.</em>']} lede="We stay model‑agnostic and cloud‑agnostic, choosing proven technology that fits your constraints." primary={['Start a Project', '/contact']} secondary={['How we work', '/process']} />
+      <PageHero vis="agents" badge="Technology" h1={['The right tools for', '<em>each problem.</em>']} lede="We stay model‑agnostic and cloud‑agnostic, choosing proven technology that fits your constraints." primary={['Start a Project', '/contact']} secondary={['How we work', '/process']} />
       <Section>
         <SectionHead eyebrow="Stack" title="What we <em>build with.</em>" />
         <StackTable
@@ -194,7 +194,7 @@ export function Technology() {
 export function Company() {
   return (
     <>
-      <PageHero vis="helmet" badge="About NIMTECH" h1={['Engineers and researchers', '<em>building what’s next.</em>']} lede="NIMTECH is a global engineering studio headquartered in Kuala Lumpur, working with clients across time zones." primary={['Work with us', '/contact']} secondary={['Careers', '/careers']} />
+      <PageHero vis="globe" badge="About NIMTECH" h1={['Engineers and researchers', '<em>building what’s next.</em>']} lede="NIMTECH is a global engineering studio headquartered in Kuala Lumpur, working with clients across time zones." primary={['Work with us', '/contact']} secondary={['Careers', '/careers']} />
       <Statement text="We started where research meets real work. Our team trains its own vision models, then puts them to work in the real world <em>alongside the software, apps and agents</em> businesses run on." />
       <Section tight>
         <SectionHead eyebrow="Values" title="What we <em>believe.</em>" />
@@ -237,7 +237,7 @@ export function Company() {
 export function Careers() {
   return (
     <>
-      <PageHero vis="helmet" badge="Careers" h1={['Build AI that works', '<em>in the real world.</em>']} lede="We’re growing a remote‑first team of engineers, researchers, editors and delivery leads." primary={['See open roles', '#roles']} secondary={['About us', '/company']} />
+      <PageHero vis="agents" badge="Careers" h1={['Build AI that works', '<em>in the real world.</em>']} lede="We’re growing a remote‑first team of engineers, researchers, editors and delivery leads." primary={['See open roles', '#roles']} secondary={['About us', '/company']} />
       <Section id="roles">
         <SectionHead eyebrow="Open roles" title="Roles we’re <em>hiring for.</em>" />
         <div className="border-t border-line">
