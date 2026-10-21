@@ -8,6 +8,7 @@ import { getLenis, setLenis } from '../lib/scroll.js'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
 import Loader from './Loader.jsx'
+import Boundary from './Boundary.jsx'
 import { NavMenu, RequestModal } from './Overlays.jsx'
 
 export default function Layout() {
@@ -82,7 +83,9 @@ export default function Layout() {
       <Header onDark={pathname === '/services/ai-agents'} />
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => (getLenis() ? getLenis().scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
         <motion.main id="main" key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="relative z-[1]">
-          <FrozenOutlet />
+          <Boundary fallback={<PageError />}>
+            <FrozenOutlet />
+          </Boundary>
         </motion.main>
       </AnimatePresence>
       <Footer />
@@ -97,4 +100,18 @@ function FrozenOutlet() {
   const outlet = useOutlet()
   const [frozen] = useState(outlet)
   return frozen
+}
+
+function PageError() {
+  return (
+    <section className="grid min-h-[70svh] place-items-center px-6 text-center">
+      <div>
+        <p className="mono-label">[ Something went wrong ]</p>
+        <h1 className="h-section mt-4">This page hit a snag.</h1>
+        <button type="button" onClick={() => location.reload()} className="pill-btn pill-dark mt-8">
+          Reload the page
+        </button>
+      </div>
+    </section>
+  )
 }

@@ -18,7 +18,7 @@ const strip = (t) => String(t).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim
 const PAGES = {
   '/': {
     title: 'NIMTECH | Software, Apps, Websites & AI Development',
-    description: 'NIMTECH builds management software, mobile apps, websites, API integrations, AI models and WhatsApp AI agents for growing businesses, with one senior team from idea to launch.',
+    description: 'NIMTECH builds management software, mobile apps, websites, API integrations, AI models and WhatsApp AI agents for growing businesses, from idea to launch.',
   },
   '/services': {
     title: 'Services | AI, Computer Vision, Software & Apps | NIMTECH',

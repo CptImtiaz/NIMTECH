@@ -40,14 +40,19 @@ Inter text, JetBrains Mono labels, Space Grotesk wordmark.
   the palette morphs blue, lime, pink. Inner pages use a smaller field in
   the service colour. Reduced motion or no WebGL shows still CSS spheres.
 - **Intro loader** (`Loader.jsx`): counts 000 to 100, slides up, then the
-  header and hero animate in (`src/lib/intro.js`).
+  header and hero animate in (`src/lib/intro.js`). It plays once per
+  browser session (`public/intro-gate.js`).
+- **Phones**: inner-page heroes show still CSS spheres; the live 3D field
+  runs on the home page and on desktop.
 - **Header** with live local clock, services dropdown, Menu button and
   "Contact us"; **Menu** full-screen overlay; **Request modal** that
   prepares the enquiry for WhatsApp or email (`Overlays.jsx`). Any button
   can open it with `openRequest(serviceId)` from `src/lib/bus.js`.
 - **CSS spheres** (`Orb.jsx`, `SphereArt` in `home/Blocks.jsx`) illustrate
   each service without photos.
-- **Live demos** (`demos.jsx`): admin dashboard, customer and partner app,
+- **Live demos** (`demos.jsx`; the software one is `Dashboard.jsx`, a live
+  command centre with modules, KPIs, an interactive chart, a breakdown
+  ring, an activity feed and records): admin dashboard, customer and partner app,
   websites, object tracking and skin analysis, integration flow, WhatsApp
   auto-reply. Sample data only.
 - Reveals: `.rise` (fade, rise, unblur), `Lines` (line by line) and `Words`

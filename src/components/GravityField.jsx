@@ -2,19 +2,35 @@ import { useEffect, useRef, useState } from 'react'
 import { onReady } from '../lib/intro.js'
 import { useReduced } from '../lib/canvas.js'
 import Orb from './Orb.jsx'
+import Boundary from './Boundary.jsx'
 
 // The 3D sphere field. `fixed`: full-screen behind the page, driven by
 // scroll (home). Otherwise it fills its parent and just floats (heroes).
 // Loads three.js after first paint; without WebGL or with reduced motion
 // it shows a still cluster of CSS spheres instead.
-export default function GravityField({ color = '#2F69FF', fixed = false, count, morph = fixed, offset = 0, className = '' }) {
+// If WebGL fails in an unexpected way, show the still spheres instead.
+export default function GravityField(props) {
+  return (
+    <Boundary fallback={<div className={`${props.fixed ? 'fixed inset-0 z-0' : 'absolute inset-0'} pointer-events-none`} aria-hidden="true"><StillCluster color={props.color || '#2F69FF'} /></div>}>
+      <Field {...props} />
+    </Boundary>
+  )
+}
+
+function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset = 0, className = '' }) {
   const box = useRef(null)
   const cv = useRef(null)
   const reduced = useReduced()
   const [failed, setFailed] = useState(false)
 
+  // phones and low-core devices get live 3D only on the home page
+  const [still, setStill] = useState(false)
   useEffect(() => {
-    if (reduced) return
+    if (!fixed && (innerWidth < 768 || (navigator.hardwareConcurrency || 8) <= 4)) setStill(true)
+  }, [fixed])
+
+  useEffect(() => {
+    if (reduced || still) return
     const container = box.current
     const canvas = cv.current
     if (!container || !canvas) return
@@ -44,7 +60,6 @@ export default function GravityField({ color = '#2F69FF', fixed = false, count, 
     addEventListener('scroll', onScroll, { passive: true })
     onScroll()
 
-    // pause when the hero is off screen
     // pause when off screen or the tab is hidden
     let onScreen = true
     const sync = () => (control.paused = !onScreen || document.hidden)
@@ -58,7 +73,6 @@ export default function GravityField({ color = '#2F69FF', fixed = false, count, 
     // build the scene once the intro is done and the browser is idle
     let t = 0
     const idle = (f) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 1200 }) : setTimeout(f, 200))
-    const stopReady = onReady(() => (t = idle(boot)))
     const boot = () => {
       import('../three/gravity.js')
         .then(({ createGravity }) => {
@@ -73,6 +87,8 @@ export default function GravityField({ color = '#2F69FF', fixed = false, count, 
         })
         .catch(() => setFailed(true))
     }
+    // (registered after boot exists: onReady runs at once when already ready)
+    const stopReady = onReady(() => (t = idle(boot)))
 
     return () => {
       dead = true
@@ -88,30 +104,32 @@ export default function GravityField({ color = '#2F69FF', fixed = false, count, 
       removeEventListener('mouseup', up)
       removeEventListener('scroll', onScroll)
     }
-  }, [color, fixed, count, morph, offset, reduced])
+  }, [color, fixed, count, morph, offset, reduced, still])
 
   return (
     <div ref={box} className={`${fixed ? 'fixed inset-0 z-0' : 'absolute inset-0'} pointer-events-none ${className}`} aria-hidden="true">
-      {reduced || failed ? <StillCluster color={color} /> : <canvas ref={cv} className="block h-full w-full" />}
+      {reduced || failed || still ? <StillCluster color={color} /> : <canvas ref={cv} className="block h-full w-full" />}
     </div>
   )
 }
 
 // Static fallback: a few CSS spheres in the service colour.
 function StillCluster({ color }) {
+  // [left%, top%, size in vmax, glass]
   const s = [
-    [50, 48, 18],
-    [38, 40, 11],
-    [62, 38, 9],
-    [58, 60, 13],
-    [42, 62, 8],
-    [70, 52, 7],
-    [30, 54, 6],
+    [68, 34, 22, 0],
+    [84, 22, 11, 1],
+    [52, 20, 9, 0],
+    [88, 52, 14, 0],
+    [60, 58, 12, 1],
+    [76, 66, 8, 0],
+    [40, 34, 6, 1],
+    [94, 80, 9, 0],
   ]
   return (
-    <div className="absolute inset-0">
-      {s.map(([x, y, r], i) => (
-        <Orb key={i} color={color} className="absolute" style={{ left: `${x}%`, top: `${y}%`, width: `${r}vmin`, height: `${r}vmin`, transform: 'translate(-50%,-50%)' }} />
+    <div className="absolute inset-0 overflow-hidden">
+      {s.map(([x, y, r, g], i) => (
+        <Orb key={i} color={color} glass={!!g} className="sphere-art-orb" style={{ position: 'absolute', left: `${x}%`, top: `${y}%`, width: `${r}vmax`, '--k': i, '--z': (i % 3) + 1 }} />
       ))}
     </div>
   )

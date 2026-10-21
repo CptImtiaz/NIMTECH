@@ -72,13 +72,13 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
-          <div>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-12 py-16 lg:grid-cols-4">
+          <div className="col-span-2 lg:col-span-1">
             <p className="font-grotesk text-lg font-bold tracking-[0.22em]">NIMTECH</p>
             <p className="mt-4 max-w-[20rem] text-sm leading-relaxed text-white/55">An independent studio building software, apps, websites and AI for growing businesses.</p>
           </div>
           {cols.map(([t, links], i) => (
-            <nav key={t} aria-label={t} className="rise" style={{ '--d': `${i * 0.08}s` }}>
+            <nav key={t} aria-label={t} className={`rise ${i === 2 ? 'col-span-2 lg:col-span-1' : ''}`} style={{ '--d': `${i * 0.08}s` }}>
               <h3 className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">{t}</h3>
               <ul className="mt-5 space-y-3">
                 {links.map(([l, to]) => (
@@ -125,29 +125,33 @@ export default function Footer() {
   )
 }
 
-// Giant frosted NIMTECH that rises letter by letter and drifts sideways as
-// the footer scrolls into view.
+// Giant frosted NIMTECH. Letters rise out of a clip one by one as the
+// footer scrolls into view, a light sweeps across them, and each lifts on
+// hover.
 function Wordmark({ target }) {
   const { scrollYProgress } = useScroll({ target, offset: ['start end', 'end end'] })
-  const p = useSpring(scrollYProgress, { stiffness: 90, damping: 22, mass: 0.4 })
-  const x = useTransform(p, [0, 1], ['-6%', '0%'])
+  const p = useSpring(scrollYProgress, { stiffness: 80, damping: 20, mass: 0.4 })
+  const scale = useTransform(p, [0.4, 1], [0.92, 1])
   return (
-    <motion.p className="foot-mark" style={{ x }} aria-hidden="true">
-      {'NIMTECH'.split('').map((c, i) => (
-        <Letter key={i} p={p} i={i} c={c} />
-      ))}
-    </motion.p>
+    <div className="foot-mark-wrap" aria-hidden="true">
+      <motion.p className="foot-mark" style={{ scale }}>
+        {'NIMTECH'.split('').map((c, i) => (
+          <Letter key={i} p={p} i={i} c={c} />
+        ))}
+      </motion.p>
+    </div>
   )
 }
 
 function Letter({ p, i, c }) {
-  const a = 0.35 + i * 0.06
-  const y = useTransform(p, [a, a + 0.3], ['80%', '0%'])
-  const o = useTransform(p, [a, a + 0.3], [0, 1])
-  const r = useTransform(p, [a, a + 0.3], [12, 0])
+  const a = 0.3 + i * 0.07
+  const y = useTransform(p, [a, a + 0.3], ['105%', '0%'])
+  const r = useTransform(p, [a, a + 0.3], [8, 0])
   return (
-    <motion.span className="inline-block" style={{ y, opacity: o, rotate: r }}>
-      {c}
-    </motion.span>
+    <span className="foot-letter-clip">
+      <motion.span className="foot-letter" style={{ y, rotate: r, '--i': i }}>
+        {c}
+      </motion.span>
+    </span>
   )
 }

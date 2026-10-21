@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Check, MapPin, Truck, Camera, CalendarCheck, Building2, Plane, Wallet, HeartPulse, Leaf, Send } from 'lucide-react'
+import { Check, MapPin, Truck, Camera, CalendarCheck, Send } from 'lucide-react'
 import { REDUCE } from '../lib/canvas.js'
 
 // Interactive product demos, one per service. All data shown is sample data.
@@ -254,58 +254,8 @@ export function AppDemo() {
 }
 
 /* ---------------- Management software dashboard ---------------- */
-const MODS = [
-  ['Company', Building2, [['Staff', '248'], ['Branches', '6'], ['Approvals', '12']], [40, 55, 48, 62, 70, 66, 74, 80, 77, 85, 90, 94], ['HR policy update · approved', 'New branch · Penang', 'Leave request · Sarah']],
-  ['Trips', Plane, [['Trips today', '36'], ['On time', '97%'], ['Seats sold', '1,204']], [30, 42, 38, 55, 61, 58, 72, 69, 80, 76, 88, 92], ['Morning tour · boarding', 'Group trip · 12 guests', 'Vehicle swap · Bus 4']],
-  ['Fintech', Wallet, [['Volume', 'RM 1.2M'], ['Invoices', '3,410'], ['Overdue', '2%']], [50, 46, 58, 63, 60, 71, 69, 78, 82, 79, 88, 96], ['Payout batch · sent', 'Invoice #8841 · paid', 'Refund · RM 120']],
-  ['Healthcare', HeartPulse, [['Patients', '5,960'], ['Visits today', '142'], ['No-shows', '3%']], [35, 40, 52, 49, 57, 63, 60, 68, 72, 70, 79, 84], ['Dr. Lee · 14 visits', 'Lab results · ready', 'Reminder SMS · sent']],
-  ['Wellness', Leaf, [['Products', '312'], ['Orders', '1,887'], ['Low stock', '4']], [44, 52, 49, 60, 58, 66, 74, 70, 81, 86, 84, 93], ['Collagen drink · restock', 'Distributor · Johor', 'Order #2231 · shipped']],
-]
-
-export function DashboardDemo() {
-  const ref = useRef(null)
-  const [m, setM] = useState(0)
-  const [auto, setAuto] = useState(true)
-  useTick(ref, 3600, () => setM((x) => (x + 1) % MODS.length), auto)
-  const [name, , kpis, bars, rows] = MODS[m]
-  return (
-    <div ref={ref} className="db">
-      <aside className="db-side" role="tablist" aria-label="Modules">
-        <span className="db-logo">admin</span>
-        {MODS.map(([n, Ico], i) => (
-          <button key={n} type="button" role="tab" aria-selected={m === i} onClick={() => (setM(i), setAuto(false))}>
-            <Ico className="h-4 w-4" />
-            <span>{n}</span>
-          </button>
-        ))}
-      </aside>
-      <div key={m} className="db-main">
-        <p className="db-title">{name} overview</p>
-        <div className="db-kpis">
-          {kpis.map(([k, v]) => (
-            <div key={k}>
-              <small>{k}</small>
-              <b>{v}</b>
-            </div>
-          ))}
-        </div>
-        <div className="db-chart" aria-hidden="true">
-          {bars.map((h, i) => (
-            <i key={i} style={{ height: `${h}%`, animationDelay: `${i * 40}ms` }} />
-          ))}
-        </div>
-        <ul className="db-rows">
-          {rows.map((r) => (
-            <li key={r}>
-              <span />
-              {r}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  )
-}
+export { default as DashboardDemo } from './Dashboard.jsx'
+import DashboardDemo from './Dashboard.jsx'
 
 /* ---------------- Websites in a browser ---------------- */
 const SITES = [
@@ -360,6 +310,7 @@ export function VisionDemo() {
       <div className="vz-cam">
         <video ref={v} poster="/projects/tracking.webp" muted loop playsInline preload="none" aria-label="Object tracking model following one vehicle from a drone">
           <source src="/projects/tracking.mp4" type="video/mp4" />
+          <source src="/projects/tracking.webm" type="video/webm" />
         </video>
         <span className="vz-scan" />
         <span className="vz-corner c-tl" />

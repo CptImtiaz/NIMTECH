@@ -8,6 +8,8 @@ export default defineConfig({
     // libraries get stable chunks so they stay cached between releases
     chunkSizeWarningLimit: 600,
     cssCodeSplit: true,
+    // ship every asset as a file (fonts included) so the strict CSP holds
+    assetsInlineLimit: 0,
     rollupOptions: {
       output: {
         manualChunks(id) {

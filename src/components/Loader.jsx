@@ -15,6 +15,15 @@ export default function Loader() {
   const panel = useRef(null)
 
   useEffect(() => {
+    // already seen this session: no intro
+    if (document.documentElement.classList.contains('no-intro')) {
+      setGone(true)
+      markReady()
+      return
+    }
+    try {
+      sessionStorage.setItem('nim-intro', '1')
+    } catch {}
     stopScroll()
     let raf
     const t0 = performance.now()
