@@ -2,7 +2,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { INSIGHTS, insight } from '../data/insights.js'
 import { svcName } from '../data/services.js'
-import { CtaBand, PageHero } from '../components/ui.jsx'
+import { PageHero } from '../components/ui.jsx'
 
 const fmt = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 
@@ -44,7 +44,6 @@ export function InsightsIndex() {
           ))}
         </div>
       </section>
-      <CtaBand title="Want this applied" accent="to your business?" />
     </>
   )
 }
@@ -117,7 +116,6 @@ export function Article() {
           </div>
         </div>
       </section>
-      <CtaBand />
     </>
   )
 }

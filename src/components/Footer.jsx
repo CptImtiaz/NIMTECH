@@ -42,10 +42,11 @@ export default function Footer() {
         <div className="foot-track">
           {[0, 1].map((k) => (
             <span key={k} className="inline-flex items-center">
-              {WORDS.map((w) => (
-                <span key={w} className="inline-flex items-center">
-                  <span className="px-8">{w}</span>
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#2f69ff]" />
+              {WORDS.map((w, i) => (
+                <span key={w} className="foot-tick">
+                  <span className="foot-tick-n">0{i + 1}</span>
+                  {w}
+                  <span className="foot-tick-dot" />
                 </span>
               ))}
             </span>

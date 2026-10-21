@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { ORDER, SERVICES } from '../../data/services.js'
 import { openRequest } from '../../lib/bus.js'
 import Orb from '../Orb.jsx'
@@ -58,27 +58,6 @@ export function AboutStatement() {
           </div>
         </div>
       </div>
-    </section>
-  )
-}
-
-/* ---------------- We / Build / → / Better ---------------- */
-export function CreateBand() {
-  const tiles = [
-    ['We', 'bg-[#f1f0ee] text-[#111]'],
-    ['Build', 'bg-gradient-to-br from-[#5175ff] to-[#0e2ac5] text-white'],
-    [null, 'bg-[#0a0a0a] text-white'],
-    ['Better', 'bg-[#f1f0ee]/60 text-[#111]/35'],
-  ]
-  return (
-    <section className="bg-white">
-      <ul className="wrap flex flex-col gap-3 py-10 sm:flex-row sm:gap-4">
-        {tiles.map(([w, cls], i) => (
-          <li key={i} className="rise flex-1" style={{ '--d': `${i * 0.12}s` }}>
-            <span className={`band-tile ${cls}`}>{w || <ArrowRight className="h-9 w-9 sm:h-12 sm:w-12" />}</span>
-          </li>
-        ))}
-      </ul>
     </section>
   )
 }

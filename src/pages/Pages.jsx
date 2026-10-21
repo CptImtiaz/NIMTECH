@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
 import { ORDER, SERVICES } from '../data/services.js'
 import { HQ } from '../data/site.js'
-import { AboutStatement, CreateBand, ServiceCards, SolveRows, Stats } from '../components/home/Blocks.jsx'
+import { AboutStatement, ServiceCards, SolveRows, Stats } from '../components/home/Blocks.jsx'
 import { DemoLab, Process, WhyBento } from '../components/home/Sections.jsx'
 import Orb from '../components/Orb.jsx'
-import { CtaBand, PageHero, Pill, TalkButton } from '../components/ui.jsx'
+import { PageHero, Pill, TalkButton } from '../components/ui.jsx'
 
 const Body = ({ children }) => <div className="relative z-10 overflow-clip rounded-t-[2.5rem] bg-white md:rounded-t-[4rem]">{children}</div>
 
@@ -18,7 +18,6 @@ export function Services() {
         <ServiceCards title="Pick a service" />
         <DemoLab />
         <SolveRows />
-        <CtaBand />
       </Body>
     </>
   )
@@ -32,11 +31,9 @@ export function About() {
       </PageHero>
       <Body>
         <AboutStatement />
-        <CreateBand />
         <Stats />
         <WhyBento />
         <Process />
-        <CtaBand />
       </Body>
     </>
   )

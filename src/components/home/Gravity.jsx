@@ -16,11 +16,20 @@ export default function GravityStory() {
   const [stage, setStage] = useState(0)
   useEffect(() => {
     let raf = 0
+    let vh = innerHeight || 1
+    let vw = innerWidth
+    const resize = () => {
+      if (innerWidth !== vw) {
+        vw = innerWidth
+        vh = innerHeight || 1
+      }
+    }
+    addEventListener('resize', resize)
     const on = () => {
       if (raf) return
       raf = requestAnimationFrame(() => {
         raf = 0
-        const p = scrollY / (innerHeight || 1)
+        const p = scrollY / vh
         setStage(p > 1.55 ? 2 : p > 0.7 ? 1 : 0)
       })
     }
@@ -28,6 +37,7 @@ export default function GravityStory() {
     on()
     return () => {
       removeEventListener('scroll', on)
+      removeEventListener('resize', resize)
       cancelAnimationFrame(raf)
     }
   }, [])

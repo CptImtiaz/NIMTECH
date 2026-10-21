@@ -397,15 +397,24 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   }
   simulateAndRender()
 
+  // Phones resize the viewport as the address bar shows and hides while
+  // scrolling. Ignore those height-only nudges so the canvas is not cleared
+  // and the heart targets are not reshuffled mid-scroll.
+  let lastW = container.clientWidth
+  let lastH = container.clientHeight
   const handleResize = () => {
     const width = container.clientWidth
     const height = container.clientHeight
     if (!width || !height) return
+    if (width === lastW && Math.abs(height - lastH) < 160) return
+    const widthChanged = width !== lastW
+    lastW = width
+    lastH = height
     camera.aspect = width / height
     camera.updateProjectionMatrix()
     renderer.setSize(width, height)
     updateFrustumBounds()
-    assignHeartTargets()
+    if (widthChanged) assignHeartTargets()
   }
   const ro = new ResizeObserver(handleResize)
   ro.observe(container)

@@ -11,7 +11,7 @@ import Boundary from './Boundary.jsx'
 // If WebGL fails in an unexpected way, show the still spheres instead.
 export default function GravityField(props) {
   return (
-    <Boundary fallback={<div className={`${props.fixed ? 'fixed inset-0 z-0' : 'absolute inset-0'} pointer-events-none`} aria-hidden="true"><StillCluster color={props.color || '#2F69FF'} /></div>}>
+    <Boundary fallback={<div className={`${props.fixed ? 'g-fixed' : 'absolute inset-0'} pointer-events-none`} aria-hidden="true"><StillCluster color={props.color || '#2F69FF'} /></div>}>
       <Field {...props} />
     </Boundary>
   )
@@ -46,12 +46,23 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
     }
     const down = () => (mouse.isDown = true)
     const up = () => (mouse.isDown = false)
+    // viewport height measured once (and again only when the width changes),
+    // so the phone address bar showing or hiding does not jolt the progress
+    let vh = innerHeight || 1
+    let vw = innerWidth
+    const onResize = () => {
+      if (innerWidth !== vw) {
+        vw = innerWidth
+        vh = innerHeight || 1
+      }
+    }
+    addEventListener('resize', onResize)
     let raf = 0
     const onScroll = () => {
       if (raf) return
       raf = requestAnimationFrame(() => {
         raf = 0
-        control.progress = fixed ? window.scrollY / (innerHeight || 1) : 0
+        control.progress = fixed ? window.scrollY / vh : 0
       })
     }
     addEventListener('pointermove', move, { passive: true })
@@ -103,11 +114,12 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
       removeEventListener('mousedown', down)
       removeEventListener('mouseup', up)
       removeEventListener('scroll', onScroll)
+      removeEventListener('resize', onResize)
     }
   }, [color, fixed, count, morph, offset, reduced, still])
 
   return (
-    <div ref={box} className={`${fixed ? 'fixed inset-0 z-0' : 'absolute inset-0'} pointer-events-none ${className}`} aria-hidden="true">
+    <div ref={box} className={`${fixed ? 'g-fixed' : 'absolute inset-0'} pointer-events-none ${className}`} aria-hidden="true">
       {reduced || failed || still ? <StillCluster color={color} /> : <canvas ref={cv} className="block h-full w-full" />}
     </div>
   )

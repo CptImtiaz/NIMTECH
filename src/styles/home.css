@@ -19,10 +19,6 @@
 .social-chip { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 9999px; background: var(--surface); transition: transform .3s var(--spring); }
 .social-chip:hover { transform: scale(1.15); }
 
-/* We / Build / → / Better */
-.band-tile { display: grid; place-items: center; height: 6rem; border-radius: 9999px; font-family: 'Raleway Variable', sans-serif; font-size: 1.875rem; font-weight: 500; transition: transform .35s var(--spring); }
-.band-tile:hover { transform: scale(1.03); }
-@media (min-width: 640px) { .band-tile { height: 10rem; font-size: 2.6rem; } }
 
 /* service ink cards with 3D sphere art */
 .svc-card { display: flex; flex-direction: column; justify-content: space-between; gap: 1rem; min-height: 30rem; border-radius: 2rem; padding: 1.75rem; color: #fff;
@@ -55,14 +51,6 @@
 .why-card:hover .why-orb { transform: translate(-10px, 10px) scale(1.1); }
 .why-ic { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 1rem; background: var(--ink); color: #fff; }
 
-/* CTA panel */
-.cta { position: relative; isolation: isolate; overflow: hidden; border-radius: 2.5rem; padding: 7rem 1.5rem 8rem; text-align: center; color: #fff; background: radial-gradient(80% 90% at 50% 120%, #1b2fb0 0%, #0a0a0a 60%); }
-.cta-orbs i { position: absolute; z-index: -1; border-radius: 50%; background: radial-gradient(circle at 32% 28%, #fff 0 5%, var(--c) 45%, color-mix(in srgb, var(--c) 40%, #000)); animation: orb-drift 9s ease-in-out infinite alternate; }
-.cta-orbs i:nth-child(1) { --c: #2f69ff; left: 6%; top: 18%; width: 7rem; height: 7rem; }
-.cta-orbs i:nth-child(2) { --c: #e1fc03; right: 9%; top: 12%; width: 4rem; height: 4rem; animation-delay: -3s; }
-.cta-orbs i:nth-child(3) { --c: #ffc5c2; right: 14%; bottom: 14%; width: 8rem; height: 8rem; animation-delay: -5s; }
-.cta-orbs i:nth-child(4) { --c: #96e5ff; left: 14%; bottom: 10%; width: 3.5rem; height: 3.5rem; animation-delay: -7s; }
-@media (max-width: 640px) { .cta-orbs i { opacity: .5; } }
 
 /* segmented tabs on dark */
 .seg button .orb { box-shadow: none; }

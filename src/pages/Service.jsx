@@ -2,7 +2,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import { ORDER, SERVICES } from '../data/services.js'
 import { DEMOS } from '../components/demos.jsx'
 import { SphereArt } from '../components/home/Blocks.jsx'
-import { CtaBand, Faq, Label, Lines, PageHero, Pill, TalkButton } from '../components/ui.jsx'
+import { Faq, Label, Lines, PageHero, Pill, TalkButton } from '../components/ui.jsx'
 
 // Service page: 3D hero in the service colour, then the detail.
 export default function Service() {
@@ -89,7 +89,6 @@ export function ServiceDetail({ id, demo = true }) {
       </section>
 
       <Faq items={s.faq} />
-      <CtaBand />
     </div>
   )
 }

@@ -151,30 +151,4 @@ export function Faq({ items, title = 'Questions, answered.' }) {
   )
 }
 
-// Black call-to-action panel with orbiting spheres.
-export function CtaBand({ title = ['Have an idea?', 'Let’s give it weight.'], text = 'Tell us what you want to build. We reply within one business day with questions and a first plan.' }) {
-  return (
-    <section className="bg-white px-3 pb-3 sm:px-5 sm:pb-5">
-      <div className="cta rise">
-        <div className="cta-orbs" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <i />
-        </div>
-        <div className="relative">
-          <p className="mono-label text-white/50">[ Let’s collaborate ]</p>
-          <Lines lines={title} className="h-hero mx-auto mt-6 max-w-[16ch] text-white" stagger={100} />
-          <p className="mx-auto mt-6 max-w-[44ch] text-[17px] leading-relaxed text-white/60">{text}</p>
-          <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <Pill variant="light" arrow="up-right" onClick={() => openRequest()}>
-              Start a project
-            </Pill>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 export const Arrow = ArrowUpRight
