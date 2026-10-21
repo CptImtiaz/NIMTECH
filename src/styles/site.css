@@ -29,8 +29,8 @@
   }
   body {
     margin: 0;
-    background: #fff;
-    color: #0b1013;
+    background: #05060a;
+    color: #f4f6ff;
     font-family: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
     line-height: 1.55;
   }
@@ -846,20 +846,12 @@
 @media (prefers-reduced-motion: reduce) { .float-y, .cta-band { animation: none; } }
 
 /* ---------- forms, cards, steps, article ---------- */
-.field { display: grid; gap: 8px; font-size: 14px; font-weight: 500; color: #404040; }
+.field { display: grid; gap: 8px; font-size: 14px; font-weight: 500; color: rgba(255,255,255,.7); }
 .field input, .field textarea {
-  width: 100%; border-radius: 14px; border: 1px solid rgba(0,0,0,.1); background: #fff; padding: 13px 16px; font-size: 16px; font-weight: 400; color: #0a0a0a;
+  width: 100%; border-radius: 14px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.04); padding: 13px 16px; font-size: 16px; font-weight: 400; color: #fff;
   transition: border-color .2s, box-shadow .2s;
 }
 .field input:focus, .field textarea:focus { outline: none; border-color: #3054ff; box-shadow: 0 0 0 4px rgba(48,84,255,.12); }
-.get-card {
-  position: relative; border-radius: 26px; padding: 28px; background: #f6f6f8; border: 1px solid rgba(0,0,0,.05); overflow: hidden;
-  transition: transform .5s var(--ease), background-color .5s var(--ease), box-shadow .5s var(--ease);
-}
-.get-card.in:hover { transform: translateY(-6px); background: #fff; box-shadow: 0 30px 60px -30px rgba(20,20,60,.25); }
-.get-card::after { content: ''; position: absolute; right: -40px; top: -40px; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle, rgba(48,84,255,.18), transparent 70%); opacity: 0; transition: opacity .5s; }
-.get-card:hover::after { opacity: 1; }
-.get-num { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 34px; color: #3054ff; }
 .steps { position: relative; }
 @media (min-width: 768px) {
   .steps::before { content: ''; position: absolute; left: 22px; right: 0; top: 22px; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.35), rgba(255,255,255,.05)); }
@@ -867,5 +859,5 @@
 .step-dot { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #3054ff; color: #fff; font-weight: 600; box-shadow: 0 0 0 6px rgba(48,84,255,.18); }
 .prose-nim h2 { margin: 2.2em 0 .6em; font-family: 'Instrument Sans Variable', sans-serif; font-weight: 600; font-size: 28px; letter-spacing: -0.02em; }
 .prose-nim section:first-child h2 { margin-top: 0; }
-.prose-nim p { margin-top: 1em; font-size: 18px; line-height: 1.75; color: #3f3f46; }
+.prose-nim p { margin-top: 1em; font-size: 18px; line-height: 1.75; color: rgba(255,255,255,.72); }
 .insight-cover { background: radial-gradient(60% 80% at 20% 20%, var(--a, #3054ff), transparent 60%), radial-gradient(60% 80% at 80% 90%, var(--b, #a068ff), transparent 60%), #0b0b18; }

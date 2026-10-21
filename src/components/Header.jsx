@@ -1,22 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ORDER, SERVICES } from '../data/services.js'
+import { PROJECTS } from '../data/projects.js'
+import Photo from './Photo.jsx'
 import { Logo } from './Icons.jsx'
 
 // Header with one shared dropdown that morphs (position, width, height)
 // between menus, sliding its content in the direction of travel.
-const MENUS = ['services', 'work', 'company']
+const MENUS = ['services', 'solutions', 'company']
 const PAD = 20
 
-// preview image per service (project shots and scene renders)
-const PREVIEW = {
-  'ai-agents': '/posters/ai.webp',
-  'computer-vision': '/projects/target-locker.jpg',
-  software: '/projects/seaescape.webp',
-  apps: '/posters/apps.webp',
-  'api-integration': '/posters/api.webp',
-  'ai-content': '/posters/content.webp',
-}
+// two showcase cards in the Solutions menu
+const SOLUTIONS = ['roro', 'whatsapp'].map((id) => PROJECTS.find((p) => p.id === id))
 
 const Chevron = () => (
   <svg width="8" height="5" viewBox="0 0 8 5" fill="none" aria-hidden="true">
@@ -157,7 +152,7 @@ export default function Header({ tone = 'dark' }) {
         >
           <ul className="links">
             {trig('services', 'Services')}
-            {trig('work', 'Work')}
+            {trig('solutions', 'Solutions')}
             {trig('company', 'Company')}
             <li>
               <Link to="/services/ai-agents" className="plain-link" onPointerEnter={(e) => e.pointerType === 'mouse' && later(60)}>
@@ -171,33 +166,30 @@ export default function Header({ tone = 'dark' }) {
               <div className="d-list">
                 {ORDER.map((id, i) => (
                   <Link key={id} to={`/services/${id}`} className={`d-item ${img === i ? 'is-active' : ''}`} onPointerEnter={() => setImg(i)} onFocus={() => setImg(i)} onClick={close}>
-                    <strong>{SERVICES[id].name}</strong>
+                    <strong>{SERVICES[id].short}</strong>
                     <span>{SERVICES[id].tagline}</span>
                   </Link>
                 ))}
               </div>
               <div className="d-media" aria-hidden="true">
                 {ORDER.map((id, i) => (
-                  <img key={id} src={PREVIEW[id]} alt="" loading="lazy" className={`${img === i ? 'is-active' : ''} ${PREVIEW[id].startsWith('/posters') ? 'is-render' : ''}`} />
+                  <Photo key={id} src={SERVICES[id].image} sizes="300px" className={img === i ? 'is-active' : ''} />
                 ))}
               </div>
             </div>
-            <div className="panel p-work" ref={(el) => (panels.current.work = el)}>
-              {[
-                ['/work', 'Sultana Food Industry', 'Brand website with WhatsApp ordering.', '/projects/sultana.webp'],
-                ['/work', 'Target Locker', 'Vision AI that follows one object.', '/projects/target-locker.jpg'],
-              ].map(([to, t, d, src]) => (
-                <Link key={t} to={to} className="card" onClick={close}>
-                  <img src={src} alt="" loading="lazy" />
-                  <strong>{t}</strong>
-                  <span>{d}</span>
+            <div className="panel p-work" ref={(el) => (panels.current.solutions = el)}>
+              {SOLUTIONS.map((p) => (
+                <Link key={p.id} to={`/services/${p.s}`} className="card" onClick={close}>
+                  <Photo src={p.image} sizes="240px" />
+                  <strong>{p.title}</strong>
+                  <span>{p.line.split(',')[0]}.</span>
                 </Link>
               ))}
             </div>
             <div className="panel p-company" ref={(el) => (panels.current.company = el)}>
               {[
                 ['/about', 'About us'],
-                ['/work', 'All projects'],
+                ['/services', 'All services'],
                 ['/insights', 'Insights'],
                 ['/contact', 'Contact'],
               ].map(([to, l]) => (
@@ -225,11 +217,10 @@ export default function Header({ tone = 'dark' }) {
         <h3>Services</h3>
         {ORDER.map((id) => (
           <Link key={id} to={`/services/${id}`}>
-            {SERVICES[id].name}
+            {SERVICES[id].short}
           </Link>
         ))}
         <h3>Company</h3>
-        <Link to="/work">Work</Link>
         <Link to="/about">About us</Link>
         <Link to="/insights">Insights</Link>
         <Link to="/contact">Contact</Link>

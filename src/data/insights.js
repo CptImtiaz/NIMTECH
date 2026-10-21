@@ -37,7 +37,7 @@ export const INSIGHTS = [
   {
     slug: 'training-vision-models-on-your-data',
     seo: 'How to Train a Vision Model on Your Own Data',
-    s: 'computer-vision',
+    s: 'ai-models',
     kind: 'Playbook',
     title: 'Training a vision model on your own data: a practical playbook',
     sum: 'Off-the-shelf models rarely know your products, defects or sites. Here is how we go from raw images to a model you can trust on the line.',

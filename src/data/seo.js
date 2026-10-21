@@ -17,22 +17,17 @@ const strip = (t) => String(t).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim
 
 const PAGES = {
   '/': {
-    title: 'NIMTECH | AI Agents, Computer Vision, Software & Apps',
-    description: 'NIMTECH designs, builds and runs AI agents, computer vision, custom software, mobile apps and integrations for growing businesses, with one senior team from idea to launch.',
+    title: 'NIMTECH | Software, Apps, Websites & AI Development',
+    description: 'NIMTECH builds management software, mobile apps, websites, API integrations, AI models and WhatsApp AI agents for growing businesses, with one senior team from idea to launch.',
   },
   '/services': {
     title: 'Services | AI, Computer Vision, Software & Apps | NIMTECH',
-    description: 'Six services under one team: AI agents, computer vision, custom software, mobile apps, API integration and AI content.',
+    description: 'Six services under one team: software development, mobile apps, API integration, websites, AI models and AI agents.',
     crumb: 'Services',
-  },
-  '/work': {
-    title: 'Our Work | Real AI, Vision, Software and App Projects | NIMTECH',
-    description: 'Websites, booking platforms, vision models, integrations and apps built by the NIMTECH team, with what each one does and the result.',
-    crumb: 'Work',
   },
   '/about': {
     title: 'About NIMTECH | Senior Team for AI & Software',
-    description: `NIMTECH is a senior engineering team based in ${HQ}, building AI, computer vision, software and apps for businesses worldwide.`,
+    description: `NIMTECH is a senior engineering team based in ${HQ}, building software, apps, websites and AI for businesses worldwide.`,
     crumb: 'About',
   },
   '/contact': {
@@ -44,12 +39,12 @@ const PAGES = {
 
 // Service titles kept to 50-60 characters for search results
 const SERVICE_TITLES = {
-  'ai-agents': 'AI Agent Development | Agents, RAG & Copilots | NIMTECH',
-  'computer-vision': 'Computer Vision Development & Model Training | NIMTECH',
-  software: 'Custom Software Development | Platforms & Portals | NIMTECH',
-  apps: 'App Development | iOS, Android & Cross-Platform | NIMTECH',
-  'api-integration': 'API & Systems Integration | Connect Every System | NIMTECH',
-  'ai-content': 'AI Content Production | Any Format, Any Channel | NIMTECH',
+  software: 'Software Development | Management Systems | NIMTECH',
+  apps: 'Mobile App Development | iOS & Android Apps | NIMTECH',
+  'api-integration': 'API Integration | Connect Shops, Couriers & Payments | NIMTECH',
+  websites: 'Website Development | Brand & Booking Websites | NIMTECH',
+  'ai-models': 'AI Model Development | Computer Vision & ML | NIMTECH',
+  'ai-agents': 'AI Agent Development | WhatsApp Auto-Reply Agents | NIMTECH',
 }
 
 for (const id of ORDER) {

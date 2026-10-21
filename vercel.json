@@ -79,6 +79,21 @@
       "source": "/technology",
       "destination": "/services",
       "permanent": true
+    },
+    {
+      "source": "/work",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/services/computer-vision",
+      "destination": "/services/ai-models",
+      "permanent": true
+    },
+    {
+      "source": "/services/ai-content",
+      "destination": "/services",
+      "permanent": true
     }
   ]
 }

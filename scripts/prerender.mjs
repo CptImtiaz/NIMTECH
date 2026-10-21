@@ -68,7 +68,7 @@ const md = [
   '',
   '## Company',
   '',
-  ...['/work', '/about', '/insights', '/contact'].map(
+  ...['/about', '/insights', '/contact'].map(
     (u) => `- [${pageMeta(u).title.split(' | ')[0]}](${SITE_URL}${u}): ${pageMeta(u).description}`,
   ),
   '',

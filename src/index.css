@@ -1,7 +1,6 @@
 @import './styles/site.css';
 @import './styles/home.css';
 @import './styles/agents.css';
-@import './styles/apps.css';
 
 @tailwind base;
 @tailwind components;

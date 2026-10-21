@@ -24,7 +24,7 @@ export default function Footer() {
             NIMTECH
           </Link>
           <h2 className="brand__title">AI and software, built to last</h2>
-          <p className="brand__text">We design, build and run AI agents, computer vision, software, apps and integrations for growing businesses, with one senior team from first idea to launch.</p>
+          <p className="brand__text">We design and build software, mobile apps, websites, integrations, AI models and AI agents for growing businesses, with one senior team from idea to launch.</p>
           <Link to="/contact" className="brand__cta">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -69,7 +69,7 @@ export default function Footer() {
           <h3 className="col__title">Company</h3>
           <ul className="col__list">
             <li><Link to="/about">About us</Link></li>
-            <li><Link to="/work">Projects</Link></li>
+            <li><Link to="/services">All services</Link></li>
             <li><Link to="/insights">Insights</Link></li>
             <li><Link to="/contact">Contact</Link></li>
           </ul>

@@ -9,7 +9,6 @@ import '@fontsource/instrument-serif/400-italic.css'
 import '@fontsource-variable/geist'
 import '@fontsource-variable/plus-jakarta-sans'
 import '@fontsource-variable/urbanist'
-import '@fontsource-variable/figtree'
 import './index.css'
 
 const el = document.getElementById('root')

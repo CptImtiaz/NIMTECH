@@ -1,8 +1,8 @@
 # NIMTECH
 
-Website for NIMTECH, a senior team that designs, builds and runs AI
-agents, computer vision, software, mobile apps, integrations and AI
-content for growing businesses. Built with React, Vite, Tailwind CSS,
+Website for NIMTECH, a senior team that builds software, mobile apps,
+websites, API integrations, AI models and AI agents for growing
+businesses. Built with React, Vite, Tailwind CSS,
 Framer Motion, hls.js and Lenis.
 
 ## Getting started
@@ -19,46 +19,43 @@ npm run preview   # serve the production build
 
 | Route | Page |
 | --- | --- |
-| `/` | Video hero ("Build Faster"), six services, real projects, the AI automation mosaic, delivery tabs, AI agents orbit, why NIMTECH, FAQ |
-| `/services` | All services and how we deliver |
-| `/services/:id` | Service page: dark hero with the service's 3D render, what you get, related projects, four steps, FAQ (`computer-vision`, `software`, `api-integration`, `ai-content`) |
-| `/services/ai-agents` | The agent cast in orbit, the manifesto, "Chat anywhere", then the service detail |
-| `/services/apps` | Daylight hero around the concept app "Nestling", night falls for the home-screen story, then the service detail |
-| `/work` | All projects with pictures, filterable by service |
-| `/about` | Story, values and how we deliver |
+| `/` | Hero (video, aurora, moving grid, floating cards), services reel, pinned project gallery, live demos, WhatsApp agent demo, process, why us, FAQ |
+| `/services` | All services and the live demos |
+| `/services/:id` | Photo hero, live demo, what you get, projects, four steps, FAQ (`software`, `apps`, `api-integration`, `websites`, `ai-models`) |
+| `/services/ai-agents` | The agent cast in orbit, manifesto, chat anywhere, WhatsApp demo, then the service detail |
+| `/about` | Story, why us, process |
 | `/insights`, `/insights/:slug` | Insights index and articles (`src/data/insights.js`) |
 | `/contact` | Enquiry form (opens WhatsApp or email) and contact details |
 
 ## Design
 
-- **Header** (`src/components/Header.jsx`): morphing dropdown with three
-  panels (services, work, company) and a mobile sheet.
-- **Footer** (`src/components/Footer.jsx`): blue-hour meadow video with a
-  frosted NIMTECH wordmark.
-- **Home sections** (`src/components/home/`): `VideoHero` (Mux HLS
-  stream), `ServicesGrid`, `ProjectsShowcase`, `Mosaic` (five-card
-  automation mosaic, plays its entrance once), `DeliverTabs` (stages cycle
-  every 4 seconds over a video), `AgentOrbit` (typed headline, orbiting
-  agents, count-up), `CoreFeatures`.
+A dark, futuristic system: gradient-shimmer headlines, glass cards with a
+glow that follows the pointer (`.spot`), photo heroes with a slow zoom,
+and elements that fade up as they scroll in (`.rise`). Everything respects
+reduced motion.
+
+- **Header** (`src/components/Header.jsx`): morphing dropdown (services,
+  solutions, company) and a mobile sheet.
+- **Footer** (`src/components/Footer.jsx`): meadow video with a frosted
+  wordmark.
+- **Home** (`src/components/home/`): `HeroX`, `ServiceReel`, `Showcase`,
+  and `Sections.jsx` (`DemoLab`, `AgentSpot`, `Process`, `WhyBento`).
+- **Live demos** (`src/components/demos.jsx`): management dashboard, RoRo
+  bin customer and driver apps, website browser, object tracking and skin
+  analysis, integration flow, WhatsApp auto-reply. Sample data only.
 - **Shared pieces** (`src/components/ui.jsx`): `PageHero`, `StartButton`,
-  `Faq`, `CtaBand`.
-- **Styles** (`src/styles/`): `site.css` (tokens, header, footer, shared),
-  `home.css` (home sections, project art), `agents.css`, `apps.css`.
-- **Type** (self-hosted via Fontsource): Instrument Sans and Instrument
-  Serif for headlines, Inter for text, Plus Jakarta Sans (mosaic),
-  Urbanist (agents orbit), Figtree (Apps page), Geist (header).
-- **Agent cast** (`src/components/Puppet.jsx`): 16 claymation-style
-  puppet agents drawn in SVG.
-- Elements with the `rise` class fade up as they scroll into view
-  (`--d` sets a delay). Everything respects reduced motion.
+  `Faq`, `CtaBand`. `Photo.jsx` renders responsive photos.
+- **Styles**: `src/styles/site.css` (tokens, header, footer, forms) and
+  `src/styles/home.css` (everything else).
 
 ## Editing content
 
-- `src/data/services.js`: the six services (tagline, description, what you
-  get, steps, FAQ).
-- `src/data/projects.js`: projects shown on Home, Work and service pages.
-  Pictures live in `public/projects/`; projects without a screenshot use an
-  illustrated cover from `src/components/ProjectMedia.jsx`.
+- `src/data/services.js`: the six services (tagline, description, photo,
+  what you get, steps, FAQ).
+- `src/data/projects.js`: project showcases, described by type (no client
+  names). Screenshots of our builds live in `public/projects/`.
+- `src/data/images.js`: photos, loaded from the Unsplash CDN. Swap any ID
+  for your own photo or a different Unsplash image.
 - `src/data/site.js`: email (nimtech.itsolution@gmail.com), WhatsApp
   number, HQ and the home FAQ. **Replace the WhatsApp placeholder before
   launch.**
@@ -78,6 +75,6 @@ npm run preview   # serve the production build
 - `vercel.json` (Vercel) and `public/_headers` (Netlify, Cloudflare Pages)
   set a Content Security Policy and the usual security headers. The CSP
   allows the video and image hosts the site uses (Mux, CloudFront,
-  Unsplash, r2.dev); add any new host there.
+  Unsplash); add any new host there.
 - No secrets live in the repo; the contact form opens the visitor's own
   email or WhatsApp, so there is no backend.

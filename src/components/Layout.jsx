@@ -6,9 +6,6 @@ import { REDUCE } from '../lib/canvas.js'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
 
-// pages whose first screen is light, so the header uses dark text
-const LIGHT = ['/services/apps']
-
 export default function Layout() {
   const { pathname } = useLocation()
   const lenis = useRef(null)
@@ -29,6 +26,19 @@ export default function Layout() {
       cancelAnimationFrame(raf)
       l.destroy()
     }
+  }, [])
+
+  // `.spot` cards get a glow that follows the pointer
+  useEffect(() => {
+    const move = (e) => {
+      const el = e.target.closest?.('.spot')
+      if (!el) return
+      const r = el.getBoundingClientRect()
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`)
+      el.style.setProperty('--my', `${e.clientY - r.top}px`)
+    }
+    addEventListener('pointermove', move, { passive: true })
+    return () => removeEventListener('pointermove', move)
   }, [])
 
   // reveal `.rise` elements as they scroll into view
@@ -55,9 +65,9 @@ export default function Layout() {
   }, [pathname])
 
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-white">
+    <div className="relative min-h-screen overflow-x-clip bg-[#05060a]">
       <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-[#3054ff]" />
-      <Header tone={LIGHT.includes(pathname) ? 'light' : 'dark'} />
+      <Header />
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => (lenis.current ? lenis.current.scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
         <motion.main key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="relative z-[1]">
           <FrozenOutlet />
