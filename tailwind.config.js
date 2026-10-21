@@ -4,18 +4,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Inter for text, Instrument Sans/Serif for headlines; section fonts
-        // from the reference designs (all self-hosted)
-        display: ['"Instrument Sans Variable"', '"Inter Variable"', 'system-ui', 'sans-serif'],
-        serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+        // Raleway headlines, Inter text, JetBrains Mono labels, Space Grotesk wordmark
+        display: ['"Raleway Variable"', '"Inter Variable"', 'system-ui', 'sans-serif'],
         body: ['"Inter Variable"', 'system-ui', 'sans-serif'],
         inter: ['"Inter Variable"', 'system-ui', 'sans-serif'],
-        geist: ['"Geist Variable"', '"Inter Variable"', 'sans-serif'],
-        jakarta: ['"Plus Jakarta Sans Variable"', '"Inter Variable"', 'sans-serif'],
-        urbanist: ['"Urbanist Variable"', '"Inter Variable"', 'sans-serif'],
-        figtree: ['"Figtree Variable"', '"Inter Variable"', 'sans-serif'],
-        mono: ['"Geist Mono Variable"', 'ui-monospace', 'monospace'],
-        fustat: ['"Instrument Sans Variable"', '"Inter Variable"', 'sans-serif'],
+        grotesk: ['"Space Grotesk Variable"', '"Inter Variable"', 'sans-serif'],
+        mono: ['"JetBrains Mono Variable"', 'ui-monospace', 'monospace'],
       },
 
       colors: {

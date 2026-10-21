@@ -3,7 +3,7 @@
 Website for NIMTECH, a senior team that builds software, mobile apps,
 websites, API integrations, AI models and AI agents for growing
 businesses. Built with React, Vite, Tailwind CSS,
-Framer Motion, hls.js and Lenis.
+Framer Motion, three.js and Lenis.
 
 ## Getting started
 
@@ -19,43 +19,45 @@ npm run preview   # serve the production build
 
 | Route | Page |
 | --- | --- |
-| `/` | Hero (video, aurora, moving grid, floating cards), services reel, pinned project gallery, live demos, WhatsApp agent demo, process, why us, FAQ |
-| `/services` | All services and the live demos |
-| `/services/:id` | Photo hero, live demo, what you get, projects, four steps, FAQ (`software`, `apps`, `api-integration`, `websites`, `ai-models`) |
-| `/services/ai-agents` | The agent cast in orbit, manifesto, chat anywhere, WhatsApp demo, then the service detail |
-| `/about` | Story, why us, process |
-| `/insights`, `/insights/:slug` | Insights index and articles (`src/data/insights.js`) |
-| `/contact` | Enquiry form (opens WhatsApp or email) and contact details |
+| `/` | 3D gravity story (float, drop, heart, fly-off, driven by scroll), studio statement, We/Build/Better band, six service cards, live demos, problems we fix, stats, why us, FAQ |
+| `/services` | Service cards, live demos, problems we fix |
+| `/services/:id` | 3D hero in the service colour, live demo, what you get, four steps, FAQ |
+| `/services/ai-agents` | Agent cast in orbit, manifesto, chat anywhere, WhatsApp demo, service detail |
+| `/about` | Studio statement, stats, why us, process |
+| `/insights`, `/insights/:slug` | Articles (`src/data/insights.js`) |
+| `/contact` | Enquiry form (opens WhatsApp or email) |
 
 ## Design
 
-A dark, futuristic system: gradient-shimmer headlines, glass cards with a
-glow that follows the pointer (`.spot`), photo heroes with a slow zoom,
-and elements that fade up as they scroll in (`.rise`). Everything respects
-reduced motion.
+White-slate studio with ink cards and a cobalt accent. Raleway headlines,
+Inter text, JetBrains Mono labels, Space Grotesk wordmark.
 
-- **Header** (`src/components/Header.jsx`): morphing dropdown (services,
-  solutions, company) and a mobile sheet.
-- **Footer** (`src/components/Footer.jsx`): meadow video with a frosted
-  wordmark.
-- **Home** (`src/components/home/`): `HeroX`, `ServiceReel`, `Showcase`,
-  and `Sections.jsx` (`DemoLab`, `AgentSpot`, `Process`, `WhyBento`).
-- **Live demos** (`src/components/demos.jsx`): management dashboard, RoRo
-  bin customer and driver apps, website browser, object tracking and skin
-  analysis, integration flow, WhatsApp auto-reply. Sample data only.
-- **Shared pieces** (`src/components/ui.jsx`): `PageHero`, `StartButton`,
-  `Faq`, `CtaBand`. `Photo.jsx` renders responsive photos.
-- **Styles**: `src/styles/site.css` (tokens, header, footer, forms) and
-  `src/styles/home.css` (everything else).
+- **3D gravity field** (`src/three/gravity.js`, wrapped by
+  `src/components/GravityField.jsx`): glass and matte spheres in a
+  real-time physics sim (three.js, loaded after first paint). The cursor
+  pushes them; a fast flick throws them. On Home it fills the screen and
+  scroll drives it (float, drop and bounce, heart, fly into the lens) while
+  the palette morphs blue, lime, pink. Inner pages use a smaller field in
+  the service colour. Reduced motion or no WebGL shows still CSS spheres.
+- **Intro loader** (`Loader.jsx`): counts 000 to 100, slides up, then the
+  header and hero animate in (`src/lib/intro.js`).
+- **Header** with live local clock, services dropdown, Menu button and
+  "Contact us"; **Menu** full-screen overlay; **Request modal** that
+  prepares the enquiry for WhatsApp or email (`Overlays.jsx`). Any button
+  can open it with `openRequest(serviceId)` from `src/lib/bus.js`.
+- **CSS spheres** (`Orb.jsx`, `SphereArt` in `home/Blocks.jsx`) illustrate
+  each service without photos.
+- **Live demos** (`demos.jsx`): admin dashboard, customer and partner app,
+  websites, object tracking and skin analysis, integration flow, WhatsApp
+  auto-reply. Sample data only.
+- Reveals: `.rise` (fade, rise, unblur), `Lines` (line by line) and `Words`
+  (word by word) in `ui.jsx`. Smooth scroll by Lenis.
 
 ## Editing content
 
-- `src/data/services.js`: the six services (tagline, description, photo,
+- `src/data/services.js`: the six services (tagline, description, 3D colour,
   what you get, steps, FAQ).
-- `src/data/projects.js`: project showcases, described by type (no client
-  names). Screenshots of our builds live in `public/projects/`.
-- `src/data/images.js`: photos, loaded from the Unsplash CDN. Swap any ID
-  for your own photo or a different Unsplash image.
+- Website screenshots used in the website demo live in `public/projects/`.
 - `src/data/site.js`: email (nimtech.itsolution@gmail.com), WhatsApp
   number, HQ and the home FAQ. **Replace the WhatsApp placeholder before
   launch.**
@@ -74,7 +76,6 @@ reduced motion.
 
 - `vercel.json` (Vercel) and `public/_headers` (Netlify, Cloudflare Pages)
   set a Content Security Policy and the usual security headers. The CSP
-  allows the video and image hosts the site uses (Mux, CloudFront,
-  Unsplash); add any new host there.
+  allows the video and image hosts the site uses ; add any new host there.
 - No secrets live in the repo; the contact form opens the visitor's own
   email or WhatsApp, so there is no backend.

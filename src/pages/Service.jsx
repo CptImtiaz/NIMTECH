@@ -1,20 +1,22 @@
 import { Navigate, useParams } from 'react-router-dom'
-import { SERVICES } from '../data/services.js'
-import { projectsFor } from '../data/projects.js'
+import { ORDER, SERVICES } from '../data/services.js'
 import { DEMOS } from '../components/demos.jsx'
-import Photo from '../components/Photo.jsx'
-import { CtaBand, Faq, PageHero, StartButton } from '../components/ui.jsx'
+import { SphereArt } from '../components/home/Blocks.jsx'
+import { CtaBand, Faq, Label, Lines, PageHero, Pill, TalkButton } from '../components/ui.jsx'
 
-// Service page: photo hero, then the detail.
+// Service page: 3D hero in the service colour, then the detail.
 export default function Service() {
   const { id } = useParams()
   const s = SERVICES[id]
   if (!s) return <Navigate to="/services" replace />
   return (
     <>
-      <PageHero eyebrow={s.name} title={s.tagline} text={s.desc} image={s.image} tags={s.tags}>
-        <div className="mt-10">
-          <StartButton to={`/contact?service=${id}`}>Talk to us about it</StartButton>
+      <PageHero label={s.name} title={s.tagline} text={s.desc} color={s.color} tags={s.tags}>
+        <div className="flex flex-wrap gap-3">
+          <TalkButton service={id}>Talk to us about it</TalkButton>
+          <Pill variant="glass" to="/services">
+            All services
+          </Pill>
         </div>
       </PageHero>
       <ServiceDetail id={id} />
@@ -22,101 +24,72 @@ export default function Service() {
   )
 }
 
-// Live demo, what you get, projects, how it works, questions, call to action.
+// Live demo, what you get, how it works, other services, FAQ, CTA.
 export function ServiceDetail({ id, demo = true }) {
   const s = SERVICES[id]
-  const work = projectsFor(id)
   const Demo = DEMOS[id]
+  const idx = ORDER.indexOf(id)
   return (
-    <>
+    <div className="relative z-10 overflow-clip rounded-t-[2.5rem] bg-white md:rounded-t-[4rem]">
       {demo && Demo && (
-        <section className="relative overflow-hidden py-24 md:py-32">
-          <div className="lab-glow" aria-hidden="true" />
-          <div className="wrap relative">
-            <span className="eyebrow rise text-white/70">Live demo</span>
-            <h2 className="h2 rise mt-5 max-w-[18ch]" style={{ '--d': '.06s' }}>
-              See it <em className="grad-text">in action.</em>
-            </h2>
-            <p className="rise mt-4 text-[15px] text-white/50" style={{ '--d': '.1s' }}>
-              Interactive sample. Click around.
-            </p>
-            <div className="rise lab-stage mt-10" style={{ '--d': '.14s' }}>
-              <Demo />
+        <section className="bg-white pt-16 md:pt-24">
+          <div className="wrap">
+            <div className="lab rise">
+              <div className="lab-glow" style={{ '--c': s.color }} aria-hidden="true" />
+              <div className="relative">
+                <p className="mono-label text-white/50">[ Live demo ]</p>
+                <Lines lines={['See it in action.']} className="h-section mt-5 text-white" />
+                <p className="mt-3 text-[15px] text-white/50">Interactive sample. Click around.</p>
+              </div>
+              <div className="lab-stage relative mt-10">
+                <Demo />
+              </div>
             </div>
           </div>
         </section>
       )}
 
-      <section className="py-24 md:py-32">
-        <div className="wrap">
-          <span className="eyebrow rise text-white/70">What you get</span>
-          <h2 className="h2 rise mt-5 max-w-[20ch]" style={{ '--d': '.06s' }}>
-            Everything you need, <em className="grad-text">nothing you don’t.</em>
-          </h2>
-          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="bg-white py-24 md:py-32">
+        <div className="wrap grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+          <div className="lg:sticky lg:top-32 lg:self-start">
+            <Label>What you get</Label>
+            <Lines lines={['Everything you need,', 'nothing you don’t.']} className="h-section mt-6" />
+            <SphereArt i={idx} color={s.color} className="mt-10 hidden aspect-square max-w-[18rem] lg:block" />
+          </div>
+          <ul className="grid gap-4 sm:grid-cols-2">
             {s.get.map(([t, d], i) => (
-              <li key={t} className="glass-card spot rise" style={{ '--d': `${i * 0.07}s` }}>
-                <span className="get-num">0{i + 1}</span>
-                <h3 className="mt-12 font-display text-2xl font-semibold tracking-tight">{t}</h3>
-                <p className="mt-3 text-[16px] leading-relaxed text-white/60">{d}</p>
+              <li key={t} className="why-card spot rise" style={{ '--d': `${i * 0.07}s` }}>
+                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-400">0{i + 1}</span>
+                <h3 className="mt-10 font-display text-2xl font-semibold tracking-tight">{t}</h3>
+                <p className="mt-3 text-[15px] leading-relaxed text-neutral-600">{d}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {work.length > 0 && (
-        <section className="py-24 md:py-32">
-          <div className="wrap">
-            <span className="eyebrow rise text-white/70">Built by our team</span>
-            <h2 className="h2 rise mt-5" style={{ '--d': '.06s' }}>
-              Real projects, <em className="grad-text">real results.</em>
-            </h2>
-            <div className={`mt-12 grid gap-5 ${work.length > 1 ? 'md:grid-cols-2' : ''} ${work.length > 3 ? 'lg:grid-cols-3' : ''}`}>
-              {work.map((p, i) => (
-                <article key={p.id} className="show-card spot rise !w-auto" style={{ '--d': `${(i % 3) * 0.08}s` }}>
-                  <div className="show-img">
-                    <Photo src={p.image} alt={p.title} sizes="(min-width: 1024px) 33vw, 90vw" />
-                    {p.shot && <img src={p.shot} alt={`${p.title}, our build`} loading="lazy" className="show-shot" />}
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-display text-2xl font-semibold tracking-tight">{p.title}</h3>
-                    <p className="mt-2 text-[15px] leading-relaxed text-white/60">{p.line}</p>
-                    <ul className="mt-4 flex flex-wrap gap-2">
-                      {p.tags.map((t) => (
-                        <li key={t} className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/60">
-                          {t}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      <section className="py-24 md:py-32">
+      <section className="bg-white pb-24 md:pb-32">
         <div className="wrap">
-          <span className="eyebrow rise text-white/70">How it works</span>
-          <h2 className="h2 rise mt-5 max-w-[18ch]" style={{ '--d': '.06s' }}>
-            Four steps, <em className="grad-text">clear at every stage.</em>
-          </h2>
-          <ol className="steps mt-14 grid gap-10 md:grid-cols-4 md:gap-6">
-            {s.steps.map(([t, d], i) => (
-              <li key={t} className="rise relative" style={{ '--d': `${i * 0.1}s` }}>
-                <span className="step-dot">{i + 1}</span>
-                <h3 className="mt-6 font-display text-2xl font-semibold">{t}</h3>
-                <p className="mt-2 max-w-[28ch] text-[16px] leading-relaxed text-white/60">{d}</p>
-              </li>
-            ))}
-          </ol>
+          <div className="stats-panel rise">
+            <p className="mono-label text-white/50">[ How it works ]</p>
+            <Lines lines={['Four steps,', 'clear at every stage.']} className="h-section mt-5 text-white" />
+            <ol className="steps mt-14 grid gap-10 md:grid-cols-4 md:gap-6">
+              {s.steps.map(([t, d], i) => (
+                <li key={t} className="rise relative" style={{ '--d': `${i * 0.1}s` }}>
+                  <span className="step-dot" style={{ '--c': s.color }}>
+                    {i + 1}
+                  </span>
+                  <h3 className="mt-6 font-display text-2xl font-semibold">{t}</h3>
+                  <p className="mt-2 max-w-[28ch] text-[15px] leading-relaxed text-white/55">{d}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </section>
 
       <Faq items={s.faq} />
       <CtaBand />
-    </>
+    </div>
   )
 }

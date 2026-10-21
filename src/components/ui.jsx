@@ -1,84 +1,147 @@
-import { useState } from 'react'
+import { Children, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowRight, Plus } from 'lucide-react'
-import Photo from './Photo.jsx'
+import { ArrowRight, ArrowUpRight, Plus } from 'lucide-react'
+import { openRequest } from '../lib/bus.js'
+import GravityField from './GravityField.jsx'
 
-const EASE = [0.16, 1, 0.3, 1]
-const up = (d = 0) => ({ initial: { opacity: 0, y: 28, filter: 'blur(8px)' }, animate: { opacity: 1, y: 0, filter: 'blur(0px)' }, transition: { delay: d, duration: 0.9, ease: EASE } })
+/* ---------------- buttons and labels ---------------- */
 
-// First screen for inner pages: a full-bleed photo that slowly zooms,
-// dark veil, grid, and the headline rising in.
-export function PageHero({ eyebrow, title, accent, text, image, tags, children }) {
-  return (
-    <section className="ph" data-theme="dark">
-      {image && (
-        <div className="ph-bg" aria-hidden="true">
-          <Photo src={image} eager />
-        </div>
+// Pill button: dark, light or outline, with an optional arrow badge.
+// Renders a Link (`to`), an anchor (`href`) or a button.
+export function Pill({ variant = 'dark', arrow, to, href, children, className = '', ...rest }) {
+  const Icon = arrow === 'up-right' ? ArrowUpRight : ArrowRight
+  const cls = `pill-btn pill-${variant} ${arrow ? 'has-arrow' : ''} ${className}`
+  const inner = (
+    <>
+      <span>{children}</span>
+      {arrow && (
+        <span className="pill-badge">
+          <Icon className={`h-4 w-4 ${arrow === 'up-right' ? 'arr-ur' : 'arr-r'}`} />
+        </span>
       )}
-      <div className="ph-veil" aria-hidden="true" />
-      <div className="hero-grid pointer-events-none absolute inset-0" aria-hidden="true" />
-      <div className="ph-orb" aria-hidden="true" />
-      <div className="wrap relative">
-        <motion.span {...up(0)} className="hx-pill">
-          <span className="hx-live" /> {eyebrow}
-        </motion.span>
-        <motion.h1 {...up(0.08)} className="display mt-7 max-w-[17ch] text-[46px] sm:text-6xl lg:text-[84px]">
-          {title} {accent && <em className="grad-text pr-2">{accent}</em>}
-        </motion.h1>
-        {text && (
-          <motion.p {...up(0.18)} className="lede mt-6 max-w-[56ch] text-white/70">
-            {text}
-          </motion.p>
-        )}
-        {tags && (
-          <motion.ul {...up(0.26)} className="mt-8 flex flex-wrap gap-2">
-            {tags.map((t) => (
-              <li key={t} className="rounded-full border border-white/15 bg-white/[.06] px-4 py-1.5 text-sm text-white/80 backdrop-blur-md">
-                {t}
-              </li>
-            ))}
-          </motion.ul>
-        )}
-        {children && <motion.div {...up(0.32)}>{children}</motion.div>}
-      </div>
-    </section>
+    </>
+  )
+  if (to) return <Link to={to} className={cls} {...rest}>{inner}</Link>
+  if (href) return <a href={href} className={cls} {...rest}>{inner}</a>
+  return <button type="button" className={cls} {...rest}>{inner}</button>
+}
+
+export const TalkButton = ({ service, children = 'Let’s talk', variant = 'dark' }) => (
+  <Pill variant={variant} arrow="right" onClick={() => openRequest(service)}>
+    {children}
+  </Pill>
+)
+
+// "[ 02 — Physics ]" mono label
+export const Label = ({ children, light, className = '' }) => (
+  <p className={`mono-label rise ${light ? 'text-white/50' : ''} ${className}`}>[ {children} ]</p>
+)
+
+// Dot eyebrow
+export const Eyebrow = ({ children, light, className = '' }) => (
+  <span className={`eyebrow ${light ? 'eyebrow-light' : ''} ${className}`}>{children}</span>
+)
+
+/* ---------------- text reveals ---------------- */
+
+// Heading revealed line by line from a clip. `lines`: array of strings or nodes.
+export function Lines({ as: Tag = 'h2', lines, className = '', stagger = 120, delay = 0 }) {
+  return (
+    <Tag className={`lines ${className}`}>
+      {(Array.isArray(lines) ? lines : [lines]).map((l, i) => (
+        <span key={i} className="line">
+          <span style={{ transitionDelay: `${delay + i * stagger}ms` }}>{l}</span>
+        </span>
+      ))}
+    </Tag>
   )
 }
 
-// Primary call to action used on every page.
-export function StartButton({ to = '/contact', children = 'Start your project' }) {
+// Paragraph or heading revealed word by word. Children may mix strings and
+// <span className="muted"> parts.
+export function Words({ as: Tag = 'h2', children, className = '', stagger = 35 }) {
+  let n = 0
+  const split = (node, cls) =>
+    String(node)
+      .split(/(\s+)/)
+      .map((w, i) =>
+        /^\s+$/.test(w) || !w ? (
+          w
+        ) : (
+          <span key={`${n}-${i}`} className={`word ${cls || ''}`} style={{ transitionDelay: `${n++ * stagger}ms` }}>
+            {w}
+          </span>
+        ),
+      )
   return (
-    <Link to={to} className="start-btn group">
-      <span className="relative">{children}</span>
-      <span className="arrow-dot relative">
-        <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-      </span>
-    </Link>
+    <Tag className={`words ${className}`}>
+      {Children.map(children, (c) => (typeof c === 'string' ? split(c) : split(c.props.children, c.props.className)))}
+    </Tag>
+  )
+}
+
+/* ---------------- page pieces ---------------- */
+
+// Inner-page hero: the 3D field in the service colour behind big type.
+export function PageHero({ label, title, text, color = '#2F69FF', tags, children }) {
+  return (
+    <section className="ph">
+      <div className="ph-bg" style={{ '--c': color }} aria-hidden="true" />
+      <GravityField color={color} count={40} offset={0.24} className="max-lg:!bottom-[42%]" />
+      <div className="veil lg:hidden" aria-hidden="true" />
+      <div className="wrap pointer-events-none relative z-10 flex min-h-[88svh] flex-col justify-end pb-14 pt-36">
+        <div className="pointer-events-auto max-w-[56rem]">
+          <p className="mono-label hero-in" style={{ '--d': '.1s' }}>
+            [ {label} ]
+          </p>
+          <Lines as="h1" lines={Array.isArray(title) ? title : [title]} className="hero-title mt-6 hero-lines" delay={250} />
+          {text && (
+            <p className="hero-in mt-7 max-w-[44ch] font-display text-[17px] font-medium leading-[1.45] text-neutral-700 md:text-[19px]" style={{ '--d': '.55s' }}>
+              {text}
+            </p>
+          )}
+          {tags && (
+            <ul className="hero-in mt-7 flex flex-wrap gap-2" style={{ '--d': '.65s' }}>
+              {tags.map((t) => (
+                <li key={t} className="glass-chip">
+                  {t}
+                </li>
+              ))}
+            </ul>
+          )}
+          {children && (
+            <div className="hero-in mt-9" style={{ '--d': '.75s' }}>
+              {children}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
   )
 }
 
 export function Faq({ items, title = 'Questions, answered.' }) {
   const [open, setOpen] = useState(0)
   return (
-    <section className="py-24 md:py-32">
+    <section className="bg-white py-24 md:py-32">
       <div className="wrap grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
         <div>
-          <span className="eyebrow rise text-white/70">FAQ</span>
-          <h2 className="h2 rise mt-5">{title}</h2>
+          <Label>FAQ</Label>
+          <Lines lines={[title]} className="h-section mt-6" />
         </div>
-        <ul className="grid gap-3">
+        <ul>
           {items.map(([q, a], i) => (
-            <li key={q} className={`faq-item rise ${open === i ? 'on' : ''}`} style={{ '--d': `${i * 0.05}s` }}>
-              <button type="button" onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i} className="flex w-full items-center justify-between gap-6 p-6 text-left">
-                <h3 className="font-display text-xl font-semibold tracking-tight md:text-2xl">{q}</h3>
-                <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/15 transition-all duration-500 ${open === i ? 'rotate-45 bg-white text-black' : ''}`}>
+            <li key={q} className="rise border-t border-[#e6e5e2] first:border-t-0" style={{ '--d': `${i * 0.06}s` }}>
+              <button type="button" onClick={() => setOpen(open === i ? -1 : i)} aria-expanded={open === i} className={`faq-row ${open === i ? 'on' : ''}`}>
+                <h3>{q}</h3>
+                <span className="faq-ic">
                   <Plus className="h-4 w-4" />
                 </span>
               </button>
               <div className={`grid transition-all duration-500 ${open === i ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-                <p className="overflow-hidden px-6 pb-6 text-[17px] leading-relaxed text-white/65">{a}</p>
+                <div className="overflow-hidden">
+                  <p className="px-6 pb-6 text-[16px] leading-relaxed text-neutral-600">{a}</p>
+                </div>
               </div>
             </li>
           ))}
@@ -88,27 +151,30 @@ export function Faq({ items, title = 'Questions, answered.' }) {
   )
 }
 
-// Closing call to action: a glowing orb rising over a horizon.
-export function CtaBand({ title = 'Have an idea?', accent = 'Let’s build it.', text = 'Tell us what you want to fix or build. We reply within one working day with questions and a first plan.' }) {
+// Black call-to-action panel with orbiting spheres.
+export function CtaBand({ title = ['Have an idea?', 'Let’s give it weight.'], text = 'Tell us what you want to build. We reply within one business day with questions and a first plan.' }) {
   return (
-    <section className="px-3 pb-3 pt-10 sm:px-5 sm:pb-5">
-      <div className="cta rise" data-theme="dark">
-        <div className="cta-orb" aria-hidden="true" />
-        <div className="cta-rings" aria-hidden="true">
+    <section className="bg-white px-3 pb-3 sm:px-5 sm:pb-5">
+      <div className="cta rise">
+        <div className="cta-orbs" aria-hidden="true">
+          <i />
           <i />
           <i />
           <i />
         </div>
         <div className="relative">
-          <h2 className="display mx-auto max-w-[14ch] text-5xl md:text-7xl">
-            {title} <em className="grad-text">{accent}</em>
-          </h2>
-          <p className="lede mx-auto mt-6 max-w-[46ch] text-white/70">{text}</p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <StartButton />
+          <p className="mono-label text-white/50">[ Let’s collaborate ]</p>
+          <Lines lines={title} className="h-hero mx-auto mt-6 max-w-[16ch] text-white" stagger={100} />
+          <p className="mx-auto mt-6 max-w-[44ch] text-[17px] leading-relaxed text-white/60">{text}</p>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Pill variant="light" arrow="up-right" onClick={() => openRequest()}>
+              Start a project
+            </Pill>
           </div>
         </div>
       </div>
     </section>
   )
 }
+
+export const Arrow = ArrowUpRight

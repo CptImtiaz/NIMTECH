@@ -1,89 +1,125 @@
 import { Link } from 'react-router-dom'
+import { ArrowUpRight, Mail, MessageCircle } from 'lucide-react'
 import { ORDER, SERVICES } from '../data/services.js'
-import { EMAIL, HQ, WHATSAPP, WHATSAPP_LABEL } from '../data/site.js'
+import { EMAIL, HQ, WHATSAPP } from '../data/site.js'
+import { openRequest } from '../lib/bus.js'
+import { Lines, Pill } from './ui.jsx'
 
-const MEADOW = 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4d01c727-d9c5-47c8-a778-35a451ffd39f.mp4'
-const MEADOW_POSTER = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261014_121838_c97d0940-f430-4304-8573-4f47ee44f447.png'
+const WORDS = ['Software', 'Mobile apps', 'Websites', 'API integration', 'AI models', 'AI agents']
 
-// Footer: a pale paper top with the brand and three link columns, a
-// blue-hour meadow video below, and a frosted-glass wordmark in the fog.
+// Black footer: a ticker of services, a call to action, link columns and a
+// giant faint wordmark.
 export default function Footer() {
+  const cols = [
+    ['Services', ORDER.map((id) => [SERVICES[id].short, `/services/${id}`])],
+    [
+      'Studio',
+      [
+        ['About', '/about'],
+        ['All services', '/services'],
+        ['Insights', '/insights'],
+        ['Contact', '/contact'],
+      ],
+    ],
+    [
+      'Get in touch',
+      [
+        [EMAIL, `mailto:${EMAIL}`],
+        ['WhatsApp', `https://wa.me/${WHATSAPP}`],
+        [HQ, null],
+        ['Working worldwide', null],
+      ],
+    ],
+  ]
   return (
-    <footer className="footer">
-      <div className="footer__stage" aria-hidden="true">
-        <video className="footer__video" src={MEADOW} poster={MEADOW_POSTER} autoPlay muted loop playsInline preload="none" />
+    <footer className="foot">
+      <div className="foot-glow a" aria-hidden="true" />
+      <div className="foot-glow b" aria-hidden="true" />
+      <div className="foot-ticker" aria-hidden="true">
+        <div className="foot-track">
+          {[0, 1].map((k) => (
+            <span key={k} className="inline-flex items-center">
+              {WORDS.map((w) => (
+                <span key={w} className="inline-flex items-center">
+                  <span className="px-8">{w}</span>
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#2f69ff]" />
+                </span>
+              ))}
+            </span>
+          ))}
+        </div>
       </div>
-      <p className="footer__wordmark" aria-hidden="true">
+
+      <div className="wrap relative z-10 pb-10 pt-16 md:pt-24">
+        <div className="flex flex-col gap-8 border-b border-white/10 pb-16 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="mono-label text-white/40">[ Let’s collaborate ]</p>
+            <Lines lines={['Have an idea', 'with real weight?']} className="h-hero mt-6 max-w-[16ch] text-white" stagger={100} />
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Pill variant="light" arrow="up-right" onClick={() => openRequest()}>
+              Start a project
+            </Pill>
+            <a href={`mailto:${EMAIL}`} className="foot-mail group">
+              <span>{EMAIL}</span>
+              <span className="blue-orb !h-10 !w-10">
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <p className="font-grotesk text-lg font-bold tracking-[0.22em]">NIMTECH</p>
+            <p className="mt-4 max-w-[20rem] text-sm leading-relaxed text-white/55">An independent studio building software, apps, websites and AI for growing businesses.</p>
+          </div>
+          {cols.map(([t, links], i) => (
+            <nav key={t} aria-label={t} className="rise" style={{ '--d': `${i * 0.08}s` }}>
+              <h3 className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">{t}</h3>
+              <ul className="mt-5 space-y-3">
+                {links.map(([l, to]) => (
+                  <li key={l}>
+                    {to ? (
+                      to.startsWith('/') ? (
+                        <Link to={to} className="foot-link group">
+                          {l}
+                          <ArrowUpRight className="h-3.5 w-3.5" />
+                        </Link>
+                      ) : (
+                        <a href={to} className="foot-link group" target={to.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">
+                          <span className="break-all">{l}</span>
+                          <ArrowUpRight className="h-3.5 w-3.5" />
+                        </a>
+                      )
+                    ) : (
+                      <span className="text-[15px] text-white/55">{l}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+        </div>
+
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-7 sm:flex-row">
+          <p className="flex items-center gap-3 font-mono text-[11px] text-white/40">
+            <span className="font-grotesk text-sm font-bold tracking-[0.22em] text-white">NIMTECH</span>
+            <span className="h-1.5 w-1.5 rounded-full bg-[#2f69ff]" />© {new Date().getFullYear()} — All rights reserved.
+          </p>
+          <div className="flex gap-2">
+            <a href={`mailto:${EMAIL}`} aria-label="Email" className="foot-round">
+              <Mail className="h-4 w-4" />
+            </a>
+            <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="foot-round">
+              <MessageCircle className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p className="foot-mark" aria-hidden="true">
         NIMTECH
       </p>
-      <div className="footer__fog" aria-hidden="true" />
-      <div className="footer__content">
-        <div className="brand">
-          <Link to="/" className="brand__logo" aria-label="NIMTECH home">
-            <span className="brand__mark" />
-            NIMTECH
-          </Link>
-          <h2 className="brand__title">AI and software, built to last</h2>
-          <p className="brand__text">We design and build software, mobile apps, websites, integrations, AI models and AI agents for growing businesses, with one senior team from idea to launch.</p>
-          <Link to="/contact" className="brand__cta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="m3.5 6 8.5 7 8.5-7" />
-            </svg>
-            Start a project
-          </Link>
-          <p className="brand__copy">
-            © {new Date().getFullYear()} NIMTECH · {HQ}
-          </p>
-          <ul className="brand__status" aria-label="How we work">
-            <li className="chip">
-              <span className="chip__dot" aria-hidden="true" />
-              Replies within 1 working day
-            </li>
-            <li className="chip">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20 11a8 8 0 1 0-2.3 5.7" />
-                <path d="M20 4v7h-7" />
-              </svg>
-              Demo every 2 weeks
-            </li>
-            <li className="chip">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z" />
-              </svg>
-              You own the code
-            </li>
-          </ul>
-        </div>
-        <nav className="col col--menu" aria-label="Services">
-          <h3 className="col__title">Services</h3>
-          <ul className="col__list">
-            {ORDER.map((id) => (
-              <li key={id}>
-                <Link to={`/services/${id}`}>{SERVICES[id].name}</Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <nav className="col" aria-label="Company">
-          <h3 className="col__title">Company</h3>
-          <ul className="col__list">
-            <li><Link to="/about">About us</Link></li>
-            <li><Link to="/services">All services</Link></li>
-            <li><Link to="/insights">Insights</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-          </ul>
-        </nav>
-        <nav className="col" aria-label="Get in touch">
-          <h3 className="col__title">Get in touch</h3>
-          <ul className="col__list">
-            <li><a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
-            <li><a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer">WhatsApp {WHATSAPP_LABEL}</a></li>
-            <li>{HQ}</li>
-            <li>Working worldwide</li>
-          </ul>
-        </nav>
-      </div>
     </footer>
   )
 }

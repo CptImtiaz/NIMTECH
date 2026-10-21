@@ -1,14 +1,12 @@
-import { IMG } from './images.js'
-
 // The six NIMTECH services, kept short: one line to understand it, four
-// things you get, four steps, three questions.
+// things you get, four steps, three questions. `color` tints its 3D field.
 export const ORDER = ['software', 'apps', 'api-integration', 'websites', 'ai-models', 'ai-agents']
 
 export const SERVICES = {
   software: {
     name: 'Software Development',
     short: 'Software',
-    image: IMG.dashboard,
+    color: '#2F69FF',
     tagline: 'One system to run your whole business.',
     desc: 'Management systems built around how your team works: companies, trips, finance, healthcare and products, all in one secure place instead of ten spreadsheets.',
     tags: ['Admin systems', 'Dashboards', 'Portals', 'Cloud'],
@@ -33,14 +31,14 @@ export const SERVICES = {
   apps: {
     name: 'Mobile App Development',
     short: 'Mobile Apps',
-    image: IMG.phone,
+    color: '#FFC5C2',
     tagline: 'iPhone and Android apps people keep using.',
-    desc: 'Customer and driver apps that work in the real world: bookings, live tracking, payments and notifications, from first prototype to both app stores.',
+    desc: 'Customer and partner apps for bookings, live tracking, payments and notifications, designed and built from first prototype to both app stores.',
     tags: ['iOS', 'Android', 'Live tracking', 'Payments'],
     get: [
       ['Customer apps', 'Order, book, pay and track in a few taps.'],
-      ['Driver and field apps', 'Jobs, routes and proof of delivery, even with weak signal.'],
-      ['Live tracking', 'Customers see where their order or driver is, in real time.'],
+      ['Partner and staff apps', 'Jobs, schedules and updates for your team, even with weak signal.'],
+      ['Live tracking', 'Customers see where their order or booking is, in real time.'],
       ['Store launch', 'App Store and Google Play release, then regular updates.'],
     ],
     steps: [
@@ -58,7 +56,7 @@ export const SERVICES = {
   'api-integration': {
     name: 'API Integration',
     short: 'API Integration',
-    image: IMG.server,
+    color: '#96E5FF',
     tagline: 'Your systems talking to each other, automatically.',
     desc: 'We connect your shop, couriers, payments, SMS, WhatsApp and accounting, so orders and data move on their own and nobody types the same thing twice.',
     tags: ['Shopify', 'Couriers', 'Payments', 'SMS and WhatsApp'],
@@ -83,7 +81,7 @@ export const SERVICES = {
   websites: {
     name: 'Website Development',
     short: 'Websites',
-    image: IMG.web,
+    color: '#E1FC03',
     tagline: 'Fast websites that turn visitors into customers.',
     desc: 'Brand sites, online ordering and booking platforms that load fast, rank on Google and let customers buy or book from their phone.',
     tags: ['Brand sites', 'Online booking', 'Ordering', 'SEO'],
@@ -108,7 +106,7 @@ export const SERVICES = {
   'ai-models': {
     name: 'AI Model Development',
     short: 'AI Models',
-    image: IMG.ai,
+    color: '#A068FF',
     tagline: 'Custom AI that sees, reads and predicts.',
     desc: 'Computer vision and machine learning models trained on your own data: tracking objects in video, analysing skin from a photo, reading documents and spotting defects.',
     tags: ['Computer vision', 'Object tracking', 'Image analysis', 'Prediction'],
@@ -133,7 +131,7 @@ export const SERVICES = {
   'ai-agents': {
     name: 'AI Agent Development',
     short: 'AI Agents',
-    image: IMG.robot,
+    color: '#25D3A0',
     tagline: 'AI teammates that reply, book and update, 24/7.',
     desc: 'AI agents that answer customers on WhatsApp, take bookings, process documents and update your systems, with a person approving anything important.',
     tags: ['WhatsApp auto-reply', 'Support', 'Bookings', 'Back office'],

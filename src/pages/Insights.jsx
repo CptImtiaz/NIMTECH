@@ -3,7 +3,6 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { INSIGHTS, insight } from '../data/insights.js'
 import { svcName } from '../data/services.js'
 import { CtaBand, PageHero } from '../components/ui.jsx'
-import { IMG } from '../data/images.js'
 
 const fmt = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 
@@ -16,17 +15,17 @@ const TONES = [
 function Card({ a, i }) {
   const [x, y] = TONES[i % 3]
   return (
-    <Link to={`/insights/${a.slug}`} className="rise group flex h-full flex-col overflow-hidden spot rounded-[26px] border border-white/10 bg-white/[.03] transition-colors hover:border-white/25" style={{ '--d': `${(i % 2) * 0.08}s` }}>
+    <Link to={`/insights/${a.slug}`} className="rise group flex h-full flex-col overflow-hidden spot rounded-[26px] border border-[#e6e5e2] bg-white transition-shadow hover:shadow-[0_30px_60px_-30px_rgba(14,42,197,.3)]" style={{ '--d': `${(i % 2) * 0.08}s` }}>
       <div className="insight-cover relative h-48 transition-transform duration-700 group-hover:scale-[1.02]" style={{ '--a': x, '--b': y }}>
         <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-black">{a.kind}</span>
       </div>
       <div className="flex flex-1 flex-col p-7">
-        <span className="text-xs font-medium uppercase tracking-wider text-[#8ea2ff]">{svcName(a.s)}</span>
+        <span className="text-xs font-medium uppercase tracking-wider text-[#0E2AC5]">{svcName(a.s)}</span>
         <h3 className="mt-3 font-display text-2xl font-semibold leading-tight tracking-tight">{a.title}</h3>
-        <p className="mt-3 text-[16px] leading-relaxed text-white/60">{a.sum}</p>
-        <span className="mt-auto flex items-center justify-between pt-6 text-sm text-white/50">
+        <p className="mt-3 text-[16px] leading-relaxed text-neutral-600">{a.sum}</p>
+        <span className="mt-auto flex items-center justify-between pt-6 text-sm text-neutral-500">
           {a.read} min read
-          <ArrowUpRight className="h-5 w-5 text-white transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          <ArrowUpRight className="h-5 w-5 text-neutral-900 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </span>
       </div>
     </Link>
@@ -37,8 +36,8 @@ function Card({ a, i }) {
 export function InsightsIndex() {
   return (
     <>
-      <PageHero eyebrow="Insights" title="Practical thinking on" accent="AI and software." text="Short guides from the engineers who build these systems, written for business owners." image={IMG.matrix} />
-      <section className="py-20 md:py-28">
+      <PageHero label="Insights" title={['Practical thinking on', 'AI and software.']} text="Short guides from the engineers who build these systems, written for business owners." color="#E1FC03" />
+      <section className="relative z-10 rounded-t-[2.5rem] bg-white py-20 md:rounded-t-[4rem] md:py-28">
         <div className="wrap grid gap-5 md:grid-cols-2">
           {INSIGHTS.map((a, i) => (
             <Card key={a.slug} a={a} i={i} />
@@ -59,20 +58,20 @@ export function Article() {
   return (
     <>
       <article>
-        <header className="relative isolate overflow-hidden pb-16 pt-36 text-white md:pt-44" data-theme="dark">
-          <div className="hero-grid pointer-events-none absolute inset-0 -z-10" />
+        <header className="relative isolate overflow-hidden pb-16 pt-36 md:pt-44">
+          <div className="ph-bg" style={{ '--c': '#96E5FF' }} aria-hidden="true" />
           <div className="wrap max-w-[900px]">
-            <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-[13px] text-white/55">
-              <Link to="/" className="hover:text-white">Home</Link>
+            <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-[13px] text-neutral-500">
+              <Link to="/" className="hover:text-neutral-900">Home</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/insights" className="hover:text-white">Insights</Link>
+              <Link to="/insights" className="hover:text-neutral-900">Insights</Link>
             </nav>
-            <span className="mt-8 block text-xs font-medium uppercase tracking-wider text-[#8ea2ff]">
+            <span className="mt-8 block text-xs font-medium uppercase tracking-wider text-[#0E2AC5]">
               {a.kind} · <Link to={`/services/${a.s}`} className="hover:underline">{svcName(a.s)}</Link>
             </span>
-            <h1 className="display mt-4 text-[clamp(34px,4.6vw,60px)]">{a.title}</h1>
-            <p className="lede mt-6 text-white/70">{a.sum}</p>
-            <p className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-white/55">
+            <h1 className="mt-4 font-display text-[clamp(34px,4.6vw,60px)] font-medium leading-[1.02] tracking-tight">{a.title}</h1>
+            <p className="mt-6 text-[19px] leading-relaxed text-neutral-700">{a.sum}</p>
+            <p className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-neutral-500">
               <span>By the NIMTECH engineering team</span>
               <time dateTime={a.date}>{fmt(a.date)}</time>
               <span>{a.read} min read</span>
@@ -91,7 +90,7 @@ export function Article() {
             ))}
           </div>
           <aside className="lg:sticky lg:top-28 lg:self-start">
-            <div className="glass-card rounded-[22px] p-6">
+            <div className="rounded-[22px] bg-[#f1f0ee] p-6">
               <p className="text-sm font-semibold">Key takeaways</p>
               <ul className="mt-4 grid gap-3 text-[15px] leading-relaxed">
                 {a.takeaways.map((t) => (
@@ -101,7 +100,7 @@ export function Article() {
                   </li>
                 ))}
               </ul>
-              <Link to={`/contact?service=${a.s}`} className="pill-light mt-6 w-full justify-center">
+              <Link to={`/contact?service=${a.s}`} className="pill-btn pill-dark mt-6 w-full justify-center">
                 Talk to an engineer <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -110,7 +109,7 @@ export function Article() {
       </article>
       <section className="py-20">
         <div className="wrap">
-          <p className="eyebrow text-white/70">Keep reading</p>
+          <p className="eyebrow">Keep reading</p>
           <div className="mt-8 grid gap-5 md:grid-cols-2">
             {more.map((x, i) => (
               <Card key={x.slug} a={x} i={i + 1} />

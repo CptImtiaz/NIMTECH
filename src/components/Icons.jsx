@@ -8,3 +8,12 @@ export function Logo({ className = 'h-7 w-7', light = false }) {
     </svg>
   )
 }
+
+// Four-point spark used as a decorative accent.
+export function LogoMark({ className = 'h-5 w-5' }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z" />
+    </svg>
+  )
+}

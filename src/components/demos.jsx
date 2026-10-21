@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Check, MapPin, Truck, Camera, CalendarCheck, Building2, Plane, Wallet, HeartPulse, Leaf, Send } from 'lucide-react'
 import { REDUCE } from '../lib/canvas.js'
-import Photo from './Photo.jsx'
-import { IMG } from '../data/images.js'
+import Orb from './Orb.jsx'
 
 // Interactive product demos, one per service. All data shown is sample data.
 
@@ -109,12 +108,12 @@ export function WhatsAppDemo() {
   )
 }
 
-/* ---------------- RoRo bin app (customer + driver) ---------------- */
+/* ---------------- On-demand app (customer + partner) ---------------- */
 const RORO = [
-  ['Order a bin', 'New job nearby'],
-  ['Driver on the way', 'Navigate to site'],
-  ['Bin delivered', 'Proof of delivery'],
-  ['Pickup booked', 'Job complete'],
+  ['Book a service', 'New job nearby'],
+  ['Partner on the way', 'Navigate to customer'],
+  ['Job done', 'Proof of completion'],
+  ['Rated 5 stars', 'Paid out'],
 ]
 
 function RouteMap({ moving }) {
@@ -139,25 +138,25 @@ function RoroScreen({ step, role }) {
     if (step === 0)
       return (
         <>
-          <p className="rr-h">Choose a bin</p>
+          <p className="rr-h">Book a service</p>
           <div className="rr-sizes">
-            {['6 yd', '10 yd', '20 yd'].map((s, i) => (
+            {['Standard', 'Express', 'Scheduled'].map((s, i) => (
               <span key={s} className={i === 1 ? 'on' : ''}>
                 <b>{s}</b>
-                <small>{['Small reno', 'Kitchen', 'Big clear-out'][i]}</small>
+                <small>{['Today', 'In 60 min', 'Pick a time'][i]}</small>
               </span>
             ))}
           </div>
           <p className="rr-field">
-            <MapPin className="h-3.5 w-3.5" /> 12 Jalan Ampang, KL
+            <MapPin className="h-3.5 w-3.5" /> Your saved address
           </p>
-          <span className="rr-btn">Request bin</span>
+          <span className="rr-btn">Confirm booking</span>
         </>
       )
     if (step === 1)
       return (
         <>
-          <p className="rr-h">Driver on the way</p>
+          <p className="rr-h">Partner on the way</p>
           <RouteMap moving />
           <p className="rr-row">
             <Truck className="h-4 w-4" /> Arriving in <b>18 min</b>
@@ -167,21 +166,21 @@ function RoroScreen({ step, role }) {
     if (step === 2)
       return (
         <>
-          <p className="rr-h">Bin delivered</p>
+          <p className="rr-h">Job done</p>
           <div className="rr-done">
             <Check className="h-7 w-7" />
           </div>
-          <p className="rr-row">Placed on driveway · photo saved</p>
-          <span className="rr-btn">Schedule pickup</span>
+          <p className="rr-row">Photo proof saved · paid in app</p>
+          <span className="rr-btn">Rate your partner</span>
         </>
       )
     return (
       <>
-        <p className="rr-h">Pickup booked</p>
+        <p className="rr-h">Thanks for rating</p>
         <div className="rr-done">
           <CalendarCheck className="h-7 w-7" />
         </div>
-        <p className="rr-row">Friday, 9:00 to 11:00 AM</p>
+        <p className="rr-row">★★★★★ · Book again in one tap</p>
       </>
     )
   }
@@ -190,8 +189,8 @@ function RoroScreen({ step, role }) {
       <>
         <p className="rr-h">New job · 2.4 km</p>
         <div className="rr-job">
-          <b>10 yd bin</b>
-          <small>12 Jalan Ampang · today</small>
+          <b>Express job</b>
+          <small>2.4 km away · today</small>
         </div>
         <span className="rr-btn rr-pulse">Accept job</span>
       </>
@@ -207,11 +206,11 @@ function RoroScreen({ step, role }) {
   if (step === 2)
     return (
       <>
-        <p className="rr-h">Proof of delivery</p>
+        <p className="rr-h">Proof of completion</p>
         <div className="rr-cam">
           <Camera className="h-7 w-7" />
         </div>
-        <span className="rr-btn">Confirm drop-off</span>
+        <span className="rr-btn">Mark job done</span>
       </>
     )
   return (
@@ -220,12 +219,12 @@ function RoroScreen({ step, role }) {
       <div className="rr-done">
         <Check className="h-7 w-7" />
       </div>
-      <p className="rr-row">3 jobs today · next at 2pm</p>
+      <p className="rr-row">Paid out · next job at 2pm</p>
     </>
   )
 }
 
-export function RoroDemo() {
+export function AppDemo() {
   const ref = useRef(null)
   const [step, setStep] = useState(0)
   const [auto, setAuto] = useState(true)
@@ -235,7 +234,7 @@ export function RoroDemo() {
       <div className="rr-phones">
         {['customer', 'driver'].map((role) => (
           <div key={role} className="rr-phone">
-            <span className="rr-role">{role === 'customer' ? 'Customer app' : 'Driver app'}</span>
+            <span className="rr-role">{role === 'customer' ? 'Customer app' : 'Partner app'}</span>
             <div key={step} className="rr-screen">
               <RoroScreen step={step} role={role} />
             </div>
@@ -247,7 +246,7 @@ export function RoroDemo() {
           <button key={c} type="button" role="tab" aria-selected={step === i} onClick={() => (setStep(i), setAuto(false))}>
             <span>{i + 1}</span>
             <b>{c}</b>
-            <small>Driver: {d}</small>
+            <small>Partner: {d}</small>
           </button>
         ))}
       </div>
@@ -258,7 +257,7 @@ export function RoroDemo() {
 /* ---------------- Management software dashboard ---------------- */
 const MODS = [
   ['Company', Building2, [['Staff', '248'], ['Branches', '6'], ['Approvals', '12']], [40, 55, 48, 62, 70, 66, 74, 80, 77, 85, 90, 94], ['HR policy update · approved', 'New branch · Penang', 'Leave request · Sarah']],
-  ['Trips', Plane, [['Trips today', '36'], ['On time', '97%'], ['Seats sold', '1,204']], [30, 42, 38, 55, 61, 58, 72, 69, 80, 76, 88, 92], ['KL → Langkawi · boarding', 'Island tour · 12 guests', 'Driver swap · Bus 4']],
+  ['Trips', Plane, [['Trips today', '36'], ['On time', '97%'], ['Seats sold', '1,204']], [30, 42, 38, 55, 61, 58, 72, 69, 80, 76, 88, 92], ['Morning tour · boarding', 'Group trip · 12 guests', 'Vehicle swap · Bus 4']],
   ['Fintech', Wallet, [['Volume', 'RM 1.2M'], ['Invoices', '3,410'], ['Overdue', '2%']], [50, 46, 58, 63, 60, 71, 69, 78, 82, 79, 88, 96], ['Payout batch · sent', 'Invoice #8841 · paid', 'Refund · RM 120']],
   ['Healthcare', HeartPulse, [['Patients', '5,960'], ['Visits today', '142'], ['No-shows', '3%']], [35, 40, 52, 49, 57, 63, 60, 68, 72, 70, 79, 84], ['Dr. Lee · 14 visits', 'Lab results · ready', 'Reminder SMS · sent']],
   ['Wellness', Leaf, [['Products', '312'], ['Orders', '1,887'], ['Low stock', '4']], [44, 52, 49, 60, 58, 66, 74, 70, 81, 86, 84, 93], ['Collagen drink · restock', 'Distributor · Johor', 'Order #2231 · shipped']],
@@ -372,7 +371,7 @@ export function VisionDemo() {
         </span>
       </div>
       <div className="vz-skin">
-        <Photo src={IMG.skincare} alt="Face photo used for skin analysis" sizes="(min-width: 1024px) 30vw, 90vw" />
+        <div className="vz-face"><Orb color="#ffc5c2" className="vz-face-orb" /></div>
         <span className="vz-mesh" />
         <ul>
           {[
@@ -450,7 +449,7 @@ export function FlowDemo() {
 
 export const DEMOS = {
   software: DashboardDemo,
-  apps: RoroDemo,
+  apps: AppDemo,
   'api-integration': FlowDemo,
   websites: BrowserDemo,
   'ai-models': VisionDemo,

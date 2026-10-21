@@ -1,5 +1,6 @@
 @import './styles/site.css';
 @import './styles/home.css';
+@import './styles/demos.css';
 @import './styles/agents.css';
 
 @tailwind base;

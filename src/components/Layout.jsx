@@ -1,21 +1,25 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import Lenis from 'lenis'
 import { REDUCE } from '../lib/canvas.js'
+import { onReady } from '../lib/intro.js'
+import { getLenis, setLenis } from '../lib/scroll.js'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
+import Loader from './Loader.jsx'
+import { NavMenu, RequestModal } from './Overlays.jsx'
 
 export default function Layout() {
   const { pathname } = useLocation()
-  const lenis = useRef(null)
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 24, mass: 0.3 })
 
+  // smooth, weighty scroll
   useEffect(() => {
     if (REDUCE) return
-    const l = new Lenis({ lerp: 0.1, smoothWheel: true })
-    lenis.current = l
+    const l = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 1 })
+    setLenis(l)
     let raf
     const loop = (t) => {
       l.raf(t)
@@ -25,8 +29,35 @@ export default function Layout() {
     return () => {
       cancelAnimationFrame(raf)
       l.destroy()
+      setLenis(null)
     }
   }, [])
+
+  // after the intro, mark the page so hero entrances play
+  useEffect(() => onReady(() => document.documentElement.classList.add('is-ready')), [])
+
+  // reveal `.rise`, `.lines` and `.words` as they scroll into view (once)
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (es) =>
+        es.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in')
+            io.unobserve(e.target)
+          }
+        }),
+      { rootMargin: '0px 0px -12% 0px' },
+    )
+    const scan = () => document.querySelectorAll('.rise:not(.in), .lines:not(.in), .words:not(.in)').forEach((el) => io.observe(el))
+    const t = setTimeout(scan, 50)
+    const mo = new MutationObserver(scan)
+    mo.observe(document.body, { childList: true, subtree: true })
+    return () => {
+      clearTimeout(t)
+      mo.disconnect()
+      io.disconnect()
+    }
+  }, [pathname])
 
   // `.spot` cards get a glow that follows the pointer
   useEffect(() => {
@@ -41,39 +72,22 @@ export default function Layout() {
     return () => removeEventListener('pointermove', move)
   }, [])
 
-  // reveal `.rise` elements as they scroll into view
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (es) =>
-        es.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('in')
-            io.unobserve(e.target)
-          }
-        }),
-      { rootMargin: '0px 0px -10% 0px' },
-    )
-    const scan = () => document.querySelectorAll('.rise:not(.in)').forEach((el) => io.observe(el))
-    const t = setTimeout(scan, 50)
-    const mo = new MutationObserver(scan)
-    mo.observe(document.body, { childList: true, subtree: true })
-    return () => {
-      clearTimeout(t)
-      mo.disconnect()
-      io.disconnect()
-    }
-  }, [pathname])
-
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-[#05060a]">
-      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-[#3054ff]" />
-      <Header />
-      <AnimatePresence initial={false} mode="wait" onExitComplete={() => (lenis.current ? lenis.current.scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
-        <motion.main key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="relative z-[1]">
+    <div className="relative min-h-screen overflow-x-clip">
+      <a href="#main" className="skip">
+        Skip to content
+      </a>
+      <Loader />
+      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-[#2f69ff]" />
+      <Header onDark={pathname === '/services/ai-agents'} />
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => (getLenis() ? getLenis().scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
+        <motion.main id="main" key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="relative z-[1]">
           <FrozenOutlet />
         </motion.main>
       </AnimatePresence>
       <Footer />
+      <NavMenu />
+      <RequestModal />
     </div>
   )
 }
