@@ -1,7 +1,7 @@
 // Page titles, descriptions and structured data. Used by the client <Seo>
 // head updater and by scripts/prerender.mjs, which writes them into the
 // static HTML of every route.
-import { ORDER, SERVICES } from './content.js'
+import { ORDER, SERVICES } from './services.js'
 import { INSIGHTS } from './insights.js'
 import { EMAIL, HOME_FAQ, HQ } from './site.js'
 
@@ -17,47 +17,27 @@ const strip = (t) => String(t).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim
 
 const PAGES = {
   '/': {
-    title: 'NIMTECH | AI, Computer Vision & Software Engineering Firm',
-    description: 'NIMTECH is a global engineering firm that designs, builds and runs AI agents, computer vision, custom software, mobile apps, systems integration and AI content, from first prototype to production at scale.',
+    title: 'NIMTECH | AI Agents, Computer Vision, Software & Apps',
+    description: 'NIMTECH designs, builds and runs AI agents, computer vision, custom software, mobile apps and integrations for growing businesses, with one senior team from idea to launch.',
   },
   '/services': {
     title: 'Services | AI, Computer Vision, Software & Apps | NIMTECH',
-    description: 'Six practices under one team: AI agents, computer vision and model training, custom software, mobile and web apps, API and systems integration, and AI content.',
+    description: 'Six services under one team: AI agents, computer vision, custom software, mobile apps, API integration and AI content.',
     crumb: 'Services',
   },
-  '/industries': {
-    title: 'Industries | AI & Software Solutions by Sector | NIMTECH',
-    description: 'AI, computer vision and software for retail, logistics, manufacturing, healthcare, finance, property, education and the public sector.',
-    crumb: 'Industries',
-  },
   '/work': {
-    title: 'Work & Case Studies | AI, Vision and App Projects | NIMTECH',
-    description: 'Examples of AI agents, vision systems, platforms and apps NIMTECH has designed and shipped, with the problem, the build and the result.',
+    title: 'Our Work | Real AI, Vision, Software and App Projects | NIMTECH',
+    description: 'Websites, booking platforms, vision models, integrations and apps built by the NIMTECH team, with what each one does and the result.',
     crumb: 'Work',
   },
-  '/process': {
-    title: 'How We Work | Discovery to Support in Five Phases | NIMTECH',
-    description: 'Discovery, design, build, launch and support: how NIMTECH runs projects, communicates progress and keeps quality and security high.',
-    crumb: 'How we work',
-  },
-  '/technology': {
-    title: 'Technology & Research | Our AI and Software Stack | NIMTECH',
-    description: 'The models, frameworks and cloud platforms NIMTECH builds with, and Target Locker, our in-house model for finding and tracking objects across video.',
-    crumb: 'Technology',
-  },
-  '/company': {
-    title: 'About NIMTECH | Engineering Studio for AI & Software',
-    description: `NIMTECH is a senior engineering team based in ${HQ}, working with companies worldwide on AI, computer vision, software and apps.`,
-    crumb: 'Company',
-  },
-  '/careers': {
-    title: 'Careers at NIMTECH | AI, Vision & Software Engineering Jobs',
-    description: 'Open roles at NIMTECH for engineers, researchers and designers working on AI agents, computer vision, software and apps.',
-    crumb: 'Careers',
+  '/about': {
+    title: 'About NIMTECH | Senior Team for AI & Software',
+    description: `NIMTECH is a senior engineering team based in ${HQ}, building AI, computer vision, software and apps for businesses worldwide.`,
+    crumb: 'About',
   },
   '/contact': {
     title: 'Contact NIMTECH | Start Your AI or Software Project',
-    description: 'Tell us about your project. We reply within one business day with questions, a first approach and next steps.',
+    description: 'Tell us about your project. We reply within one working day with questions, a first approach and next steps.',
     crumb: 'Contact',
   },
 }
@@ -76,7 +56,7 @@ for (const id of ORDER) {
   const s = SERVICES[id]
   PAGES[`/services/${id}`] = {
     title: SERVICE_TITLES[id] || `${s.name} | NIMTECH`,
-    description: strip(s.lede),
+    description: strip(s.desc),
     crumb: s.name,
     service: id,
   }
@@ -170,8 +150,8 @@ export function schema(path) {
       '@type': 'Service',
       '@id': `${url}#service`,
       name: s.name,
-      serviceType: s.short,
-      description: strip(s.lede),
+      serviceType: s.name,
+      description: strip(s.desc),
       provider: { '@id': ORG_ID },
       areaServed: 'Worldwide',
       url,
@@ -187,7 +167,7 @@ export function schema(path) {
       description: a.sum,
       datePublished: a.date,
       dateModified: a.date,
-      author: { '@type': 'Organization', name: 'NIMTECH engineering team', url: `${SITE_URL}/company` },
+      author: { '@type': 'Organization', name: 'NIMTECH engineering team', url: `${SITE_URL}/about` },
       publisher: { '@id': ORG_ID },
       mainEntityOfPage: url,
       image: `${SITE_URL}${OG_IMAGE}`,

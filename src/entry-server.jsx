@@ -14,6 +14,6 @@ export function render(url) {
 }
 
 export { ROUTES, headTags, SITE_URL, UPDATED, pageMeta } from './data/seo.js'
-export { ORDER, SERVICES } from './data/content.js'
+export { ORDER, SERVICES } from './data/services.js'
 export { EMAIL, HQ } from './data/site.js'
 export { INSIGHTS } from './data/insights.js'

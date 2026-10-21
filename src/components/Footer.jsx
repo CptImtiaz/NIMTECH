@@ -1,68 +1,89 @@
 import { Link } from 'react-router-dom'
-import { INDUSTRIES, ORDER } from '../data/content.js'
-import { INSIGHTS } from '../data/insights.js'
-import { COMPANY_LINKS, EMAIL, HQ } from '../data/site.js'
-import { Button, svcName } from './blocks.jsx'
-import { ArrowRight, Logo } from './Icons.jsx'
+import { ORDER, SERVICES } from '../data/services.js'
+import { EMAIL, HQ, WHATSAPP, WHATSAPP_LABEL } from '../data/site.js'
 
+const MEADOW = 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4d01c727-d9c5-47c8-a778-35a451ffd39f.mp4'
+const MEADOW_POSTER = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261014_121838_c97d0940-f430-4304-8573-4f47ee44f447.png'
+
+// Footer: a pale paper top with the brand and three link columns, a
+// blue-hour meadow video below, and a frosted-glass wordmark in the fog.
 export default function Footer() {
   return (
-    <footer className="dark-band relative mt-10 overflow-hidden">
-      <div className="wrap relative">
-        <div className="grid gap-10 border-b border-white/10 py-16 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1.2fr]">
-          <div className="min-w-0">
-            <Link to="/" className="flex items-center gap-2.5 font-display text-[20px] font-semibold tracking-[-.02em]">
-              <Logo className="h-8 w-8" light />
-              NIMTECH
-            </Link>
-            <p className="mt-5 max-w-[34ch] text-[14.5px] leading-relaxed text-white/70">An engineering firm for AI agents, computer vision, software, apps, integration and AI content. Headquartered in {HQ}, delivering worldwide.</p>
-            <div className="mt-7">
-              <Button to="/contact" variant="light">Start a Project</Button>
-            </div>
-          </div>
-          <FootCol title="Services" links={ORDER.map((id) => [`/services/${id}`, svcName(id)])} />
-          <FootCol title="Industries" links={INDUSTRIES.slice(0, 6).map((x) => ['/industries', x[0]])} />
-          <FootCol title="Company" links={[...COMPANY_LINKS, ['/contact', 'Contact']]} />
-          <div>
-            <p className="mb-4 font-mono text-[11.5px] font-medium uppercase tracking-[.14em] text-white/55">Latest insights</p>
-            <ul className="grid gap-4">
-              {INSIGHTS.map((a) => (
-                <li key={a.slug}>
-                  <Link to={`/insights/${a.slug}`} className="group block text-[14px] leading-snug text-white/80 hover:text-white">
-                    {a.title}
-                    <span className="mt-1 flex items-center gap-1.5 text-[12.5px] text-white/50 group-hover:text-brand-light">
-                      {a.kind} · {a.read} min <ArrowRight className="h-3 w-3" />
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <footer className="footer">
+      <div className="footer__stage" aria-hidden="true">
+        <video className="footer__video" src={MEADOW} poster={MEADOW_POSTER} autoPlay muted loop playsInline preload="none" />
+      </div>
+      <p className="footer__wordmark" aria-hidden="true">
+        NIMTECH
+      </p>
+      <div className="footer__fog" aria-hidden="true" />
+      <div className="footer__content">
+        <div className="brand">
+          <Link to="/" className="brand__logo" aria-label="NIMTECH home">
+            <span className="brand__mark" />
+            NIMTECH
+          </Link>
+          <h2 className="brand__title">AI and software, built to last</h2>
+          <p className="brand__text">We design, build and run AI agents, computer vision, software, apps and integrations for growing businesses, with one senior team from first idea to launch.</p>
+          <Link to="/contact" className="brand__cta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="m3.5 6 8.5 7 8.5-7" />
+            </svg>
+            Start a project
+          </Link>
+          <p className="brand__copy">
+            © {new Date().getFullYear()} NIMTECH · {HQ}
+          </p>
+          <ul className="brand__status" aria-label="How we work">
+            <li className="chip">
+              <span className="chip__dot" aria-hidden="true" />
+              Replies within 1 working day
+            </li>
+            <li className="chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 11a8 8 0 1 0-2.3 5.7" />
+                <path d="M20 4v7h-7" />
+              </svg>
+              Demo every 2 weeks
+            </li>
+            <li className="chip">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z" />
+              </svg>
+              You own the code
+            </li>
+          </ul>
         </div>
-        <address className="flex flex-wrap items-center justify-between gap-4 py-7 text-[13px] not-italic text-white/55">
-          <span>© {new Date().getFullYear()} NIMTECH. All rights reserved.</span>
-          <span className="flex flex-wrap gap-x-6 gap-y-2">
-            <a href={`mailto:${EMAIL}`} className="hover:text-white">{EMAIL}</a>
-            <span>{HQ}</span>
-            <Link to="/contact" className="hover:text-white">Contact form</Link>
-          </span>
-        </address>
+        <nav className="col col--menu" aria-label="Services">
+          <h3 className="col__title">Services</h3>
+          <ul className="col__list">
+            {ORDER.map((id) => (
+              <li key={id}>
+                <Link to={`/services/${id}`}>{SERVICES[id].name}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <nav className="col" aria-label="Company">
+          <h3 className="col__title">Company</h3>
+          <ul className="col__list">
+            <li><Link to="/about">About us</Link></li>
+            <li><Link to="/work">Projects</Link></li>
+            <li><Link to="/insights">Insights</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+          </ul>
+        </nav>
+        <nav className="col" aria-label="Get in touch">
+          <h3 className="col__title">Get in touch</h3>
+          <ul className="col__list">
+            <li><a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
+            <li><a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer">WhatsApp {WHATSAPP_LABEL}</a></li>
+            <li>{HQ}</li>
+            <li>Working worldwide</li>
+          </ul>
+        </nav>
       </div>
     </footer>
-  )
-}
-
-function FootCol({ title, links }) {
-  return (
-    <div>
-      <p className="mb-4 font-mono text-[11.5px] font-medium uppercase tracking-[.14em] text-white/55">{title}</p>
-      <ul className="grid gap-2.5 text-[14.5px]">
-        {links.map(([to, l]) => (
-          <li key={to + l}>
-            <Link to={to} className="text-white/75 transition-colors hover:text-white">{l}</Link>
-          </li>
-        ))}
-      </ul>
-    </div>
   )
 }

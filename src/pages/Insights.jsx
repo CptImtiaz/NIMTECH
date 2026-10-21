@@ -1,45 +1,50 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { INSIGHTS, insight } from '../data/insights.js'
-import { CTA, Section, svcName } from '../components/blocks.jsx'
-import InsightCard from '../components/InsightCard.jsx'
-import { ArrowRight } from '../components/Icons.jsx'
-import { Reveal, SplitText } from '../components/motion.jsx'
+import { svcName } from '../data/services.js'
+import { CtaBand, PageHero } from '../components/ui.jsx'
 
 const fmt = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 
+const TONES = [
+  ['#3054ff', '#a068ff'],
+  ['#ff7a45', '#a068ff'],
+  ['#16a34a', '#3054ff'],
+]
+
+function Card({ a, i }) {
+  const [x, y] = TONES[i % 3]
+  return (
+    <Link to={`/insights/${a.slug}`} className="rise group flex h-full flex-col overflow-hidden rounded-[26px] border border-black/[.07] bg-white transition-shadow hover:shadow-[0_30px_60px_-30px_rgba(20,20,60,.3)]" style={{ '--d': `${(i % 2) * 0.08}s` }}>
+      <div className="insight-cover relative h-48 transition-transform duration-700 group-hover:scale-[1.02]" style={{ '--a': x, '--b': y }}>
+        <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1 text-xs font-medium">{a.kind}</span>
+      </div>
+      <div className="flex flex-1 flex-col p-7">
+        <span className="text-xs font-medium uppercase tracking-wider text-[#3054ff]">{svcName(a.s)}</span>
+        <h3 className="mt-3 font-display text-2xl font-semibold leading-tight tracking-tight">{a.title}</h3>
+        <p className="mt-3 text-[16px] leading-relaxed text-neutral-600">{a.sum}</p>
+        <span className="mt-auto flex items-center justify-between pt-6 text-sm text-neutral-500">
+          {a.read} min read
+          <ArrowUpRight className="h-5 w-5 text-black transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </span>
+      </div>
+    </Link>
+  )
+}
+
 /* ---------- index ---------- */
 export function InsightsIndex() {
-  const [lead, ...rest] = INSIGHTS
   return (
     <>
-      <section className="border-b border-line pb-16 pt-36 md:pt-44">
-        <div className="wrap">
-          <span className="kicker">Insights</span>
-          <SplitText lines={['Practical thinking on', '<em>AI and software.</em>']} className="h1 mt-5 max-w-[18ch]" />
-          <p className="lede mt-6">Guides and perspectives from the engineers who build and run these systems for our clients.</p>
-        </div>
-      </section>
-      <Section>
-        <Reveal>
-          <Link to={`/insights/${lead.slug}`} className="group grid overflow-hidden rounded-[16px] border border-line bg-white lg:grid-cols-[1.1fr_1fr]">
-            <div className="insight-art min-h-[240px] lg:min-h-[360px]" data-k="0" />
-            <div className="flex flex-col p-7 md:p-10">
-              <span className="font-mono text-[11.5px] uppercase tracking-[.08em] text-brand">Featured · {lead.kind}</span>
-              <h2 className="h2 mt-4 !text-[clamp(28px,2.8vw,40px)] transition-colors group-hover:text-brand">{lead.title}</h2>
-              <p className="lede mt-4">{lead.sum}</p>
-              <span className="mt-auto flex items-center gap-2 pt-8 text-[14.5px] font-medium text-brand">
-                Read the {lead.kind.toLowerCase()} <ArrowRight className="h-4 w-4" />
-              </span>
-            </div>
-          </Link>
-        </Reveal>
-        <div className="mt-4 grid gap-4 md:grid-cols-2">
-          {rest.map((a, i) => (
-            <InsightCard key={a.slug} a={a} i={i + 1} />
+      <PageHero eyebrow="Insights" title="Practical thinking on" accent="AI and software." text="Short guides from the engineers who build these systems, written for business owners." />
+      <section className="bg-[#f6f6f8] py-20 md:py-28">
+        <div className="wrap grid gap-5 md:grid-cols-2">
+          {INSIGHTS.map((a, i) => (
+            <Card key={a.slug} a={a} i={i} />
           ))}
         </div>
-      </Section>
-      <CTA title="Want this applied to <em>your problem?</em>" />
+      </section>
+      <CtaBand title="Want this applied" accent="to your business?" />
     </>
   )
 }
@@ -53,19 +58,20 @@ export function Article() {
   return (
     <>
       <article>
-        <header className="border-b border-line pb-14 pt-36 md:pt-44">
+        <header className="relative isolate overflow-hidden bg-black pb-16 pt-36 text-white md:pt-44" data-theme="dark">
+          <div className="hero-grid pointer-events-none absolute inset-0 -z-10" />
           <div className="wrap max-w-[900px]">
-            <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-[13px] text-ink-soft">
-              <Link to="/" className="hover:text-ink">Home</Link>
+            <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-[13px] text-white/55">
+              <Link to="/" className="hover:text-white">Home</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/insights" className="hover:text-ink">Insights</Link>
+              <Link to="/insights" className="hover:text-white">Insights</Link>
             </nav>
-            <span className="mt-8 block font-mono text-[12px] uppercase tracking-[.12em] text-brand">
+            <span className="mt-8 block text-xs font-medium uppercase tracking-wider text-[#8ea2ff]">
               {a.kind} · <Link to={`/services/${a.s}`} className="hover:underline">{svcName(a.s)}</Link>
             </span>
-            <h1 className="h1 mt-4 !text-[clamp(34px,4.2vw,58px)]">{a.title}</h1>
-            <p className="lede mt-6 !text-[19px]">{a.sum}</p>
-            <p className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-ink-soft">
+            <h1 className="display mt-4 text-[clamp(34px,4.6vw,60px)]">{a.title}</h1>
+            <p className="lede mt-6 text-white/70">{a.sum}</p>
+            <p className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-white/55">
               <span>By the NIMTECH engineering team</span>
               <time dateTime={a.date}>{fmt(a.date)}</time>
               <span>{a.read} min read</span>
@@ -84,32 +90,34 @@ export function Article() {
             ))}
           </div>
           <aside className="lg:sticky lg:top-28 lg:self-start">
-            <div className="rounded-[14px] border border-line bg-surface p-6">
-              <p className="kicker">Key takeaways</p>
-              <ul className="mt-5 grid gap-3 text-[14.5px] leading-relaxed text-ink">
+            <div className="rounded-[22px] bg-[#f6f6f8] p-6">
+              <p className="text-sm font-semibold">Key takeaways</p>
+              <ul className="mt-4 grid gap-3 text-[15px] leading-relaxed">
                 {a.takeaways.map((t) => (
                   <li key={t} className="flex gap-3">
-                    <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-brand" />
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#3054ff]" />
                     {t}
                   </li>
                 ))}
               </ul>
-              <Link to={`/contact?service=${a.s}`} className="btn btn-primary mt-6 w-full justify-center">
-                Talk to an engineer
+              <Link to={`/contact?service=${a.s}`} className="pill-dark mt-6 w-full justify-center">
+                Talk to an engineer <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </aside>
         </div>
       </article>
-      <Section className="bg-surface">
-        <p className="kicker">Keep reading</p>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {more.map((x, i) => (
-            <InsightCard key={x.slug} a={x} i={i + 1} />
-          ))}
+      <section className="bg-[#f6f6f8] py-20">
+        <div className="wrap">
+          <p className="eyebrow">Keep reading</p>
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {more.map((x, i) => (
+              <Card key={x.slug} a={x} i={i + 1} />
+            ))}
+          </div>
         </div>
-      </Section>
-      <CTA />
+      </section>
+      <CtaBand />
     </>
   )
 }

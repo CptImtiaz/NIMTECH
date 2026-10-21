@@ -59,7 +59,7 @@ const md = [
   '',
   ...ORDER.map((id) => {
     const s = SERVICES[id]
-    return `- [${s.name}](${SITE_URL}/services/${id}): ${strip(s.lede)} Typical work: ${s.tags.join(', ')}.`
+    return `- [${s.name}](${SITE_URL}/services/${id}): ${s.tagline} ${strip(s.desc)} Includes: ${s.get.map(([t]) => t).join(', ')}.`
   }),
   '',
   '## Insights',
@@ -68,7 +68,7 @@ const md = [
   '',
   '## Company',
   '',
-  ...['/industries', '/work', '/process', '/technology', '/company', '/careers', '/insights', '/contact'].map(
+  ...['/work', '/about', '/insights', '/contact'].map(
     (u) => `- [${pageMeta(u).title.split(' | ')[0]}](${SITE_URL}${u}): ${pageMeta(u).description}`,
   ),
   '',

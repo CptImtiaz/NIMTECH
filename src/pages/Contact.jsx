@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ORDER, SERVICES } from '../data/content.js'
+import { Clock, Mail, MapPin, MessageCircle } from 'lucide-react'
+import { ORDER, SERVICES, svcName } from '../data/services.js'
 import { EMAIL, HQ, WHATSAPP, WHATSAPP_LABEL } from '../data/site.js'
-import { PageHero } from '../components/Heroes.jsx'
-import { Button, CopyEmail, Section, svcName } from '../components/blocks.jsx'
-import { EASE, Reveal } from '../components/motion.jsx'
+import { PageHero } from '../components/ui.jsx'
 
-const OPTIONS = ['Not sure yet', ...ORDER.map(svcName), 'Careers']
+const EASE = [0.16, 1, 0.3, 1]
+const OPTIONS = ['Not sure yet', ...ORDER.map(svcName)]
 
 export default function Contact() {
   const [params] = useSearchParams()
   const pre = params.get('service')
-  const initial = pre === 'careers' ? 'Careers' : SERVICES[pre] ? svcName(pre) : 'Not sure yet'
+  const initial = SERVICES[pre] ? svcName(pre) : 'Not sure yet'
   const [form, setForm] = useState({ name: '', company: '', email: params.get('email') || '', phone: '', service: initial, message: '' })
   const [out, setOut] = useState(null)
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
@@ -33,64 +33,72 @@ export default function Contact() {
 
   return (
     <>
-      <PageHero badge="Contact" h1={['Tell us what', '<em>to build.</em>']} lede="A few lines about the problem is enough. A senior engineer replies within one working day." primary={['Write to us', '#form']} />
-      <Section id="form">
-        <div className="grid items-start gap-7 lg:grid-cols-[1.2fr_.8fr]">
-          <Reveal>
-            <form onSubmit={submit} noValidate className="card grid gap-4 sm:grid-cols-2">
-              <Field label="Name"><input value={form.name} onChange={set('name')} autoComplete="name" /></Field>
-              <Field label="Company"><input value={form.company} onChange={set('company')} autoComplete="organization" /></Field>
-              <Field label="Work email"><input type="email" value={form.email} onChange={set('email')} autoComplete="email" /></Field>
-              <Field label="Phone / WhatsApp"><input inputMode="tel" value={form.phone} onChange={set('phone')} autoComplete="tel" /></Field>
-              <Field label="What do you need?" full>
-                <select value={form.service} onChange={set('service')}>
-                  {OPTIONS.map((o) => <option key={o}>{o}</option>)}
-                </select>
-              </Field>
-              <Field label="Tell us about the problem" full>
-                <textarea value={form.message} onChange={set('message')} placeholder="What are you trying to achieve, and what’s getting in the way?" />
-              </Field>
-              <div className="sm:col-span-2">
-                <button type="submit" className="btn btn-primary">
-                  <span>Prepare enquiry</span>
-                </button>
+      <PageHero eyebrow="Contact" title="Tell us what" accent="to build." text="A few lines about the problem is enough. A senior engineer replies within one working day." />
+      <section id="form" className="bg-white py-20 md:py-28">
+        <div className="wrap grid items-start gap-8 lg:grid-cols-[1.25fr_.75fr]">
+          <form onSubmit={submit} noValidate className="rise grid gap-5 rounded-[28px] border border-black/[.07] bg-[#f6f6f8] p-6 sm:grid-cols-2 md:p-10">
+            <Field label="Name"><input value={form.name} onChange={set('name')} autoComplete="name" /></Field>
+            <Field label="Company"><input value={form.company} onChange={set('company')} autoComplete="organization" /></Field>
+            <Field label="Work email"><input type="email" value={form.email} onChange={set('email')} autoComplete="email" /></Field>
+            <Field label="Phone / WhatsApp"><input inputMode="tel" value={form.phone} onChange={set('phone')} autoComplete="tel" /></Field>
+            <fieldset className="sm:col-span-2">
+              <legend className="mb-3 text-sm font-medium text-neutral-700">What do you need?</legend>
+              <div className="flex flex-wrap gap-2">
+                {OPTIONS.map((o) => (
+                  <button key={o} type="button" onClick={() => setForm((f) => ({ ...f, service: o }))} aria-pressed={form.service === o} className={`rounded-full px-4 py-2 text-sm transition-colors ${form.service === o ? 'bg-black text-white' : 'bg-white text-neutral-700 ring-1 ring-black/10 hover:ring-black/30'}`}>
+                    {o}
+                  </button>
+                ))}
               </div>
-              <AnimatePresence>
-                {out && (
-                  <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: EASE }} className="flex flex-wrap items-center gap-3 text-[14.5px] sm:col-span-2" role="status">
-                    {out.error ? (
-                      <span className="text-red-600">{out.error}</span>
-                    ) : (
-                      <>
-                        <span className="text-ink">Your enquiry is ready. Send it by:</span>
-                        <Button href={out.wa} target="_blank" rel="noopener noreferrer">WhatsApp</Button>
-                        <Button href={out.mail} variant="glass">Email</Button>
-                      </>
-                    )}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </form>
-          </Reveal>
-          <div className="grid gap-4">
+            </fieldset>
+            <Field label="Tell us about the problem" full>
+              <textarea rows={5} value={form.message} onChange={set('message')} placeholder="What are you trying to achieve, and what’s getting in the way?" />
+            </Field>
+            <div className="sm:col-span-2">
+              <button type="submit" className="pill-dark">Prepare my enquiry</button>
+            </div>
+            <AnimatePresence>
+              {out && (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: EASE }} className="flex flex-wrap items-center gap-3 text-[15px] sm:col-span-2" role="status">
+                  {out.error ? (
+                    <span className="text-red-600">{out.error}</span>
+                  ) : (
+                    <>
+                      <span>Your enquiry is ready. Send it by:</span>
+                      <a href={out.wa} target="_blank" rel="noopener noreferrer" className="pill bg-[#25d366] px-5 py-2.5 text-white">WhatsApp</a>
+                      <a href={out.mail} className="pill-ghost !py-2.5">Email</a>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </form>
+          <ul className="grid gap-3">
             {[
-              ['Email', EMAIL, 'The best way to reach the team.', true],
-              ['WhatsApp', WHATSAPP_LABEL, 'For quick questions.'],
-              ['Headquarters', HQ, 'Working with clients worldwide.'],
-              ['Response time', 'Within one working day', 'In your time zone.'],
-            ].map((c, i) => (
-              <Reveal key={c[0]} delay={i * 0.07}>
-                <div className="card">
-                  <span className="card-num">{c[0].toUpperCase()}</span>
-                  <p className="h3 break-words">{c[1]}</p>
-                  <p className="card-text">{c[2]}</p>
-                  {c[3] && <div><CopyEmail label="Copy email" /></div>}
-                </div>
-              </Reveal>
-            ))}
-          </div>
+              [Mail, 'Email', EMAIL, `mailto:${EMAIL}`],
+              [MessageCircle, 'WhatsApp', WHATSAPP_LABEL, `https://wa.me/${WHATSAPP}`],
+              [MapPin, 'Based in', HQ, null],
+              [Clock, 'Reply time', 'Within one working day', null],
+            ].map(([Ico, k, v, href], i) => {
+              const inner = (
+                <>
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-black text-white"><Ico className="h-5 w-5" /></span>
+                  <span className="min-w-0">
+                    <span className="block text-sm text-neutral-500">{k}</span>
+                    <span className="block break-words font-display text-lg font-semibold">{v}</span>
+                  </span>
+                </>
+              )
+              const cls = 'flex items-center gap-4 rounded-[22px] border border-black/[.07] bg-white p-5 transition-colors'
+              return (
+                <li key={k} className="rise" style={{ '--d': `${i * 0.06}s` }}>
+                  {href ? <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className={`${cls} hover:border-black/25`}>{inner}</a> : <div className={cls}>{inner}</div>}
+                </li>
+              )
+            })}
+          </ul>
         </div>
-      </Section>
+      </section>
     </>
   )
 }

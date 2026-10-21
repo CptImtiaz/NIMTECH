@@ -3,9 +3,11 @@ import { useLocation, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import Lenis from 'lenis'
 import { REDUCE } from '../lib/canvas.js'
-import Navbar from './Navbar.jsx'
+import Header from './Header.jsx'
 import Footer from './Footer.jsx'
-import { EASE } from './motion.jsx'
+
+// pages whose first screen is light, so the header uses dark text
+const LIGHT = ['/services/apps']
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -29,31 +31,35 @@ export default function Layout() {
     }
   }, [])
 
+  // reveal `.rise` elements as they scroll into view
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (es) =>
+        es.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in')
+            io.unobserve(e.target)
+          }
+        }),
+      { rootMargin: '0px 0px -10% 0px' },
+    )
+    const scan = () => document.querySelectorAll('.rise:not(.in)').forEach((el) => io.observe(el))
+    const t = setTimeout(scan, 50)
+    const mo = new MutationObserver(scan)
+    mo.observe(document.body, { childList: true, subtree: true })
+    return () => {
+      clearTimeout(t)
+      mo.disconnect()
+      io.disconnect()
+    }
+  }, [pathname])
+
   return (
-    <div className="relative min-h-screen overflow-x-clip bg-night">
-      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-brand" />
-      <Navbar />
-      {/* initial={false}: no curtain or page fade on first load, so the
-          prerendered page shows at once */}
-      <AnimatePresence initial={false}>
-        <motion.div
-          key={pathname}
-          aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-[65] origin-top bg-gradient-to-b from-deep via-brand to-night"
-          initial={{ scaleY: 1 }}
-          animate={{ scaleY: 0, transition: { duration: 0.8, ease: EASE, delay: 0.05 } }}
-          exit={{ opacity: 0, transition: { duration: 0.01 } }}
-        />
-      </AnimatePresence>
+    <div className="relative min-h-screen overflow-x-clip bg-white">
+      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-[#3054ff]" />
+      <Header tone={LIGHT.includes(pathname) ? 'light' : 'dark'} />
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => (lenis.current ? lenis.current.scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
-        <motion.main
-          key={pathname}
-          initial={{ opacity: 0, y: 40, rotateX: 6, scale: 0.98, transformPerspective: 1400 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1, transitionEnd: { transform: 'none' } }}
-          exit={{ opacity: 0, y: -30, rotateX: -4, scale: 0.98, filter: 'blur(8px)' }}
-          transition={{ duration: 0.55, ease: EASE }}
-          className="relative z-[1]"
-        >
+        <motion.main key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="relative z-[1]">
           <FrozenOutlet />
         </motion.main>
       </AnimatePresence>
