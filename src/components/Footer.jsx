@@ -1,4 +1,6 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { ArrowUpRight, Mail, MessageCircle } from 'lucide-react'
 import { ORDER, SERVICES } from '../data/services.js'
 import { EMAIL, HQ, WHATSAPP } from '../data/site.js'
@@ -10,6 +12,7 @@ const WORDS = ['Software', 'Mobile apps', 'Websites', 'API integration', 'AI mod
 // Black footer: a ticker of services, a call to action, link columns and a
 // giant faint wordmark.
 export default function Footer() {
+  const ref = useRef(null)
   const cols = [
     ['Services', ORDER.map((id) => [SERVICES[id].short, `/services/${id}`])],
     [
@@ -32,7 +35,7 @@ export default function Footer() {
     ],
   ]
   return (
-    <footer className="foot">
+    <footer ref={ref} className="foot">
       <div className="foot-glow a" aria-hidden="true" />
       <div className="foot-glow b" aria-hidden="true" />
       <div className="foot-ticker" aria-hidden="true">
@@ -117,9 +120,34 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <p className="foot-mark" aria-hidden="true">
-        NIMTECH
-      </p>
+      <Wordmark target={ref} />
     </footer>
+  )
+}
+
+// Giant frosted NIMTECH that rises letter by letter and drifts sideways as
+// the footer scrolls into view.
+function Wordmark({ target }) {
+  const { scrollYProgress } = useScroll({ target, offset: ['start end', 'end end'] })
+  const p = useSpring(scrollYProgress, { stiffness: 90, damping: 22, mass: 0.4 })
+  const x = useTransform(p, [0, 1], ['-6%', '0%'])
+  return (
+    <motion.p className="foot-mark" style={{ x }} aria-hidden="true">
+      {'NIMTECH'.split('').map((c, i) => (
+        <Letter key={i} p={p} i={i} c={c} />
+      ))}
+    </motion.p>
+  )
+}
+
+function Letter({ p, i, c }) {
+  const a = 0.35 + i * 0.06
+  const y = useTransform(p, [a, a + 0.3], ['80%', '0%'])
+  const o = useTransform(p, [a, a + 0.3], [0, 1])
+  const r = useTransform(p, [a, a + 0.3], [12, 0])
+  return (
+    <motion.span className="inline-block" style={{ y, opacity: o, rotate: r }}>
+      {c}
+    </motion.span>
   )
 }

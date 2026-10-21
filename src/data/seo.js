@@ -3,7 +3,7 @@
 // static HTML of every route.
 import { ORDER, SERVICES } from './services.js'
 import { INSIGHTS } from './insights.js'
-import { EMAIL, HOME_FAQ, HQ } from './site.js'
+import { EMAIL, HOME_FAQ, HQ, WHATSAPP } from './site.js'
 
 // Production origin. Set VITE_SITE_URL at build time when the domain changes.
 export const SITE_URL = (import.meta.env?.VITE_SITE_URL || 'https://www.nimtech.com').replace(/\/$/, '')
@@ -11,7 +11,7 @@ export const SITE_NAME = 'NIMTECH'
 export const OG_IMAGE = '/og.jpg'
 // First published and last updated dates, shown to search engines
 export const PUBLISHED = '2026-10-20'
-export const UPDATED = '2026-10-20'
+export const UPDATED = '2026-10-21'
 
 const strip = (t) => String(t).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
 
@@ -94,7 +94,12 @@ const organization = () => ({
   logo: `${SITE_URL}/favicon.svg`,
   email: EMAIL,
   description: PAGES['/'].description,
+  telephone: `+${WHATSAPP}`,
   address: { '@type': 'PostalAddress', addressLocality: HQ.split(',')[0], addressCountry: 'MY' },
+  contactPoint: [
+    { '@type': 'ContactPoint', contactType: 'sales', telephone: `+${WHATSAPP}`, email: EMAIL, availableLanguage: ['English', 'Malay'], areaServed: 'Worldwide' },
+  ],
+  slogan: 'Less noise. More gravity.',
   areaServed: 'Worldwide',
   knowsAbout: ORDER.map((id) => SERVICES[id].name),
 })
@@ -116,7 +121,7 @@ export function schema(path) {
     organization(),
     { '@type': 'WebSite', '@id': `${SITE_URL}/#website`, url: `${SITE_URL}/`, name: SITE_NAME, publisher: { '@id': ORG_ID }, inLanguage: 'en' },
     {
-      '@type': 'WebPage',
+      '@type': m.path === '/about' ? 'AboutPage' : m.path === '/contact' ? 'ContactPage' : m.path === '/services' || m.path === '/insights' ? 'CollectionPage' : 'WebPage',
       '@id': `${url}#webpage`,
       url,
       name: m.title,
@@ -126,6 +131,7 @@ export function schema(path) {
       datePublished: PUBLISHED,
       dateModified: UPDATED,
       inLanguage: 'en',
+      primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}${OG_IMAGE}`, width: 1200, height: 630 },
     },
   ]
   if (m.path === '/') graph.push(faqPage(HOME_FAQ))
@@ -189,7 +195,7 @@ export function headTags(path) {
   const t = [
     `<title>${esc(m.title)}</title>`,
     `<meta name="description" content="${esc(m.description)}" />`,
-    m.noindex ? '<meta name="robots" content="noindex" />' : `<link rel="canonical" href="${url}" />`,
+    m.noindex ? '<meta name="robots" content="noindex" />' : `<link rel="canonical" href="${url}" />\n    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="${SITE_NAME}" />`,
     `<meta property="og:title" content="${esc(m.title)}" />`,
@@ -198,11 +204,13 @@ export function headTags(path) {
     `<meta property="og:image" content="${img}" />`,
     `<meta property="og:image:width" content="1200" />`,
     `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="NIMTECH: software, apps, websites and AI" />`,
     `<meta property="og:locale" content="en_US" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
     `<meta name="twitter:title" content="${esc(m.title)}" />`,
     `<meta name="twitter:description" content="${esc(m.description)}" />`,
     `<meta name="twitter:image" content="${img}" />`,
+    `<meta name="twitter:image:alt" content="NIMTECH: software, apps, websites and AI" />`,
     `<meta property="article:published_time" content="${PUBLISHED}" />`,
     `<meta property="article:modified_time" content="${UPDATED}" />`,
   ]

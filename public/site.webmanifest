@@ -1,0 +1,10 @@
+{
+  "name": "NIMTECH",
+  "short_name": "NIMTECH",
+  "description": "Software, mobile apps, websites, API integration, AI models and AI agents.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7fafc",
+  "theme_color": "#0a0a0a",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

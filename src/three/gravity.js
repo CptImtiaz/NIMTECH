@@ -32,16 +32,19 @@ const lerp = (a, b, t) => a + (b - a) * t
 const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3)
 
 export function createGravity({ canvas, container, ballColor = '#2F69FF', control, mouse, onReady = () => {}, count, morph = true, offsetX = 0 }) {
+  // phones and low-core devices: no transmission pass, no shadows, lighter
+  // meshes and fewer physics steps
+  const lite = window.innerWidth < 768 || (navigator.hardwareConcurrency || 8) <= 4
   const scene = new THREE.Scene()
   const camera = new THREE.PerspectiveCamera(38, container.clientWidth / container.clientHeight, 0.1, 100)
   camera.position.set(0, 0, 11)
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2))
   renderer.setSize(container.clientWidth, container.clientHeight)
   renderer.toneMapping = THREE.ACESFilmicToneMapping
   renderer.toneMappingExposure = 1.15
-  renderer.shadowMap.enabled = true
+  renderer.shadowMap.enabled = !lite
   renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
   const hemiLight = new THREE.HemisphereLight(0xffffff, new THREE.Color(ballColor), 1.6)
@@ -49,8 +52,8 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   const keyLight = new THREE.DirectionalLight(0xffffff, 1.4)
   keyLight.position.set(-6, 10, 8)
   keyLight.castShadow = true
-  keyLight.shadow.mapSize.width = 2048
-  keyLight.shadow.mapSize.height = 2048
+  keyLight.shadow.mapSize.width = window.innerWidth < 768 ? 1024 : 2048
+  keyLight.shadow.mapSize.height = window.innerWidth < 768 ? 1024 : 2048
   keyLight.shadow.camera.near = 0.5
   keyLight.shadow.camera.far = 30
   keyLight.shadow.camera.left = -8
@@ -82,7 +85,7 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   updateFrustumBounds()
 
   const isMobile = window.innerWidth < 768
-  const ballCount = count ?? (isMobile ? 54 : 96)
+  const ballCount = count ?? (isMobile ? 44 : 96)
 
   const palette = getDynamicColors(ballColor)
   const isBlack = ['#141414', '#18181b', '#000000'].includes(ballColor.toLowerCase())
@@ -92,7 +95,7 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   const ROLES = ['pastel', 'light', 'medium', 'deep', 'glass']
   const curPal = { pastel: new THREE.Color(), light: new THREE.Color(), medium: new THREE.Color(), deep: new THREE.Color(), glass: new THREE.Color() }
 
-  const sphereGeometry = new THREE.SphereGeometry(1, 48, 48)
+  const sphereGeometry = lite ? new THREE.SphereGeometry(1, 28, 20) : new THREE.SphereGeometry(1, 48, 48)
   const balls = []
   for (let i = 0; i < ballCount; i++) {
     let radius = 0.33
@@ -107,7 +110,14 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
     let sphereMat
     let role = 'medium'
     const isGlass = Math.random() < 0.22 && !isBlack
-    if (isGlass) {
+    if (isGlass && lite) {
+      sphereMat = new THREE.MeshPhysicalMaterial({
+        color: palette.glass, roughness: 0.08, metalness: 0.0, clearcoat: 1.0, clearcoatRoughness: 0.03,
+        emissive: palette.glass, emissiveIntensity: 0.12, transparent: true, opacity: 0.55,
+      })
+      color = palette.glass
+      role = 'glass'
+    } else if (isGlass) {
       sphereMat = new THREE.MeshPhysicalMaterial({
         color: palette.glass, roughness: 0.08, metalness: 0.0, clearcoat: 1.0, clearcoatRoughness: 0.03, transmission: 0.95,
         ior: 1.485, thickness: 2.2, specularColor: new THREE.Color('#ffffff'), specularIntensity: 1.0,
@@ -305,14 +315,15 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
       const c = b.isGlass ? curPal.glass : curPal[b.role]
       b.material.color.copy(c)
       if (!isBlack) b.material.emissive.copy(c)
-      b.material.opacity = flyF > 0.001 ? 1 - smoothstep(camZ - 2.6, camZ - 0.3, b.position.z) : 1
+      const baseOpacity = lite && b.isGlass ? 0.55 : 1
+      b.material.opacity = (flyF > 0.001 ? 1 - smoothstep(camZ - 2.6, camZ - 0.3, b.position.z) : 1) * baseOpacity
       const targetVis = b.radius * (1 - (1 - shapeScale) * shapeF)
       b.visualScale += (targetVis - b.visualScale) * 0.12
       b.sphere.scale.setScalar(b.visualScale)
     }
 
     const collideScale = 0.28 * (1 - 0.93 * shapeF) * (1 - flyF)
-    const subSteps = 4
+    const subSteps = lite ? 2 : 4
     for (let step = 0; step < subSteps; step++) {
       for (let i = 0; i < balls.length; i++) {
         for (let j = i + 1; j < balls.length; j++) {

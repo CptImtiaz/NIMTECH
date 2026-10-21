@@ -1,18 +1,21 @@
 // Writes static HTML for every route into dist/, plus 404.html,
 // sitemap.xml, robots.txt and llms.txt. Runs after the client and SSR
 // builds (see "build" in package.json).
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const dist = join(root, 'dist')
 const ssr = join(root, 'dist-ssr')
-const { render, ROUTES, headTags, SITE_URL, UPDATED, pageMeta, ORDER, SERVICES, EMAIL, HQ, INSIGHTS } = await import(
+const { render, ROUTES, headTags, SITE_URL, UPDATED, pageMeta, ORDER, SERVICES, EMAIL, HQ, WHATSAPP, INSIGHTS } = await import(
   pathToFileURL(join(ssr, 'entry-server.js')).href
 )
 
-const template = readFileSync(join(dist, 'index.html'), 'utf8')
+// preload the two fonts the first screen needs
+const fonts = readdirSync(join(dist, 'assets')).filter((f) => /^(raleway|inter)-latin-wght-normal-.*\.woff2$/.test(f))
+const preload = fonts.map((f) => `<link rel="preload" href="/assets/${f}" as="font" type="font/woff2" crossorigin />`).join('\n    ')
+const template = readFileSync(join(dist, 'index.html'), 'utf8').replace('<!--preload-->', preload)
 const page = (url) => template.replace('<!--head-->', headTags(url)).replace('<!--app-->', render(url))
 
 for (const url of ROUTES) {
@@ -53,7 +56,7 @@ const md = [
   '',
   `> ${pageMeta('/').description}`,
   '',
-  `NIMTECH is an engineering studio headquartered in ${HQ} that works with companies worldwide. Contact: ${EMAIL} or ${SITE_URL}/contact. Clients own the source code, models, datasets and infrastructure we build.`,
+  `NIMTECH is an engineering studio headquartered in ${HQ} that works with companies worldwide. Contact: ${EMAIL}, WhatsApp +${WHATSAPP}, or ${SITE_URL}/contact. Clients own the source code, models, datasets and infrastructure we build.`,
   '',
   '## Services',
   '',

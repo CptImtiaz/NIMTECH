@@ -27,7 +27,7 @@ export default function Seo() {
     set('meta[name="twitter:title"]', 'content', m.title)
     set('meta[name="twitter:description"]', 'content', m.description)
     set('link[rel="canonical"]', 'href', url)
-    set('meta[name="robots"]', 'content', m.noindex ? 'noindex' : 'index, follow')
+    set('meta[name="robots"]', 'content', m.noindex ? 'noindex' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1')
     set('script[type="application/ld+json"]', 'type', 'application/ld+json')
     document.head.querySelector('script[type="application/ld+json"]').textContent = m.noindex ? '{}' : JSON.stringify(schema(m.path))
   }, [pathname])

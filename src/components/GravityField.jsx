@@ -45,10 +45,21 @@ export default function GravityField({ color = '#2F69FF', fixed = false, count, 
     onScroll()
 
     // pause when the hero is off screen
-    const io = new IntersectionObserver(([e]) => (control.paused = !e.isIntersecting))
+    // pause when off screen or the tab is hidden
+    let onScreen = true
+    const sync = () => (control.paused = !onScreen || document.hidden)
+    const io = new IntersectionObserver(([e]) => {
+      onScreen = e.isIntersecting
+      sync()
+    })
     if (!fixed) io.observe(container)
+    document.addEventListener('visibilitychange', sync)
 
-    const t = setTimeout(() => {
+    // build the scene once the intro is done and the browser is idle
+    let t = 0
+    const idle = (f) => ('requestIdleCallback' in window ? requestIdleCallback(f, { timeout: 1200 }) : setTimeout(f, 200))
+    const stopReady = onReady(() => (t = idle(boot)))
+    const boot = () => {
       import('../three/gravity.js')
         .then(({ createGravity }) => {
           if (dead) return
@@ -58,16 +69,19 @@ export default function GravityField({ color = '#2F69FF', fixed = false, count, 
             setFailed(true)
             return
           }
-          onReady(() => setTimeout(() => (control.started = true), 120))
+          setTimeout(() => (control.started = true), 120)
         })
         .catch(() => setFailed(true))
-    }, 60)
+    }
 
     return () => {
       dead = true
+      stopReady()
+      if ('cancelIdleCallback' in window) cancelIdleCallback(t)
       clearTimeout(t)
       dispose()
       io.disconnect()
+      document.removeEventListener('visibilitychange', sync)
       cancelAnimationFrame(raf)
       removeEventListener('pointermove', move)
       removeEventListener('mousedown', down)
