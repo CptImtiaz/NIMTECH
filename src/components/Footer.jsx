@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { ArrowUpRight, Mail, MessageCircle } from 'lucide-react'
 import { ORDER, SERVICES } from '../data/services.js'
-import { EMAIL, HQ, WHATSAPP } from '../data/site.js'
+import { EMAIL, GMAIL, HQ, WHATSAPP } from '../data/site.js'
 import { openRequest } from '../lib/bus.js'
 import { Lines, Pill } from './ui.jsx'
 
@@ -27,7 +27,7 @@ export default function Footer() {
     [
       'Get in touch',
       [
-        [EMAIL, `mailto:${EMAIL}`],
+        [EMAIL, GMAIL],
         ['WhatsApp', `https://wa.me/${WHATSAPP}`],
         [HQ, null],
         ['Working worldwide', null],
@@ -64,7 +64,7 @@ export default function Footer() {
             <Pill variant="light" arrow="up-right" onClick={() => openRequest()}>
               Start a project
             </Pill>
-            <a href={`mailto:${EMAIL}`} className="foot-mail group">
+            <a href={GMAIL} target="_blank" rel="noopener noreferrer" className="foot-mail group">
               <span>{EMAIL}</span>
               <span className="blue-orb h-10! w-10!">
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
@@ -112,7 +112,7 @@ export default function Footer() {
             <span className="h-1.5 w-1.5 rounded-full bg-[#2f69ff]" />© {new Date().getFullYear()} — All rights reserved.
           </p>
           <div className="flex gap-2">
-            <a href={`mailto:${EMAIL}`} aria-label="Email" className="foot-round">
+            <a href={GMAIL} target="_blank" rel="noopener noreferrer" aria-label="Email" className="foot-round">
               <Mail className="h-4 w-4" />
             </a>
             <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="foot-round">

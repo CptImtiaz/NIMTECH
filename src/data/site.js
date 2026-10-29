@@ -1,5 +1,7 @@
 // Contact details used across the site.
 export const EMAIL = 'nimtech.itsolution@gmail.com'
+// a new Gmail message to us, for links that should open straight away
+export const GMAIL = `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}`
 export const WHATSAPP = '60199680781' // country code + number, no "+"
 export const WHATSAPP_LABEL = '+60 19-968 0781'
 export const HQ = 'Kuala Lumpur, Malaysia'
