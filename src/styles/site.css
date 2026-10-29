@@ -219,9 +219,7 @@ html.is-ready .hero-in { opacity: 1; transform: none; filter: none; }
 .g-fixed { position: fixed; left: 0; top: 0; z-index: 0; width: 100%; height: 100vh; height: 100lvh; transform: translateZ(0); }
 .g-standin { position: absolute; inset: 0; transition: opacity 1s var(--ease), visibility 0s; }
 .g-standin.is-off { opacity: 0; visibility: hidden; transition: opacity 1s var(--ease), visibility 0s 1s; }
-/* desktop: lift the bottom-right sphere clear of the hero paragraph */
-@media (min-width: 1200px) { .g-standin .sphere-art-orb:nth-child(8) { left: 64% !important; top: 80% !important; } }
-@media (min-width: 768px) and (max-width: 1199px) { .g-standin .sphere-art-orb:nth-child(8) { display: none; } }
+@media (min-width: 768px) { .g-standin { display: none; } }
 
 /* soft white veil behind hero text on small screens */
 .veil { position: absolute; inset: auto 0 0 0; height: 62%; z-index: 0; pointer-events: none; background: linear-gradient(to top, rgba(255,255,255,.92) 0%, rgba(255,255,255,.7) 45%, transparent 100%); }
