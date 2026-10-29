@@ -40,7 +40,8 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   camera.position.set(0, 0, 11)
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' })
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.5 : 2))
+  // 1.5x is plenty for soft spheres and keeps big Retina screens light
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5))
   renderer.setSize(container.clientWidth, container.clientHeight)
   renderer.toneMapping = THREE.ACESFilmicToneMapping
   renderer.toneMappingExposure = 1.15
@@ -217,7 +218,6 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   let mouseSpeed = 0
 
   const simulateAndRender = () => {
-    animationFrameId = requestAnimationFrame(simulateAndRender)
     const time = clock.getElapsedTime()
     clock.getDelta()
     updateMouse3D()
@@ -395,13 +395,28 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
       onReady()
     }
   }
+  // The physics is tuned per 60 Hz frame. On 120 Hz screens (MacBook Pro
+  // ProMotion, gaming monitors) run it at most 60 times a second, or the
+  // field moves twice as fast and the GPU renders twice as often.
+  const FRAME = 1000 / 60
+  let last = 0
+  let acc = FRAME
+  const loop = (now) => {
+    animationFrameId = requestAnimationFrame(loop)
+    acc += last ? Math.min(now - last, 100) : FRAME
+    last = now
+    if (acc < FRAME - 1) return
+    acc = Math.min(acc - FRAME, FRAME)
+    simulateAndRender()
+  }
+
   // compile the shaders first (off the main thread where the browser
   // supports it), then start the loop
   let disposed = false
   renderer
     .compileAsync(scene, camera)
     .catch(() => {})
-    .then(() => !disposed && simulateAndRender())
+    .then(() => !disposed && (animationFrameId = requestAnimationFrame(loop)))
 
   // Phones resize the viewport as the address bar shows and hides while
   // scrolling. Ignore those height-only nudges so the canvas is not cleared
