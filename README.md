@@ -64,7 +64,7 @@ Inter text, JetBrains Mono labels, Space Grotesk wordmark.
   what you get, steps, FAQ).
 - Website screenshots used in the website demo live in `public/projects/`.
 - `src/data/site.js`: email (nimtech.itsolution@gmail.com), WhatsApp
-  (+60 19-968 0781), HQ and the home FAQ.
+  (+60 19-994 4917), HQ and the home FAQ.
 
 ## SEO and AI search
 
