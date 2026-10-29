@@ -395,7 +395,13 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
       onReady()
     }
   }
-  simulateAndRender()
+  // compile the shaders first (off the main thread where the browser
+  // supports it), then start the loop
+  let disposed = false
+  renderer
+    .compileAsync(scene, camera)
+    .catch(() => {})
+    .then(() => !disposed && simulateAndRender())
 
   // Phones resize the viewport as the address bar shows and hides while
   // scrolling. Ignore those height-only nudges so the canvas is not cleared
@@ -420,6 +426,7 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   ro.observe(container)
 
   return () => {
+    disposed = true
     cancelAnimationFrame(animationFrameId)
     ro.disconnect()
     sphereGeometry.dispose()

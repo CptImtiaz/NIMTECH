@@ -53,7 +53,7 @@ export default function Loader() {
     <div ref={panel} className={`loader ${leaving ? 'is-leaving' : ''}`} role="status" aria-label="Loading">
       <div className="loader-center">
         <p className="loader-brand">
-          <Logo className="h-[1.875rem] w-[1.875rem]" light />
+          <Logo className="h-7.5 w-7.5" light />
           NIMTECH
         </p>
         <p className="loader-tag">Software, apps and AI with real gravity.</p>

@@ -22,6 +22,8 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
   const cv = useRef(null)
   const reduced = useReduced()
   const [failed, setFailed] = useState(false)
+  // phones see the still spheres from the first paint until the 3D is live
+  const [live, setLive] = useState(false)
 
   // phones and low-core devices get live 3D only on the home page
   const [still, setStill] = useState(false)
@@ -89,7 +91,7 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
         .then(({ createGravity }) => {
           if (dead) return
           try {
-            dispose = createGravity({ canvas, container, ballColor: color, control, mouse, count: count && innerWidth < 768 ? Math.round(count * 0.6) : count, morph, offsetX: innerWidth >= 1024 ? offset : 0 })
+            dispose = createGravity({ canvas, container, ballColor: color, control, mouse, count: count && innerWidth < 768 ? Math.round(count * 0.6) : count, morph, offsetX: innerWidth >= 1024 ? offset : 0, onReady: () => !dead && setLive(true) })
           } catch {
             setFailed(true)
             return
@@ -98,12 +100,29 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
         })
         .catch(() => setFailed(true))
     }
+    // Phones keep the main thread free while the page loads: the still
+    // spheres show first and the 3D starts on the first touch or scroll,
+    // or after a few seconds.
+    const EV = ['pointerdown', 'touchstart', 'scroll', 'keydown']
+    let wait = 0
+    const go = () => {
+      clearTimeout(wait)
+      EV.forEach((e) => removeEventListener(e, go))
+      t = idle(boot)
+    }
+    const start = () => {
+      if (!fixed || innerWidth >= 768) return go()
+      EV.forEach((e) => addEventListener(e, go, { passive: true, once: true }))
+      wait = setTimeout(go, 4000)
+    }
     // (registered after boot exists: onReady runs at once when already ready)
-    const stopReady = onReady(() => (t = idle(boot)))
+    const stopReady = onReady(start)
 
     return () => {
       dead = true
       stopReady()
+      clearTimeout(wait)
+      EV.forEach((e) => removeEventListener(e, go))
       if ('cancelIdleCallback' in window) cancelIdleCallback(t)
       clearTimeout(t)
       dispose()
@@ -120,7 +139,18 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
 
   return (
     <div ref={box} className={`${fixed ? 'g-fixed' : 'absolute inset-0'} pointer-events-none ${className}`} aria-hidden="true">
-      {reduced || failed || still ? <StillCluster color={color} /> : <canvas ref={cv} className="block h-full w-full" />}
+      {reduced || failed || still ? (
+        <StillCluster color={color} />
+      ) : (
+        <>
+          {fixed && (
+            <div className={`g-standin ${live ? 'is-off' : ''}`}>
+              <StillCluster color={color} />
+            </div>
+          )}
+          <canvas ref={cv} className="relative block h-full w-full" />
+        </>
+      )}
     </div>
   )
 }

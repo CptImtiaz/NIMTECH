@@ -44,15 +44,15 @@ export default function GravityStory() {
 
   return (
     <>
-      <div className="fixed inset-0 -z-10 transition-[background] duration-[1200ms] ease-[cubic-bezier(.65,0,.35,1)]" style={{ background: BG[stage] }} aria-hidden="true" />
+      <div className="fixed inset-0 -z-10 transition-[background] duration-1200 ease-[cubic-bezier(.65,0,.35,1)]" style={{ background: BG[stage] }} aria-hidden="true" />
       <GravityField fixed color="#2F69FF" />
 
       {/* 01 hero */}
-      <section className="g-sec relative z-10 flex min-h-[100svh] items-end px-6 pb-12 md:px-12 md:pb-14">
+      <section className="g-sec relative z-10 flex min-h-svh items-end px-6 pb-12 md:px-12 md:pb-14">
         <div className="veil md:hidden" aria-hidden="true" />
         <div className="relative flex w-full flex-col justify-between gap-8 md:flex-row md:items-end">
           <div className="pointer-events-auto flex flex-col items-start">
-            <p className="hero-in mb-4 font-display text-xs font-medium uppercase tracking-[0.05em] text-[#0E2AC5] md:mb-6 md:text-[14px]" style={{ '--d': '.15s' }}>
+            <p className="hero-in mb-4 font-display text-xs font-medium uppercase tracking-wider text-[#0E2AC5] leading-4 md:mb-6 md:text-[14px]" style={{ '--d': '.15s' }}>
               [ Digital studio ]
             </p>
             <Lines as="h1" lines={['Less noise.', 'More gravity.']} className="hero-lines g-h1" delay={280} stagger={120} />
@@ -78,7 +78,7 @@ export default function GravityStory() {
       </section>
 
       {/* 02 drop */}
-      <section className="g-sec relative z-10 flex min-h-[100svh] items-center px-6 pb-40 pt-32 md:px-12 md:pt-40">
+      <section className="g-sec relative z-10 flex min-h-svh items-center px-6 pb-40 pt-32 md:px-12 md:pt-40">
         <div className="grid w-full grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="pointer-events-auto lg:col-span-7">
             <Label>02 — Engineering</Label>
@@ -110,7 +110,7 @@ export default function GravityStory() {
       </section>
 
       {/* 03 shape */}
-      <section className="g-sec relative z-10 flex min-h-[100svh] flex-col justify-between px-6 py-36 md:px-12 md:py-44">
+      <section className="g-sec relative z-10 flex min-h-svh flex-col justify-between px-6 py-36 md:px-12 md:py-44">
         <div className="pointer-events-auto">
           <Label>03 — Form</Label>
           <Lines lines={['Chaos, then form.']} className="g-h2 mt-6 max-w-2xl" />
@@ -126,7 +126,7 @@ export default function GravityStory() {
       </section>
 
       {/* 04 release */}
-      <section className="g-sec relative z-10 flex min-h-[100svh] flex-col items-center justify-center px-6 py-36 text-center md:px-12 md:py-44">
+      <section className="g-sec relative z-10 flex min-h-svh flex-col items-center justify-center px-6 py-36 text-center md:px-12 md:py-44">
         <div className="pointer-events-auto max-w-3xl">
           <Label className="text-center">04 — Release</Label>
           <Lines lines={['And then,', 'weightless.']} className="g-h2 g-h2-xl mx-auto mt-7" />

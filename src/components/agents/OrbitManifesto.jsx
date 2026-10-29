@@ -83,7 +83,7 @@ export default function OrbitManifesto() {
 
   // the manifesto: pinned over the scattered cast, or a plain block when motion is reduced
   const manifestoEl = (
-    <div className={reduced ? 'grid place-items-center px-5 py-28' : 'pointer-events-none absolute inset-0 z-[15] grid place-items-center px-5'} style={{ opacity: reduced ? 1 : 0 }}>
+    <div className={reduced ? 'grid place-items-center px-5 py-28' : 'pointer-events-none absolute inset-0 z-15 grid place-items-center px-5'} style={{ opacity: reduced ? 1 : 0 }}>
       <p className="agents-manifesto">
         <span className="sr-only">{MANIFESTO}</span>
         {WORDS.map((w, i) => (
@@ -97,9 +97,9 @@ export default function OrbitManifesto() {
 
   return (
     <section ref={ref} data-theme="dark" className={`agents-x relative ${reduced ? '' : 'h-[300vh]'}`} aria-label="NIMTECH agents">
-      <div ref={stage} className={`${reduced ? 'relative min-h-[100svh]' : 'sticky top-0 h-[100svh]'} overflow-hidden`}>
+      <div ref={stage} className={`${reduced ? 'relative min-h-svh' : 'sticky top-0 h-svh'} overflow-hidden`}>
         {/* the cast */}
-        <div className="absolute left-1/2 top-1/2 z-[1] h-0 w-0">
+        <div className="absolute left-1/2 top-1/2 z-1 h-0 w-0">
           {CAST.map((c, i) => (
             <div key={c.name} ref={(el) => (tiles.current[i] = el)} className="agent-tile" style={{ transform: 'translate3d(0,0,0)' }}>
               <div className="agent-tile-inner" tabIndex={-1}>
@@ -113,7 +113,7 @@ export default function OrbitManifesto() {
         </div>
 
         {/* hero copy */}
-        <div ref={copy} className="pointer-events-none absolute inset-0 z-[20] grid place-items-center px-5">
+        <div ref={copy} className="pointer-events-none absolute inset-0 z-20 grid place-items-center px-5">
           <div className="pointer-events-auto text-center">
             <span className="inline-flex items-center gap-2 text-[13px] text-[#ACACAC]">
               <Flower className="h-4 w-4" /> NIMTECH Agents

@@ -66,7 +66,7 @@ export default function Footer() {
             </Pill>
             <a href={`mailto:${EMAIL}`} className="foot-mail group">
               <span>{EMAIL}</span>
-              <span className="blue-orb !h-10 !w-10">
+              <span className="blue-orb h-10! w-10!">
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
               </span>
             </a>

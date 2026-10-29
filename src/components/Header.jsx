@@ -74,7 +74,7 @@ export default function Header({ onDark = false }) {
         <div className="hdr-right">
           <div className="hdr-clock" aria-label="Local time">
             <span className="text-neutral-500">Local time</span>
-            <span className="min-w-[3.5rem] font-medium tabular-nums text-neutral-900">{time}</span>
+            <span className="hdr-time min-w-14 font-medium tabular-nums">{time}</span>
             <span className="text-neutral-300">•</span>
             <span className="font-medium">{date}</span>
           </div>

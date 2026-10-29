@@ -14,7 +14,7 @@ const CHANNELS = [
 function Face({ size = 28 }) {
   return (
     <span className="inline-block shrink-0 overflow-hidden rounded-full bg-[#F0EEEB]" style={{ width: size, height: size }}>
-      <Puppet c={EMMA} size={size} label={false} tile={false} className="-mt-[2px] block scale-[1.35]" />
+      <Puppet c={EMMA} size={size} label={false} tile={false} className="mt-[-2px] block scale-[1.35]" />
     </span>
   )
 }
@@ -57,7 +57,7 @@ function Slack() {
           </span>
           <div className="min-w-0">
             <p className="text-[13px]">
-              <b>Emma</b> <span className="rounded bg-white/10 px-1 text-[9px] font-semibold text-white/75">APP</span> <span className="text-[10px] text-white/60">4:52 PM</span>
+              <b>Emma</b> <span className="rounded-sm bg-white/10 px-1 text-[9px] font-semibold text-white/75">APP</span> <span className="text-[10px] text-white/60">4:52 PM</span>
             </p>
             <p className="mt-0.5 text-white/85">Queue’s clear. 34 tickets resolved today, 2 waiting on your review.</p>
             <div className="mt-2 flex gap-1.5">
@@ -123,7 +123,7 @@ export default function ChatAnywhere() {
 
   return (
     <section ref={ref} data-theme="dark" className={`agents-x relative ${reduced ? '' : 'h-[260vh]'}`} aria-labelledby="chat-anywhere">
-      <div className={`${reduced ? 'py-24' : 'sticky top-0 h-[100svh]'} flex items-center overflow-hidden`}>
+      <div className={`${reduced ? 'py-24' : 'sticky top-0 h-svh'} flex items-center overflow-hidden`}>
         <div className="mx-auto grid w-full max-w-[1100px] items-center gap-10 px-5 pt-16 md:grid-cols-[1fr_auto] md:gap-20 md:pt-0">
           <div className="max-w-[420px]">
             <h2 id="chat-anywhere" className="agents-h3">Chat anywhere</h2>

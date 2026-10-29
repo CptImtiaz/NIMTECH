@@ -50,12 +50,6 @@
   ::-webkit-scrollbar-thumb:hover { background: rgba(14, 42, 197, 0.32); }
 }
 
-@layer components {
-  .wrap {
-    @apply mx-auto w-full max-w-[88rem] px-5 sm:px-8 lg:px-12;
-  }
-}
-
 .skip { position: absolute; left: -999px; top: 1rem; z-index: 200; border-radius: .875rem; background: var(--ink); padding: .5rem 1rem; font-size: .875rem; color: #fff; }
 .skip:focus { position: fixed; left: 1rem; }
 
@@ -85,6 +79,10 @@
 .lines.in .line > span { transform: none; opacity: 1; }
 .lines.hero-lines.in .line > span { transform: translateY(105%); opacity: 0; }
 html.is-ready .lines.hero-lines.in .line > span { transform: none; opacity: 1; }
+/* with no intro (phones, repeat visits) the hero headline rises from the
+   first paint instead of waiting for JavaScript */
+html.no-intro .lines.hero-lines .line > span { animation: line-up .9s cubic-bezier(.215,.61,.355,1) var(--ld, 0s) both; }
+@keyframes line-up { from { transform: translateY(105%); opacity: 0; } to { transform: none; opacity: 1; } }
 .words .word { display: inline-block; opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.165,.84,.44,1), transform .7s cubic-bezier(.165,.84,.44,1); }
 .words.in .word { opacity: 1; transform: none; }
 .hero-in { opacity: 0; transform: translateY(18px); filter: blur(6px); transition: opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease); transition-delay: var(--d, 0s); }
@@ -160,7 +158,8 @@ html.is-ready .hero-in { opacity: 1; transform: none; filter: none; }
 .hdr-menu:hover { background: rgba(255,255,255,.35); transform: scale(1.05); }
 .hdr.on-dark .hdr-logo, .hdr.on-dark .hdr-link, .hdr.on-dark .hdr-menu, .hdr.on-dark .glass-pill { color: #fff; }
 .hdr.on-dark .hdr-clock { color: rgba(255,255,255,.7); background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); }
-.hdr.on-dark .hdr-clock .text-neutral-900 { color: #fff; }
+.hdr-time { color: #171717; }
+.hdr.on-dark .hdr-time { color: #fff; }
 
 /* ---------- loader ---------- */
 .loader { position: fixed; inset: 0; z-index: 120; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; background: var(--ink); color: #fff; border-radius: 0 0 2rem 2rem; transition: transform .75s cubic-bezier(.22,1,.36,1); animation: loader-safety 0s 6s forwards; }
@@ -218,6 +217,9 @@ html.is-ready .hero-in { opacity: 1; transform: none; filter: none; }
 /* full-screen 3D layer sized to the large viewport, so it does not resize
    while the phone's address bar shows and hides */
 .g-fixed { position: fixed; left: 0; top: 0; z-index: 0; width: 100%; height: 100vh; height: 100lvh; transform: translateZ(0); }
+.g-standin { position: absolute; inset: 0; transition: opacity 1s var(--ease), visibility 0s; }
+.g-standin.is-off { opacity: 0; visibility: hidden; transition: opacity 1s var(--ease), visibility 0s 1s; }
+@media (min-width: 768px) { .g-standin { display: none; } }
 
 /* soft white veil behind hero text on small screens */
 .veil { position: absolute; inset: auto 0 0 0; height: 62%; z-index: 0; pointer-events: none; background: linear-gradient(to top, rgba(255,255,255,.92) 0%, rgba(255,255,255,.7) 45%, transparent 100%); }
@@ -272,6 +274,6 @@ html.is-ready .hero-in { opacity: 1; transform: none; filter: none; }
 .prose-nim p { margin-top: 1em; font-size: 18px; line-height: 1.75; color: #3f3f46; }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise, .lines .line > span, .words .word, .hero-in { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+  .rise, .lines .line > span, .words .word, .hero-in { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; animation: none !important; }
   .sphere-art-orb, .menu-orbs span, .foot-track, .foot-letter { animation: none !important; }
 }

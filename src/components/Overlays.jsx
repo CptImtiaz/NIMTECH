@@ -182,7 +182,7 @@ export function RequestModal() {
             <h2 className="font-display text-2xl font-semibold">Your request is ready</h2>
             <p className="max-w-[34ch] text-sm text-neutral-600">Choose how to send it. We’ll get back to you within one business day.</p>
             <div className="flex flex-wrap justify-center gap-2">
-              <a href={msg.wa} target="_blank" rel="noopener noreferrer" className="pill-btn pill-dark !bg-[#1fa855]">
+              <a href={msg.wa} target="_blank" rel="noopener noreferrer" className="pill-btn pill-dark bg-[#1fa855]!">
                 Send on WhatsApp
               </a>
               <a href={msg.mail} className="pill-btn pill-outline">

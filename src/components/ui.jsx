@@ -50,7 +50,7 @@ export function Lines({ as: Tag = 'h2', lines, className = '', stagger = 120, de
     <Tag className={`lines ${className}`}>
       {(Array.isArray(lines) ? lines : [lines]).map((l, i) => (
         <span key={i} className="line">
-          <span style={{ transitionDelay: `${delay + i * stagger}ms` }}>{l}</span>
+          <span style={{ transitionDelay: `${delay + i * stagger}ms`, '--ld': `${delay + i * stagger}ms` }}>{l}</span>
         </span>
       ))}
     </Tag>
@@ -87,10 +87,10 @@ export function PageHero({ label, title, text, color = '#2F69FF', tags, children
   return (
     <section className="ph">
       <div className="ph-bg" style={{ '--c': color }} aria-hidden="true" />
-      <GravityField color={color} count={40} offset={0.24} className="max-lg:!bottom-[42%]" />
+      <GravityField color={color} count={40} offset={0.24} className="max-lg:bottom-[42%]!" />
       <div className="veil lg:hidden" aria-hidden="true" />
       <div className="wrap pointer-events-none relative z-10 flex min-h-[88svh] flex-col justify-end pb-14 pt-36">
-        <div className="pointer-events-auto max-w-[56rem]">
+        <div className="pointer-events-auto max-w-4xl">
           <p className="mono-label hero-in" style={{ '--d': '.1s' }}>
             [ {label} ]
           </p>

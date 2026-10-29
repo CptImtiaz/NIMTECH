@@ -85,7 +85,7 @@ export default function Contact() {
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#0a0a0a] text-white"><Ico className="h-5 w-5" /></span>
                   <span className="min-w-0">
                     <span className="block text-sm text-neutral-500">{k}</span>
-                    <span className="block break-words font-display text-lg font-semibold">{v}</span>
+                    <span className="block wrap-break-word font-display text-lg font-semibold">{v}</span>
                   </span>
                 </>
               )

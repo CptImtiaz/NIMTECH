@@ -105,7 +105,7 @@ export function Process() {
         </div>
         <ol className="relative pl-10">
           <span className="absolute left-[11px] top-2 h-[calc(100%-1rem)] w-px bg-[#e6e5e2]" aria-hidden="true" />
-          <motion.span style={{ height: h }} className="absolute left-[11px] top-2 w-px bg-gradient-to-b from-[#2f69ff] via-[#a068ff] to-[#ff4d6d]" aria-hidden="true" />
+          <motion.span style={{ height: h }} className="absolute left-[11px] top-2 w-px bg-linear-to-b from-[#2f69ff] via-[#a068ff] to-[#ff4d6d]" aria-hidden="true" />
           {STEPS.map(([t, w, d], i) => (
             <li key={t} className="rise relative pb-16 last:pb-0" style={{ '--d': `${i * 0.06}s` }}>
               <span className="proc-dot" />

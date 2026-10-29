@@ -79,10 +79,10 @@ export default function Layout() {
         Skip to content
       </a>
       <Loader />
-      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-[#2f69ff]" />
+      <motion.div style={{ scaleX: progress }} className="fixed inset-x-0 top-0 z-70 h-[2px] origin-left bg-[#2f69ff]" />
       <Header onDark={pathname === '/services/ai-agents'} />
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => (getLenis() ? getLenis().scrollTo(0, { immediate: true }) : scrollTo(0, 0))}>
-        <motion.main id="main" key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="relative z-[1]">
+        <motion.main id="main" key={pathname} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }} className="relative z-1">
           <Boundary fallback={<PageError />}>
             <FrozenOutlet />
           </Boundary>

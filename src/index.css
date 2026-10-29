@@ -1,8 +1,76 @@
-@import './styles/site.css';
-@import './styles/home.css';
-@import './styles/demos.css';
-@import './styles/agents.css';
+@import './styles/site.css' layer(base);
+@import './styles/site.utilities.css';
+@import './styles/home.css' layer(base);
+@import './styles/demos.css' layer(base);
+@import './styles/agents.css' layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Raleway Variable', 'Inter Variable', system-ui, sans-serif;
+  --font-body: 'Inter Variable', system-ui, sans-serif;
+  --font-inter: 'Inter Variable', system-ui, sans-serif;
+  --font-grotesk: 'Space Grotesk Variable', 'Inter Variable', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  --color-ink: #0b0f1a;
+  --color-ink-soft: #4a5163;
+  --color-ink-dim: #5e6578;
+
+  --color-line: rgba(0, 0, 0, 0.1);
+  --color-night: #ffffff;
+  --color-surface: #f5f8fc;
+  --color-deep: #080b14;
+  --color-star: #ff801e;
+
+  --color-brand: #0066dd;
+  --color-brand-light: #60b1ff;
+  --color-brand-mid: #319aff;
+  --color-brand-cyan: #0b7a75;
+  --color-brand-violet: #6d4aff;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-ring: hsl(var(--ring));
+
+  /* keep the v3 shades the markup was designed with */
+  --color-emerald-400: #34d399;
+  --color-red-600: #dc2626;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: #e5e7eb;
+  }
+  /* v3 showed a pointer on buttons; v4's preflight does not */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}

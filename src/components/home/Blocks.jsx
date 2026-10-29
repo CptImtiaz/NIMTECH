@@ -32,7 +32,7 @@ export function AboutStatement() {
   return (
     <section id="about" className="bg-white">
       <div className="wrap grid items-center gap-12 py-20 lg:grid-cols-2 lg:py-28">
-        <div className="relative min-h-[16rem] lg:min-h-[22rem]">
+        <div className="relative min-h-64 lg:min-h-88">
           <SphereArt i={0} color="#2F69FF" className="absolute inset-0 m-auto max-w-[24rem]" />
           <Eyebrow className="relative">The Studio</Eyebrow>
         </div>
@@ -85,8 +85,8 @@ export function ServiceCards({ title = 'Everything we build' }) {
                   </div>
                   <SphereArt i={i} color={s.color} className="svc-art" />
                   <div className="relative">
-                    <h3 className="font-display text-2xl font-semibold tracking-tight sm:text-[1.75rem]">{s.name}</h3>
-                    <p className="mt-2 max-w-[28rem] text-sm text-white/55">{s.tagline}</p>
+                    <h3 className="font-display text-2xl font-semibold tracking-tight leading-8 sm:text-[1.75rem]">{s.name}</h3>
+                    <p className="mt-2 max-w-md text-sm text-white/55">{s.tagline}</p>
                     <ul className="mt-5 flex flex-wrap gap-2">
                       {s.tags.slice(0, 3).map((t) => (
                         <li key={t} className="tag-light">
@@ -126,7 +126,7 @@ export function SolveRows() {
             <li key={t} className="rise border-t border-[#e6e5e2] first:border-t-0" style={{ '--d': `${i * 0.08}s` }}>
               <Link to={`/services/${id}`} className="solve-row group">
                 <span className="w-7 text-sm font-medium text-neutral-400 sm:w-10">0{i + 1}</span>
-                <h3 className="flex-1 font-display text-2xl font-medium tracking-[-0.01em] sm:text-[1.875rem] md:text-4xl">{t}</h3>
+                <h3 className="flex-1 font-display text-2xl font-medium tracking-[-0.01em] leading-8 sm:text-[1.875rem] md:text-4xl md:leading-10">{t}</h3>
                 <p className="hidden max-w-[20rem] text-sm text-neutral-500 lg:block">{d}</p>
                 <span className="solve-badge" style={{ '--c': SERVICES[id].color }}>
                   <ArrowUpRight className="h-5 w-5" />
