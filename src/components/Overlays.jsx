@@ -120,7 +120,8 @@ export function RequestModal() {
     setState('sending')
     setTimeout(() => {
       setMsg({
-        mail: `mailto:${EMAIL}?subject=${encodeURIComponent('Project enquiry: ' + svc)}&body=${encodeURIComponent(txt)}`,
+        // opens a ready-to-send Gmail message in a new tab, like the WhatsApp link
+        mail: `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}&su=${encodeURIComponent('Project enquiry: ' + svc)}&body=${encodeURIComponent(txt)}`,
         wa: `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(txt)}`,
       })
       setState('done')
@@ -185,7 +186,7 @@ export function RequestModal() {
               <a href={msg.wa} target="_blank" rel="noopener noreferrer" className="pill-btn pill-dark bg-[#1fa855]!">
                 Send on WhatsApp
               </a>
-              <a href={msg.mail} className="pill-btn pill-outline">
+              <a href={msg.mail} target="_blank" rel="noopener noreferrer" className="pill-btn pill-outline">
                 Send by email
               </a>
             </div>

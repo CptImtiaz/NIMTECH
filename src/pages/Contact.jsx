@@ -27,7 +27,8 @@ export default function Contact() {
     const txt = `Hi NIMTECH, I’m ${v.name}${v.company ? ' from ' + v.company : ''}.\nInterested in: ${v.service}\n\n${v.message}\n\n${v.email ? 'Email: ' + v.email + '\n' : ''}${v.phone ? 'Phone: ' + v.phone : ''}`
     setOut({
       wa: `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(txt)}`,
-      mail: `mailto:${EMAIL}?subject=${encodeURIComponent('Project enquiry: ' + v.service)}&body=${encodeURIComponent(txt)}`,
+      // opens a ready-to-send Gmail message in a new tab, like the WhatsApp link
+      mail: `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}&su=${encodeURIComponent('Project enquiry: ' + v.service)}&body=${encodeURIComponent(txt)}`,
     })
   }
 
@@ -66,7 +67,7 @@ export default function Contact() {
                     <>
                       <span>Your enquiry is ready. Send it by:</span>
                       <a href={out.wa} target="_blank" rel="noopener noreferrer" className="pill bg-[#25d366] px-5 py-2.5 text-white">WhatsApp</a>
-                      <a href={out.mail} className="pill-btn pill-outline">Email</a>
+                      <a href={out.mail} target="_blank" rel="noopener noreferrer" className="pill-btn pill-outline">Email</a>
                     </>
                   )}
                 </motion.div>
