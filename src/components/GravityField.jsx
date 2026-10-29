@@ -59,12 +59,23 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
       }
     }
     addEventListener('resize', onResize)
+    // Once the white panel after the story fills the screen, hide the field
+    // and stop drawing it. Chrome on Mac can show a fast-scrolled panel
+    // before it is fully painted, and the spheres showed through the gaps.
+    const cover = fixed ? document.querySelector('[data-g-cover]') : null
+    let covered = false
     let raf = 0
     const onScroll = () => {
       if (raf) return
       raf = requestAnimationFrame(() => {
         raf = 0
         control.progress = fixed ? window.scrollY / vh : 0
+        const c = !!cover && cover.getBoundingClientRect().top <= 0
+        if (c !== covered) {
+          covered = c
+          container.style.visibility = c ? 'hidden' : ''
+          sync()
+        }
       })
     }
     addEventListener('pointermove', move, { passive: true })
@@ -75,7 +86,7 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
 
     // pause when off screen or the tab is hidden
     let onScreen = true
-    const sync = () => (control.paused = !onScreen || document.hidden)
+    const sync = () => (control.paused = !onScreen || covered || document.hidden)
     const io = new IntersectionObserver(([e]) => {
       onScreen = e.isIntersecting
       sync()
@@ -134,6 +145,7 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
       removeEventListener('mouseup', up)
       removeEventListener('scroll', onScroll)
       removeEventListener('resize', onResize)
+      container.style.visibility = ''
     }
   }, [color, fixed, count, morph, offset, reduced, still])
 
