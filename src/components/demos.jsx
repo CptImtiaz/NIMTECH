@@ -260,7 +260,7 @@ import DashboardDemo from './Dashboard.jsx'
 /* ---------------- Websites in a browser ---------------- */
 const SITES = [
   ['Food brand', 'sweets-shop.my', '/projects/sultana.webp'],
-  ['Boat booking', 'island-trips.my', '/projects/seaescape.webp'],
+  ['Boat booking', 'island-trips.my', '/projects/seaescape-v2.webp'],
 ]
 
 export function BrowserDemo() {
