@@ -8,8 +8,7 @@ export default function Home() {
   return (
     <>
       <GravityStory />
-      {/* data-g-cover: the 3D field hides while this panel fills the screen */}
-      <div data-g-cover className="relative z-10 overflow-clip rounded-t-[2.5rem] bg-white md:rounded-t-[4rem]">
+      <div className="relative z-10 overflow-clip rounded-t-[2.5rem] bg-white md:rounded-t-[4rem]">
         <AboutStatement />
         <ServiceCards />
         <DemoLab />

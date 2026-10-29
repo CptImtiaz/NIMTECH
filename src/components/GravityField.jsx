@@ -28,8 +28,7 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
   // phones and low-core devices get live 3D only on the home page
   const [still, setStill] = useState(false)
   useEffect(() => {
-    if (document.documentElement.classList.contains('t-no3d')) setStill(true)
-    else if (!fixed && (innerWidth < 768 || (navigator.hardwareConcurrency || 8) <= 4)) setStill(true)
+    if (!fixed && (innerWidth < 768 || (navigator.hardwareConcurrency || 8) <= 4)) setStill(true)
   }, [fixed])
 
   useEffect(() => {
@@ -60,23 +59,12 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
       }
     }
     addEventListener('resize', onResize)
-    // Once the white panel after the story fills the screen, hide the field
-    // and stop drawing it. Chrome on Mac can show a fast-scrolled panel
-    // before it is fully painted, and the spheres showed through the gaps.
-    const cover = fixed ? document.querySelector('[data-g-cover]') : null
-    let covered = false
     let raf = 0
     const onScroll = () => {
       if (raf) return
       raf = requestAnimationFrame(() => {
         raf = 0
         control.progress = fixed ? window.scrollY / vh : 0
-        const c = !!cover && cover.getBoundingClientRect().top <= 0
-        if (c !== covered) {
-          covered = c
-          container.style.visibility = c ? 'hidden' : ''
-          sync()
-        }
       })
     }
     addEventListener('pointermove', move, { passive: true })
@@ -87,7 +75,7 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
 
     // pause when off screen or the tab is hidden
     let onScreen = true
-    const sync = () => (control.paused = !onScreen || covered || document.hidden)
+    const sync = () => (control.paused = !onScreen || document.hidden)
     const io = new IntersectionObserver(([e]) => {
       onScreen = e.isIntersecting
       sync()
@@ -146,7 +134,6 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
       removeEventListener('mouseup', up)
       removeEventListener('scroll', onScroll)
       removeEventListener('resize', onResize)
-      container.style.visibility = ''
     }
   }, [color, fixed, count, morph, offset, reduced, still])
 

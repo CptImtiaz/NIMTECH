@@ -278,7 +278,7 @@ html.is-ready .hero-in { opacity: 1; transform: none; filter: none; }
   .sphere-art-orb, .menu-orbs span, .foot-track, .foot-letter { animation: none !important; }
 }
 
-/* temporary test switches (see public/intro-gate.js) */
-html.t-noblur *, html.t-noblur *::before, html.t-noblur *::after { filter: none !important; }
-html.t-noblur *, html.t-noblur *::before, html.t-noblur *::after { backdrop-filter: none !important; }
-html.t-noround [data-g-cover] { border-radius: 0 !important; overflow: visible !important; }
+/* Chrome on Mac: no blur (it flickers when scrolling; see intro-gate.js).
+   Two rules, as the minifier drops backdrop-filter when it shares one. */
+html.mac-chrome *, html.mac-chrome *::before, html.mac-chrome *::after { filter: none !important; }
+html.mac-chrome *, html.mac-chrome *::before, html.mac-chrome *::after { backdrop-filter: none !important; }

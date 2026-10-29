@@ -6,9 +6,7 @@ try {
 } catch (e) {}
 if (skip) document.documentElement.classList.add('no-intro', 'is-ready')
 
-// Temporary test switches for tracking down a Chrome-on-Mac flicker:
-// ?test=noscroll,noblur,noround,no3d each turn one effect off for the visit.
-try {
-  var t = new URLSearchParams(location.search).get('test')
-  if (t) t.split(',').forEach(function (k) { if (/^(noscroll|noblur|noround|no3d)$/.test(k)) document.documentElement.classList.add('t-' + k) })
-} catch (e) {}
+// Chrome (and other Chromium browsers) on macOS can't paint blur inside the
+// big rounded panels fast enough and flicker while scrolling; mark them so
+// the stylesheet drops blur there. Safari and other platforms keep it.
+if (/Macintosh/.test(navigator.userAgent) && /Chrome\//.test(navigator.userAgent)) document.documentElement.classList.add('mac-chrome')
