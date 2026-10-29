@@ -277,3 +277,8 @@ html.is-ready .hero-in { opacity: 1; transform: none; filter: none; }
   .rise, .lines .line > span, .words .word, .hero-in { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; animation: none !important; }
   .sphere-art-orb, .menu-orbs span, .foot-track, .foot-letter { animation: none !important; }
 }
+
+/* temporary test switches (see public/intro-gate.js) */
+html.t-noblur *, html.t-noblur *::before, html.t-noblur *::after { filter: none !important; }
+html.t-noblur *, html.t-noblur *::before, html.t-noblur *::after { backdrop-filter: none !important; }
+html.t-noround [data-g-cover] { border-radius: 0 !important; overflow: visible !important; }

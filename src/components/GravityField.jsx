@@ -28,7 +28,8 @@ function Field({ color = '#2F69FF', fixed = false, count, morph = fixed, offset 
   // phones and low-core devices get live 3D only on the home page
   const [still, setStill] = useState(false)
   useEffect(() => {
-    if (!fixed && (innerWidth < 768 || (navigator.hardwareConcurrency || 8) <= 4)) setStill(true)
+    if (document.documentElement.classList.contains('t-no3d')) setStill(true)
+    else if (!fixed && (innerWidth < 768 || (navigator.hardwareConcurrency || 8) <= 4)) setStill(true)
   }, [fixed])
 
   useEffect(() => {

@@ -18,7 +18,7 @@ export default function Layout() {
 
   // smooth, weighty scroll
   useEffect(() => {
-    if (REDUCE) return
+    if (REDUCE || document.documentElement.classList.contains('t-noscroll')) return
     const l = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 1 })
     setLenis(l)
     let raf
