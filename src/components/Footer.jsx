@@ -57,7 +57,7 @@ export default function Footer() {
       <div className="wrap relative z-10 pb-10 pt-16 md:pt-24">
         <div className="flex flex-col gap-8 border-b border-white/10 pb-16 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="mono-label text-white/40">[ Let’s collaborate ]</p>
+            <p className="mono-label text-white/60">[ Let’s collaborate ]</p>
             <Lines lines={['Have an idea', 'with real weight?']} className="h-hero mt-6 max-w-[16ch] text-white" stagger={100} />
           </div>
           <div className="flex flex-wrap gap-3">
@@ -80,7 +80,7 @@ export default function Footer() {
           </div>
           {cols.map(([t, links], i) => (
             <nav key={t} aria-label={t} className={`rise ${i === 2 ? 'col-span-2 lg:col-span-1' : ''}`} style={{ '--d': `${i * 0.08}s` }}>
-              <h3 className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/40">{t}</h3>
+              <h3 className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">{t}</h3>
               <ul className="mt-5 space-y-3">
                 {links.map(([l, to]) => (
                   <li key={l}>
@@ -107,7 +107,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-7 sm:flex-row">
-          <p className="flex items-center gap-3 font-mono text-[11px] text-white/40">
+          <p className="flex items-center gap-3 font-mono text-[11px] text-white/60">
             <span className="font-grotesk text-sm font-bold tracking-[0.22em] text-white">NIMTECH</span>
             <span className="h-1.5 w-1.5 rounded-full bg-[#2f69ff]" />© {new Date().getFullYear()} — All rights reserved.
           </p>

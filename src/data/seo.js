@@ -6,12 +6,12 @@ import { INSIGHTS } from './insights.js'
 import { EMAIL, HOME_FAQ, HQ, WHATSAPP } from './site.js'
 
 // Production origin. Set VITE_SITE_URL at build time when the domain changes.
-export const SITE_URL = (import.meta.env?.VITE_SITE_URL || 'https://www.nimtech.com').replace(/\/$/, '')
+export const SITE_URL = (import.meta.env?.VITE_SITE_URL || 'https://nimtechit.vercel.app').replace(/\/$/, '')
 export const SITE_NAME = 'NIMTECH'
 export const OG_IMAGE = '/og.jpg'
 // First published and last updated dates, shown to search engines
 export const PUBLISHED = '2026-10-20'
-export const UPDATED = '2026-10-21'
+export const UPDATED = '2026-10-29'
 
 const strip = (t) => String(t).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
 

@@ -71,7 +71,7 @@ Inter text, JetBrains Mono labels, Space Grotesk wordmark.
 - `src/data/seo.js`: title, description and structured data (Organization,
   WebSite, WebPage, Service, FAQPage, BreadcrumbList) for every route.
   **Set the real domain with `VITE_SITE_URL` at build time** (default
-  `https://www.nimtech.com`), and bump `UPDATED` when content changes.
+  `https://nimtechit.vercel.app`), and bump `UPDATED` when content changes.
 - `scripts/prerender.mjs` writes each route's HTML plus `sitemap.xml`,
   `robots.txt` and `llms.txt`. Unknown paths get `dist/404.html`.
 - `src/components/Seo.jsx` keeps the head in step during client navigation.
