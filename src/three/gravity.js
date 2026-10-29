@@ -35,9 +35,6 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   // phones and low-core devices: no transmission pass, no shadows, lighter
   // meshes and fewer physics steps
   const lite = window.innerWidth < 768 || (navigator.hardwareConcurrency || 8) <= 4
-  // Chrome (and other Chromium browsers) on macOS flicker with the
-  // transmission glass, so they get the clear-coat glass phones use
-  const simpleGlass = lite || (/Macintosh/.test(navigator.userAgent) && /Chrome\//.test(navigator.userAgent))
   const scene = new THREE.Scene()
   const camera = new THREE.PerspectiveCamera(38, container.clientWidth / container.clientHeight, 0.1, 100)
   camera.position.set(0, 0, 11)
@@ -114,7 +111,7 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
     let sphereMat
     let role = 'medium'
     const isGlass = Math.random() < 0.22 && !isBlack
-    if (isGlass && simpleGlass) {
+    if (isGlass && lite) {
       sphereMat = new THREE.MeshPhysicalMaterial({
         color: palette.glass, roughness: 0.08, metalness: 0.0, clearcoat: 1.0, clearcoatRoughness: 0.03,
         emissive: palette.glass, emissiveIntensity: 0.12, transparent: true, opacity: 0.55,
@@ -318,7 +315,7 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
       const c = b.isGlass ? curPal.glass : curPal[b.role]
       b.material.color.copy(c)
       if (!isBlack) b.material.emissive.copy(c)
-      const baseOpacity = simpleGlass && b.isGlass ? 0.55 : 1
+      const baseOpacity = lite && b.isGlass ? 0.55 : 1
       b.material.opacity = (flyF > 0.001 ? 1 - smoothstep(camZ - 2.6, camZ - 0.3, b.position.z) : 1) * baseOpacity
       const targetVis = b.radius * (1 - (1 - shapeScale) * shapeF)
       b.visualScale += (targetVis - b.visualScale) * 0.12
