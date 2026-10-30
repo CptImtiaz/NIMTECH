@@ -145,7 +145,7 @@ function Wordmark({ target }) {
 }
 
 function Letter({ p, i, c }) {
-  const a = 0.3 + i * 0.07
+  const a = 0.3 + i * 0.06 // the last letter (i = 6) lands at 0.96, before the page ends
   const y = useTransform(p, [a, a + 0.3], ['105%', '0%'])
   const r = useTransform(p, [a, a + 0.3], [8, 0])
   return (
