@@ -154,11 +154,10 @@ function Count({ to, suffix }) {
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    let last = 0
-    const on = () => {
-      const now = performance.now()
-      if (now - last < 30) return
-      last = now
+    // measure at most once a frame, and only while the number is on screen
+    let raf = 0
+    const measure = () => {
+      raf = 0
       const r = el.getBoundingClientRect()
       // 0 when its top hits the viewport bottom, 1 when its centre hits the centre
       const start = innerHeight
@@ -166,9 +165,20 @@ function Count({ to, suffix }) {
       const p = Math.min(1, Math.max(0, (start - r.top) / (start - end)))
       setV(Math.round(p * to))
     }
-    on()
-    addEventListener('scroll', on, { passive: true })
-    return () => removeEventListener('scroll', on)
+    const on = () => raf || (raf = requestAnimationFrame(measure))
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        addEventListener('scroll', on, { passive: true })
+        on()
+      } else removeEventListener('scroll', on)
+    })
+    io.observe(el)
+    measure()
+    return () => {
+      io.disconnect()
+      removeEventListener('scroll', on)
+      cancelAnimationFrame(raf)
+    }
   }, [to])
   return (
     <span ref={ref}>

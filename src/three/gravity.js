@@ -96,7 +96,7 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   const ROLES = ['pastel', 'light', 'medium', 'deep', 'glass']
   const curPal = { pastel: new THREE.Color(), light: new THREE.Color(), medium: new THREE.Color(), deep: new THREE.Color(), glass: new THREE.Color() }
 
-  const sphereGeometry = lite ? new THREE.SphereGeometry(1, 28, 20) : new THREE.SphereGeometry(1, 48, 48)
+  const sphereGeometry = lite ? new THREE.SphereGeometry(1, 28, 20) : new THREE.SphereGeometry(1, 36, 28)
   const balls = []
   for (let i = 0; i < ballCount; i++) {
     let radius = 0.33
@@ -401,13 +401,28 @@ export function createGravity({ canvas, container, ballColor = '#2F69FF', contro
   const FRAME = 1000 / 60
   let last = 0
   let acc = FRAME
+  // If the GPU can't hold ~45 fps at 1.5x resolution, drop to 1x once
+  // rather than stutter.
+  let slow = 0
+  let steps = 0
   const loop = (now) => {
     animationFrameId = requestAnimationFrame(loop)
-    acc += last ? Math.min(now - last, 100) : FRAME
+    const dt = last ? Math.min(now - last, 100) : FRAME
+    acc += dt
     last = now
     if (acc < FRAME - 1) return
     acc = Math.min(acc - FRAME, FRAME)
     simulateAndRender()
+    if (control.paused || renderer.getPixelRatio() <= 1) return
+    steps++
+    if (dt > 22) slow++
+    if (steps === 90) {
+      if (slow > 45) {
+        renderer.setPixelRatio(1)
+        renderer.setSize(container.clientWidth, container.clientHeight)
+      }
+      steps = slow = 0
+    }
   }
 
   // compile the shaders first (off the main thread where the browser

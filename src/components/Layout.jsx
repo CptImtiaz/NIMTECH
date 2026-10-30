@@ -51,10 +51,13 @@ export default function Layout() {
     )
     const scan = () => document.querySelectorAll('.rise:not(.in), .lines:not(.in), .words:not(.in)').forEach((el) => io.observe(el))
     const t = setTimeout(scan, 50)
-    const mo = new MutationObserver(scan)
+    // rescan at most once a frame, however often the page changes
+    let raf = 0
+    const mo = new MutationObserver(() => raf || (raf = requestAnimationFrame(() => ((raf = 0), scan()))))
     mo.observe(document.body, { childList: true, subtree: true })
     return () => {
       clearTimeout(t)
+      cancelAnimationFrame(raf)
       mo.disconnect()
       io.disconnect()
     }
