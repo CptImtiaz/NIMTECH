@@ -282,3 +282,20 @@ html.is-ready .hero-in { opacity: 1; transform: none; filter: none; }
    Two rules, as the minifier drops backdrop-filter when it shares one. */
 html.mac-chrome *, html.mac-chrome *::before, html.mac-chrome *::after { filter: none !important; }
 html.mac-chrome *, html.mac-chrome *::before, html.mac-chrome *::after { backdrop-filter: none !important; }
+
+/* ---------- floating WhatsApp button ---------- */
+.wa-fab { position: fixed; right: max(20px, env(safe-area-inset-right)); bottom: max(20px, env(safe-area-inset-bottom)); z-index: 60; display: flex; align-items: center; gap: .6rem; color: #fff; text-decoration: none;
+  opacity: 0; transform: translateY(16px) scale(.9); pointer-events: none; transition: opacity .5s var(--ease), transform .6s var(--spring); }
+html.is-ready .wa-fab { opacity: 1; transform: none; pointer-events: auto; transition-delay: .6s; }
+html.is-ready .wa-fab.is-hidden { opacity: 0; transform: translateY(16px) scale(.9); pointer-events: none; transition-delay: 0s; }
+.wa-fab-icon { position: relative; display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: #25d366; box-shadow: 0 10px 30px -6px rgba(37,211,102,.55), 0 2px 6px rgba(0,0,0,.12); transition: transform .35s var(--spring), box-shadow .3s; }
+.wa-fab-icon svg { width: 30px; height: 30px; }
+.wa-fab-icon::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25d366; z-index: -1; animation: wa-ring 2.8s ease-out infinite; }
+@keyframes wa-ring { 0% { transform: scale(1); opacity: .45; } 70%, 100% { transform: scale(1.6); opacity: 0; } }
+.wa-fab-label { padding: .55rem .95rem; border-radius: 999px; background: #0a0a0a; font-size: .82rem; font-weight: 500; white-space: nowrap; box-shadow: 0 8px 24px -8px rgba(0,0,0,.35);
+  opacity: 0; transform: translateX(8px); transition: opacity .3s, transform .35s var(--spring); pointer-events: none; }
+.wa-fab:hover .wa-fab-icon, .wa-fab:focus-visible .wa-fab-icon { transform: scale(1.07); box-shadow: 0 14px 34px -6px rgba(37,211,102,.7), 0 2px 6px rgba(0,0,0,.12); }
+.wa-fab:hover .wa-fab-label, .wa-fab:focus-visible .wa-fab-label { opacity: 1; transform: none; }
+.wa-fab:focus-visible { outline: none; } .wa-fab:focus-visible .wa-fab-icon { outline: 2px solid #0a0a0a; outline-offset: 3px; }
+@media (max-width: 767px) { .wa-fab-icon { width: 54px; height: 54px; } .wa-fab-icon svg { width: 28px; height: 28px; } .wa-fab-label { display: none; } }
+@media (prefers-reduced-motion: reduce) { .wa-fab-icon::before { animation: none; display: none; } }

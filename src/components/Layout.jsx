@@ -7,6 +7,7 @@ import { onReady } from '../lib/intro.js'
 import { getLenis, setLenis } from '../lib/scroll.js'
 import Header from './Header.jsx'
 import Footer from './Footer.jsx'
+import WhatsAppButton from './WhatsAppButton.jsx'
 import Loader from './Loader.jsx'
 import Boundary from './Boundary.jsx'
 import { NavMenu, RequestModal } from './Overlays.jsx'
@@ -92,6 +93,7 @@ export default function Layout() {
         </motion.main>
       </AnimatePresence>
       <Footer />
+      <WhatsAppButton />
       <NavMenu />
       <RequestModal />
     </div>
